@@ -1,0 +1,29 @@
+{
+  "name": "grace_shopper",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnthonyKuang116/grace_shopper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AnthonyKuang116/grace_shopper/issues"
+  },
+  "homepage": "https://github.com/AnthonyKuang116/grace_shopper#readme",
+  "description": "",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "react": "^17.0.2",
+    "react-scripts": "^4.0.3",
+    "reactdom": "^2.0.0"
+  }
+}
