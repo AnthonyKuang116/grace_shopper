@@ -24,9 +24,12 @@ productsRouter.get("/products", (req, res, next) => {
 
 productsRouter.post("/products", async (req, res, next) => {
   try {
-    const { name, description, price, onHand, imgSrc } = req.body;
+    const { category, subCategory, title, description, price, onHand, imgSrc } =
+      req.body;
     const newProduct = await createProduct({
-      name,
+      category,
+      subCategory,
+      title,
       description,
       price,
       onHand,
@@ -40,9 +43,12 @@ productsRouter.post("/products", async (req, res, next) => {
 
 productsRouter.patch("/products/:id", async (req, res, next) => {
   try {
-    const { name, description, price, onHand, imgSrc } = req.body;
+    const { category, subCategory, title, description, price, onHand, imgSrc } =
+      req.body;
     const updatedProduct = await updateProduct({
-      name,
+      category,
+      subCategory,
+      title,
       description,
       price,
       onHand,
