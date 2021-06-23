@@ -29,10 +29,21 @@ async function buildTables() {
 
             CREATE TABLE products(
                 id SERIAL PRIMARY KEY,
-                title VARCHAR(255) NOT NULL,
+                name VARCHAR(255) NOT NULL,
                 description TEXT NOT NULL,
-                price VARCHAR(255) NOT NULL,
-                "invQuantity" VARCHAR(255) NOT NULL
+                price INTEGER NOT NULL,
+                "onHand" INTEGER NOT NULL,
+                "imgSrc" TEXT NOT NULl
+            );
+
+            CREATE TABLE cart(
+                id SERIAL PRIMARY KEY,
+                "userId" INTEGER REFERENCES users(id),
+                "productId" INTEGER REFERENCES products(id)
+                item VARCHAR(255) NOT NULL,
+                quantity VARCHAR(255) NOT NULL,
+                price INTEGER NOT NULL,
+                "imgSrc" TEXT REFERENCES products("imgSrc")
             );
         `);
         console.log("Finished creating tables!");
