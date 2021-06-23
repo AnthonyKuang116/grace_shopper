@@ -20,10 +20,9 @@ async function buildTables() {
         await client.query(`
             CREATE TABLE users (
                 id SERIAL PRIMARY KEY,
-                name VARCHAR(255) NOT NULL,
+                name VARCHAR(255) NOT NULL UNIQUE,
                 password VARCHAR(255) NOT NULL,
                 email VARCHAR(255) NOT NULL UNIQUE,
-                guest BOOLEAN DEFAULT true,
                 admin BOOLEAN DEFAULT false
             );
 
@@ -33,20 +32,25 @@ async function buildTables() {
                 category VARCHAR(255) NOT NULL,
                 subCateogry VARCHAR(255) NOT NULL,
                 description TEXT NOT NULL,
-                price INTEGER NOT NULL,
-                "onHand" INTEGER NOT NULL,
-                "imgSrc" TEXT NOT NULl
+                price DECIMAL NOT NULL,
+                quantity INTEGER NOT NULL,
+                "imgSrc" TEXT NOT NULL
             );
 
             CREATE TABLE cart(
                 id SERIAL PRIMARY KEY,
                 "userId" INTEGER REFERENCES users(id),
-                "productId" INTEGER REFERENCES products(id)
-                item VARCHAR(255) NOT NULL,
-                quantity VARCHAR(255) NOT NULL,
-                price INTEGER NOT NULL,
-                "imgSrc" TEXT REFERENCES products("imgSrc")
+                "isActive" BOOLEAN DEFAULT true,
+                "purchaseDate" TIMESTAMP
             );
+
+            CREATE TABLE line_items(
+                id SERIAL PRIMARY KEY,
+                "cartId" INTEGER REFERENCES cart(id),
+                "productId" INTEGER REFERENCES products(id),
+                quantity INTEGER NOT NULL,
+                price DECIMAL NOT NULL,
+            )
         `);
         console.log("Finished creating tables!");
     } catch (error) {
