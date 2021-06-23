@@ -105,13 +105,13 @@ async function updateProduct(id, fields = {}) {
     }
 }
 
-async function createProduct({ name, description, price, onHand, imgSrc }) {
+async function createProduct({ name, description, price, quantity, imgSrc }) {
     try {
         const { rows: [product] } = await client.query(`
-            INSERT INTO products(name ,description, price, "onHand", "imgSrc")
+            INSERT INTO products(name ,description, price, quantity, "imgSrc")
             VALUES ($1, $2, $3, $4, $5)
             RETURNING *;
-        `, [name, description, price, onHand, imgSrc]);
+        `, [name, description, price, quantity, imgSrc]);
 
         return product;
     } catch (error) {
