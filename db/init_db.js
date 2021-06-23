@@ -11,6 +11,8 @@ async function buildTables() {
 
         console.log("Starting to drop tables...");
         await client.query(`
+            DROP TABLE IF EXITS line_items;
+            DROP TABLE IF EXISTS cart;
             DROP TABLE IF EXISTS products;
             DROP TABLE IF EXISTS users;
         `);
@@ -42,6 +44,7 @@ async function buildTables() {
                 "userId" INTEGER REFERENCES users(id),
                 "isActive" BOOLEAN DEFAULT true,
                 "purchaseDate" TIMESTAMP
+
             );
 
             CREATE TABLE line_items(
