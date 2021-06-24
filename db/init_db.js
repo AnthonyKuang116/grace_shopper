@@ -44,6 +44,7 @@ async function buildTables() {
                 "userId" INTEGER REFERENCES users(id),
                 "isActive" BOOLEAN DEFAULT true,
                 "purchaseDate" TIMESTAMP
+
             );
 
             CREATE TABLE line_items(
@@ -52,7 +53,7 @@ async function buildTables() {
                 "productId" INTEGER REFERENCES products(id),
                 quantity INTEGER NOT NULL,
                 price DECIMAL NOT NULL,
-            );
+            )
         `);
         console.log("Finished creating tables!");
     } catch (error) {
