@@ -22,7 +22,7 @@ async function createUser({ username, password }) {
 async function getUserById(id) {
     try {
         const { rows: [user] } = await client.query(`
-            SELECT id, name, password, email, guest, admin
+            SELECT id, username, password, email, admin
             FROM users
             WHERE id=$1;
         `, [id]);
@@ -95,7 +95,7 @@ async function updateProduct(id, fields = {}) {
         const { rows: [product] } = await client.query(`
             UPDATE products
             SET ${setString}
-            WHERE id=${id}
+            WHERE id=${id};
         `, Object.values(fields));
 
         return product;
@@ -105,13 +105,13 @@ async function updateProduct(id, fields = {}) {
     }
 }
 
-async function createProduct({ name, description, price, onHand, imgSrc }) {
+async function createProduct({ name, category, subCategory, description, price, onHand, imgSrc }) {
     try {
         const { rows: [product] } = await client.query(`
-            INSERT INTO products(name ,description, price, "onHand", "imgSrc")
-            VALUES ($1, $2, $3, $4, $5)
+            INSERT INTO products(name, category, "subCategory", description, price, quantity, "imgSrc")
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
             RETURNING *;
-        `, [name, description, price, onHand, imgSrc]);
+        `, [name, category, subCategory, description, price, onHand, imgSrc]);
 
         return product;
     } catch (error) {
@@ -133,12 +133,12 @@ async function getAllProducts() {
     }
 }
 
-async function emptyCart(userId) {
+async function emptyCart(cartId) {
     try {
         await client.query(`
-            DELETE FROM cart
-            WHERE "userId"=$1;
-        `, [userId]);
+            DELETE FROM line_items
+            WHERE "cartId"=$1;
+        `, [cartId]);
 
         return await getUserCart();
     } catch (error) {
@@ -147,12 +147,12 @@ async function emptyCart(userId) {
     }
 }
 
-async function removeProductFromCart(id) {
+async function removeProductFromCart(productId) {
     try {
         await client.query(`
-            DELETE FROM cart
-            WHERE "id"=$1;
-        `, [id]);
+            DELETE FROM line_items
+            WHERE "productId"=$1;
+        `, [productId]);
 
         return await getUserCart();
     } catch (error) {
@@ -173,8 +173,8 @@ async function removeProductFromCart(id) {
 async function increaseCartQuantity(id) {
     try {
         const { rows: { quantity } } = await client.query(`
-            UPDATE cart
-            SET quantity = cart.quantity + 1
+            UPDATE line_items
+            SET quantity = line_items.quantity + 1
             WHERE id=$1;
         `, [id]);
 
@@ -188,8 +188,8 @@ async function increaseCartQuantity(id) {
 async function decreaseCartQuantity(id) {
     try {
         const { rows: { quantity } } = await client.query(`
-            UPDATE cart
-            SET quantity = cart.quantity - 1;
+            UPDATE line_items
+            SET quantity = line_items.quantity - 1;
             WHERE id=$1;
         `, [id]);
 
@@ -200,13 +200,13 @@ async function decreaseCartQuantity(id) {
     }
 }
 
-async function addProductToCart({ userId, productId, item, quantity, price, imgSrc }) {
+async function addProductToCart({ cartId, productId, quantity, price }) {
     try {
         const { rows: [product] } = await client.query(`
-            INSERT INTO cart "userId", "productId", item, quantity, price, "imgSrc"
-            VALUES ($1, $2, $3, $4, $5, $6,)
+            INSERT INTO line_items ("cartId", "productId", quantity, price)
+            VALUES ($1, $2, $3, $4)
             RETURNING *;
-        `, [userId, productId, item, quantity, price, imgSrc]);
+        `, [cartId, productId, quantity, price]);
 
         return product;
     } catch (error) {
