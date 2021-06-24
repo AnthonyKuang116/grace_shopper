@@ -1,0 +1,1 @@
+export { default as getAllProducts } from "./products/getAllProducts";
