@@ -12,12 +12,61 @@ async function createUser({ username, password }) {
             RETURNING *;
         `, [username, password]);
 
+        await createCart(user.id);
+
         return user;
     } catch (error) {
         console.error("Create user error!", error);
         throw error;
     }
 }
+
+async function createCart(userId) {
+    try {
+        const { rows: [cart] } = await client.query(`
+            INSERT INTO cart ("userId")
+            VALUES ($1)
+            RETURNING  *;
+        `, [userId]);
+
+        return cart;
+    } catch (error) {
+        console.error("Could not create cart!", error);
+        throw error;
+    }
+}
+
+async function getUserCart(userId) {
+    try {
+        const { rows: [cart] } = await client.query(`
+            SELECT * FROM cart
+            WHERE ("userId"=$1 AND "isActive"=true);
+        `, [userId]);
+
+        return cart;
+    } catch (error) {
+        console.error("Could not grab cart!", error);
+        throw error;
+    }
+}
+
+async function removeCart(id) {
+    try {
+        const { rows: [cart] } = await client.query(`
+            UPDATE cart
+            SET "isActive=false
+            WHERE id=$1;
+        `, [id])
+
+        return cart;
+    } catch (error) {
+        console.error("Could not remove cart!", error);
+        throw error;
+    }
+}
+
+//createCart and removeCart functions...
+//createCart into createUser for initial cart
 
 async function getUserById(id) {
     try {
@@ -215,19 +264,7 @@ async function addProductToCart({ userId, productId, item, quantity, price, imgS
     }
 }
 
-async function getUserCart(userId) {
-    try {
-        const { rows } = await client.query(`
-            SELECT * FROM cart
-            WHERE "userId"=$1;
-        `, [userId]);
 
-        return rows;
-    } catch (error) {
-        console.error("Could not grab cart!", error);
-        throw error;
-    }
-}
 
 module.exports = {
     client,
@@ -244,5 +281,7 @@ module.exports = {
     increaseCartQuantity,
     decreaseCartQuantity,
     addProductToCart,
-    getUserCart
+    getUserCart,
+    createCart,
+    removeCart
 };

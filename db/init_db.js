@@ -1,6 +1,9 @@
 const {
-    client
+    client,
+    getAllProducts
 } = require("./index");
+
+const {populateInitialData} = require("./seed")
 
 
 async function buildTables() {
@@ -22,7 +25,7 @@ async function buildTables() {
         await client.query(`
             CREATE TABLE users (
                 id SERIAL PRIMARY KEY,
-                name VARCHAR(255) NOT NULL UNIQUE,
+                username VARCHAR(255) NOT NULL UNIQUE,
                 password VARCHAR(255) NOT NULL,
                 email VARCHAR(255) NOT NULL UNIQUE,
                 admin BOOLEAN DEFAULT false
@@ -43,8 +46,7 @@ async function buildTables() {
                 id SERIAL PRIMARY KEY,
                 "userId" INTEGER REFERENCES users(id),
                 "isActive" BOOLEAN DEFAULT true,
-                "purchaseDate" TIMESTAMP
-
+                "purchaseDate" CURRENT_TIMESTAMP
             );
 
             CREATE TABLE line_items(
@@ -52,8 +54,8 @@ async function buildTables() {
                 "cartId" INTEGER REFERENCES cart(id),
                 "productId" INTEGER REFERENCES products(id),
                 quantity INTEGER NOT NULL,
-                price DECIMAL NOT NULL,
-            )
+                price DECIMAL NOT NULL
+            );
         `);
         console.log("Finished creating tables!");
     } catch (error) {
@@ -62,4 +64,20 @@ async function buildTables() {
     }
 }
 
+async function testDb() {
+    try {
+        console.log("Starting to test database...");
+        console.log("Calling getAllProducts...")
+        const products = await getAllProducts();
+        console.log("Results:", products)
+    } catch (error) {
+        console.log("Error during testDb");
+        throw error;
+    }
+}
+
 buildTables()
+    .then(populateInitialData)
+    .then(testDb)
+    .catch(console.error)
+    .finally(() => client.end());
