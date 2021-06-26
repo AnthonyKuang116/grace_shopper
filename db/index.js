@@ -68,7 +68,7 @@ async function closeCart(id) {
 async function getUserById(id) {
     try {
         const { rows: [user] } = await client.query(`
-            SELECT id, name, password, email, guest, admin
+            SELECT id, name, password, email, admin
             FROM users
             WHERE id=$1;
         `, [id]);
@@ -89,7 +89,9 @@ async function getUserByUsername(username){
         const { rows: [user] } = await client.query(`
             SELECT * FROM users
             WHERE username=$1;
-        `, [username])
+        `, [username]);
+
+        return user;
     } catch(error) {
         console.error("Could not grab username!", error);
         throw error;
@@ -174,12 +176,12 @@ async function getAllProducts() {
     }
 }
 
-async function emptyCart(userId) {
+async function emptyCart(cartId) {
     try {
         await client.query(`
-            DELETE FROM cart
-            WHERE ("userId"=$1 AND "isActive"=true);
-        `, [userId]);
+            DELETE FROM line_items
+            WHERE ("cartId"=$1);
+        `, [cartId]);
 
     } catch (error) {
         console.error("Could not empty cart!", error);
@@ -187,12 +189,12 @@ async function emptyCart(userId) {
     }
 }
 
-async function removeProductFromCart(id, userId) {
+async function removeProductFromCart(cartId, productId) {
     try {
         await client.query(`
             DELETE FROM line_items
-            WHERE ("id"=$1 AND "userId" =$2);
-        `, [id, userId]);
+            WHERE ("cartId"=$1 AND "productId" =$2);
+        `, [cartId, productId]);
 
     } catch (error) {
         console.error("Could not remove product!", error);
@@ -206,7 +208,7 @@ async function updateCartQuantity(cartId, productId, quantity) {
             UPDATE line_items
             SET quantity=$3
             WHERE ("productId"=$2 AND "cartId"=$1);
-        `, [cartId, productId, quantity])
+        `, [cartId, productId, quantity]);
 
         return quant;
     } catch (error) {
