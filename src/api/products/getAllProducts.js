@@ -1,3 +1,4 @@
+import axios from "axios";
 async function getAllProducts() {
     try {
         const { data } = await axios.get("/api/products");
