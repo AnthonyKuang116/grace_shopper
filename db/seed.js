@@ -342,15 +342,15 @@ export const createInitialCarts = async () => {
   try {
     console.log("Adding products to carts...");
     const productsToAdd = [
-      { cartId: "1", productId: "3", quantity: "5" },
-      { cartId: "1", productId: "2", quantity: "4" },
-      { cartId: "1", productId: "1", quantity: "3" },
-      { cartId: "2", productId: "7", quantity: "8" },
-      { cartId: "2", productId: "6", quantity: "4" },
-      { cartId: "2", productId: "5", quantity: "5" },
-      { cartId: "3", productId: "25", quantity: "13" },
-      { cartId: "3", productId: "16", quantity: "30" },
-      { cartId: "3", productId: "9", quantity: "22" },
+      { cartId: 1, productId: 3, quantity: 5, price: 0.86 },
+      { cartId: 1, productId: 2, quantity: 4, price: 0.57 },
+      { cartId: 1, productId: 1, quantity: 3, price: 0.22 },
+      { cartId: 2, productId: 7, quantity: 8, price: 3.12 },
+      { cartId: 2, productId: 6, quantity: 4, price: 1.64 },
+      { cartId: 2, productId: 5, quantity: 5, price: 2.88 },
+      { cartId: 3, productId: 25, quantity: 13, price: 0.78 },
+      { cartId: 3, productId: 16, quantity: 30, price: 2.24 },
+      { cartId: 3, productId: 9, quantity: 22, price: 0.8 },
     ];
     const carts = await Promise.all(productsToAdd.map(addProductToCart));
     console.log("Carts created:");
