@@ -6,17 +6,12 @@ const DB_URL =
 const client = new Client(DB_URL);
 
 async function createUser({ username, password, email }) {
-  try {
-    const {
-      rows: [user],
-    } = await client.query(
-      `
+    try {
+        const { rows: [user] } = await client.query(`
             INSERT into users(username, password, email)
             VALUES ($1, $2, $3)
             RETURNING *;
-        `,
-      [username, password, email]
-    );
+        `, [username, password, email]);
 
     await createCart(user.id);
 
@@ -121,6 +116,8 @@ async function getUserByUsername(username) {
         `,
       [username]
     );
+
+    return user;
   } catch (error) {
     console.error("Could not grab username!", error);
     throw error;
