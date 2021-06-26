@@ -37,9 +37,9 @@ cartRouter.patch("/cart/:productId/:quantity", async (req, res, next) => {
   try {
     const { productId, quantity } = req.params;
     const { userId } = req.body;
-    const cart = getUserCart(userId)
+    const cart = getUserCart(userId);
+
     const product = await updateCartQuantity(cart.cartId, productId, quantity);
-    
     res.send(product);
   } catch (error) {
     next(error);
@@ -48,9 +48,9 @@ cartRouter.patch("/cart/:productId/:quantity", async (req, res, next) => {
 
 cartRouter.delete("/cart/:productId", async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const { productId } = req.params;
     const { userId } = req.body;
-    const product = await removeProductFromCart(id, userId);
+    const product = await removeProductFromCart(productId, userId);
     res.send(product);
   } catch (error) {
     next(error);
