@@ -4,13 +4,13 @@ const DB_NAME = "shopper-dev";
 const DB_URL = process.env.DATABASEURL || `postgres://localhost:5432/${DB_NAME}`;
 const client = new Client(DB_URL);
 
-async function createUser({ username, password }) {
+async function createUser({ username, password, email }) {
     try {
         const { rows: [user] } = await client.query(`
-            INSERT into users(username, password)
-            VALUES ($1, $2)
+            INSERT into users(username, password, email)
+            VALUES ($1, $2, $3)
             RETURNING *;
-        `, [username, password]);
+        `, [username, password, email]);
 
         await createCart(user.id);
 
@@ -200,13 +200,13 @@ async function removeProductFromCart(id, userId) {
     }
 }
 
-async function updateCartQuantity(id, userId, quantity) {
+async function updateCartQuantity(cartId, productId, quantity) {
     try {
         const { rows: { quant } } = await client. query(`
             UPDATE line_items
             SET quantity=$3
-            WHERE (id=$1 AND "userId"=$2);
-        `, [id, userId, quantity])
+            WHERE ("productId"=$2 AND "cartId"=$1);
+        `, [cartId, productId, quantity])
 
         return quant;
     } catch (error) {

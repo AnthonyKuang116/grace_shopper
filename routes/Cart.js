@@ -13,7 +13,7 @@ cartRouter.use((req, res, next) => {
   next();
 });
 
-cartRouter.get("/cart", (req, res, next) => {
+cartRouter.get("/cart/:id", (req, res, next) => {
   try {
     const { userId } = req.body;
     const cart = await getUserCart(userId);
@@ -23,29 +23,27 @@ cartRouter.get("/cart", (req, res, next) => {
   }
 });
 
-cartRouter.post("/cart/:id/:quantity", async (req, res, next) => {
+cartRouter.post("/cart/:productId/:quantity", async (req, res, next) => {
   try {
-    const { id, quantity, price } = req.params;
-    const { userId } = req.body;
-    const product = await addProductToCart(id, userId, quantity, price);
+    const { cartId, productId, quantity, price } = req.params;
+    const product = await addProductToCart(cartId, productId, quantity, price);
     res.send(product);
   } catch (error) {
     next(error);
   }
 });
 
-cartRouter.patch("/cart/:id/:quantity", async (req, res, next) => {
+cartRouter.patch("/cart/:productId/:quantity", async (req, res, next) => {
   try {
-    const { id, quantity } = req.params;
-    const { userId } = req.body;
-    const product = await updateCartQuantity(id, userId, quantity);
+    const { cartId, productId, quantity } = req.params;
+    const product = await updateCartQuantity(cartId, productId, quantity);
     res.send(product);
   } catch (error) {
     next(error);
   }
 });
 
-cartRouter.delete("/cart/:id", async (req, res, next) => {
+cartRouter.delete("/cart/:productId", async (req, res, next) => {
   try {
     const { id } = req.params;
     const { userId } = req.body;
