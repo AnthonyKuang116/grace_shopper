@@ -50,11 +50,11 @@ async function getUserCart(userId) {
     }
 }
 
-async function removeCart(id) {
+async function closeCart(id) {
     try {
         const { rows: [cart] } = await client.query(`
             UPDATE cart
-            SET "isActive=false
+            SET "isActive"=false
             WHERE id=$1;
         `, [id])
 
@@ -64,9 +64,6 @@ async function removeCart(id) {
         throw error;
     }
 }
-
-//createCart and removeCart functions...
-//createCart into createUser for initial cart
 
 async function getUserById(id) {
     try {
@@ -87,22 +84,17 @@ async function getUserById(id) {
     }
 }
 
-/**
- * 
- * Probably don't need this function since we're already grabbing by ID
- * 
- */
-
-// async function getUserByUsername(username){
-//     try {
-//         const { rows: [user] } = client.query(`
-
-//         `)
-//     } catch(error) {
-//         console.error("Could not grab username!", error);
-//         throw error;
-//     }
-// }
+async function getUserByUsername(username){
+    try {
+        const { rows: [user] } = await client.query(`
+            SELECT * FROM users
+            WHERE username=$1;
+        `, [username])
+    } catch(error) {
+        console.error("Could not grab username!", error);
+        throw error;
+    }
+}
 
 async function getAllUsers() {
     try {
@@ -154,13 +146,13 @@ async function updateProduct(id, fields = {}) {
     }
 }
 
-async function createProduct({ name, description, price, quantity, imgSrc }) {
+async function createProduct({ category, subCategory, name, description, price, quantity, imgSrc }) {
     try {
         const { rows: [product] } = await client.query(`
-            INSERT INTO products(name ,description, price, quantity, "imgSrc")
-            VALUES ($1, $2, $3, $4, $5)
+            INSERT INTO products(category, "subCategory", name ,description, price, quantity, "imgSrc")
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
             RETURNING *;
-        `, [name, description, price, quantity, imgSrc]);
+        `, [category, subCategory, name, description, price, quantity, imgSrc]);
 
         return product;
     } catch (error) {
@@ -186,43 +178,47 @@ async function emptyCart(userId) {
     try {
         await client.query(`
             DELETE FROM cart
-            WHERE "userId"=$1;
+            WHERE ("userId"=$1 AND "isActive"=true);
         `, [userId]);
 
-        return await getUserCart();
     } catch (error) {
         console.error("Could not empty cart!", error);
         throw error;
     }
 }
 
-async function removeProductFromCart(id) {
+async function removeProductFromCart(id, userId) {
     try {
         await client.query(`
-            DELETE FROM cart
-            WHERE "id"=$1;
-        `, [id]);
+            DELETE FROM line_items
+            WHERE ("id"=$1 AND "userId" =$2);
+        `, [id, userId]);
 
-        return await getUserCart();
     } catch (error) {
         console.error("Could not remove product!", error);
         throw error;
     }
 }
 
-// async function updateCartQuantity(id, user, quantity) {
-//     try {
+async function updateCartQuantity(id, userId, quantity) {
+    try {
+        const { rows: { quant } } = await client. query(`
+            UPDATE line_items
+            SET quantity=$3
+            WHERE (id=$1 AND "userId"=$2);
+        `, [id, userId, quantity])
 
-//     } catch (error) {
-//         console.error("Could not update quantity!", error);
-//         throw error;
-//     }
-// }
+        return quant;
+    } catch (error) {
+        console.error("Could not update quantity!", error);
+        throw error;
+    }
+}
 
 async function increaseCartQuantity(id) {
     try {
         const { rows: { quantity } } = await client.query(`
-            UPDATE cart
+            UPDATE line_items
             SET quantity = cart.quantity + 1
             WHERE id=$1;
         `, [id]);
@@ -237,7 +233,7 @@ async function increaseCartQuantity(id) {
 async function decreaseCartQuantity(id) {
     try {
         const { rows: { quantity } } = await client.query(`
-            UPDATE cart
+            UPDATE line_items
             SET quantity = cart.quantity - 1;
             WHERE id=$1;
         `, [id]);
@@ -249,13 +245,13 @@ async function decreaseCartQuantity(id) {
     }
 }
 
-async function addProductToCart({ userId, productId, item, quantity, price, imgSrc }) {
+async function addProductToCart({ cartId, productId, quantity, price}) {
     try {
         const { rows: [product] } = await client.query(`
-            INSERT INTO cart "userId", "productId", item, quantity, price, "imgSrc"
-            VALUES ($1, $2, $3, $4, $5, $6,)
+            INSERT INTO line_items ("cartId", "productId", quantity, price)
+            VALUES ($1, $2, $3, $4)
             RETURNING *;
-        `, [userId, productId, item, quantity, price, imgSrc]);
+        `, [cartId, productId, quantity, price]);
 
         return product;
     } catch (error) {
@@ -277,11 +273,12 @@ module.exports = {
     getAllProducts,
     emptyCart,
     removeProductFromCart,
-    // updateCartQuantity,//incomplete...perhaps an increaseCartQuantity and decreaseCartQuantity?
+    updateCartQuantity,
     increaseCartQuantity,
     decreaseCartQuantity,
     addProductToCart,
     getUserCart,
     createCart,
-    removeCart
+    closeCart,
+    getUserByUsername
 };

@@ -15,8 +15,8 @@ cartRouter.use((req, res, next) => {
 
 cartRouter.get("/cart", (req, res, next) => {
   try {
-    const { user } = req.body;
-    const cart = await getUserCart(user);
+    const { userId } = req.body;
+    const cart = await getUserCart(userId);
     res.send(cart);
   } catch (error) {
     next(error);
@@ -25,9 +25,9 @@ cartRouter.get("/cart", (req, res, next) => {
 
 cartRouter.post("/cart/:id/:quantity", async (req, res, next) => {
   try {
-    const { id, quantity } = req.params;
-    const { user } = req.body;
-    const product = await addProductToCart(id, user, quantity);
+    const { id, quantity, price } = req.params;
+    const { userId } = req.body;
+    const product = await addProductToCart(id, userId, quantity, price);
     res.send(product);
   } catch (error) {
     next(error);
@@ -37,8 +37,8 @@ cartRouter.post("/cart/:id/:quantity", async (req, res, next) => {
 cartRouter.patch("/cart/:id/:quantity", async (req, res, next) => {
   try {
     const { id, quantity } = req.params;
-    const { user } = req.body;
-    const product = await updateCartQuantity(id, user, quantity);
+    const { userId } = req.body;
+    const product = await updateCartQuantity(id, userId, quantity);
     res.send(product);
   } catch (error) {
     next(error);
@@ -48,8 +48,8 @@ cartRouter.patch("/cart/:id/:quantity", async (req, res, next) => {
 cartRouter.delete("/cart/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { user } = req.body;
-    const product = await removeProductFromCart(id, user);
+    const { userId } = req.body;
+    const product = await removeProductFromCart(id, userId);
     res.send(product);
   } catch (error) {
     next(error);
@@ -58,8 +58,8 @@ cartRouter.delete("/cart/:id", async (req, res, next) => {
 
 cartRouter.delete("/cart", (req, res, next) => {
   try {
-    const { user } = req.body;
-    const cart = emptyCart(user);
+    const { userId } = req.body;
+    const cart = emptyCart(userId);
     res.send(cart);
   } catch (error) {
     next(error);
