@@ -23,7 +23,7 @@ cartRouter.get("/cart", (req, res, next) => {
   }
 });
 
-cartRouter.post("/cart/:id/:quantity", async (req, res, next) => {
+cartRouter.post("/cart/:productId/:quantity", async (req, res, next) => {
   try {
     const { id, quantity, price } = req.params;
     const { userId } = req.body;
@@ -34,22 +34,24 @@ cartRouter.post("/cart/:id/:quantity", async (req, res, next) => {
   }
 });
 
-cartRouter.patch("/cart/:id/:quantity", async (req, res, next) => {
+cartRouter.patch("/cart/:productId/:quantity", async (req, res, next) => {
   try {
-    const { id, quantity } = req.params;
+    const { productId, quantity } = req.params;
     const { userId } = req.body;
-    const product = await updateCartQuantity(id, userId, quantity);
+    const cart = getUserCart(userId);
+
+    const product = await updateCartQuantity(cart.cartId, productId, quantity);
     res.send(product);
   } catch (error) {
     next(error);
   }
 });
 
-cartRouter.delete("/cart/:id", async (req, res, next) => {
+cartRouter.delete("/cart/:productId", async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const { productId } = req.params;
     const { userId } = req.body;
-    const product = await removeProductFromCart(id, userId);
+    const product = await removeProductFromCart(productId, userId);
     res.send(product);
   } catch (error) {
     next(error);

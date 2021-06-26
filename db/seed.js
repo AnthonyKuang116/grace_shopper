@@ -1,4 +1,5 @@
 const {
+  createProduct,
   addProductToCart,
   createUser,
   emptyCart,
@@ -6,7 +7,7 @@ const {
   updateCartQuantity,
 } = require(".");
 
-export const createInitialUsers = async () => {
+const createInitialUsers = async () => {
   console.log("Starting to create users...");
   try {
     const usersToCreate = [
@@ -33,11 +34,11 @@ export const createInitialUsers = async () => {
     console.log("Finished creating users!");
   } catch (error) {
     console.error("Error creating users!");
-    next(error);
+    throw error;
   }
 };
 
-export const createInitialProducts = async () => {
+const createInitialProducts = async () => {
   console.log("Starting to create products...");
   try {
     const productsToCreate = [
@@ -330,15 +331,16 @@ export const createInitialProducts = async () => {
         quantity: 100,
       },
     ];
+    console.log("products:", productsToCreate);
     await Promise.all(productsToCreate.map(createProduct));
     console.log("Finished creating products!");
   } catch (error) {
     console.error("Error creating products!");
-    next(error);
+    throw error;
   }
 };
 
-export const createInitialCarts = async () => {
+const createInitialCarts = async () => {
   try {
     console.log("Adding products to carts...");
     const productsToAdd = [
@@ -358,17 +360,19 @@ export const createInitialCarts = async () => {
     console.log("Products added to carts!");
   } catch (error) {
     console.log("Error adding products!");
-    next(error);
+    throw error;
   }
 };
-export const modifyCarts = async () => {
+const modifyCarts = async () => {
   try {
     console.log("Updating product #3 quantity in cart 1...");
+
     await updateCartQuantity(1, 3, 15);
+    // cartId, productId, quant
     console.log("Product #3 quantity updated to 15 in cart 1!");
   } catch (error) {
     console.log("Error updating quantity!");
-    next(error);
+    throw error;
   }
   try {
     console.log("Removing product #7 from cart 2...");
@@ -376,7 +380,7 @@ export const modifyCarts = async () => {
     console.log("Product #7 removed!");
   } catch (error) {
     console.log("Error removing product!");
-    next(error);
+    throw error;
   }
   try {
     console.log("Emptying cart 3...");
@@ -384,12 +388,13 @@ export const modifyCarts = async () => {
     console.log("Cart 3 emptied!");
   } catch (error) {
     console.log("Error emptying cart!");
-    next(error);
+    throw error;
   }
 };
 
-export const buildDb = () => {
-  createInitialUsers();
-  createInitialProducts();
-  createInitialCarts();
+const buildDb = async () => {
+  await createInitialUsers();
+  await createInitialProducts();
+  await createInitialCarts();
 };
+module.exports = { buildDb, modifyCarts };
