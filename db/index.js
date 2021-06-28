@@ -383,3 +383,4 @@ module.exports = {
   getUserByUsername,
   getUser
 };
+
