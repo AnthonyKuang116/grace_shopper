@@ -5,7 +5,7 @@ const {
   removeProductFromCart,
   updateCartQuantity,
   emptyCart,
-  getCheckout
+  getCheckout,
 } = require("../db");
 
 cartRouter.use((req, res, next) => {
@@ -28,29 +28,15 @@ cartRouter.post("/:productId/:quantity", async (req, res, next) => {
   try {
     const { productId, quantity } = req.params;
     const { userId, price } = req.body;
-<<<<<<< HEAD
+
+    console.log("params", req.params);
+
+    console.log("body", req.body);
+
     const cart = await getUserCart(userId);
-    console.log(cart);
-    const cartId = cart.id;
-
-    const product = await addProductToCart({
-      cartId,
-      productId,
-      quantity,
-      price,
-    });
-
-=======
-
-    console.log("params", req.params)
-
-    console.log("body", req.body)
-
-    const cart = await getUserCart(userId)
-    console.log("cart", cart)
+    console.log("cart", cart);
     const product = await addProductToCart(cart.id, productId, quantity, price);
-    console.log("product", product)
->>>>>>> 91cf88e1c45a2d259381c4e4d49aad328e179d34
+    console.log("product", product);
     res.send(product);
   } catch ({ name, message }) {
     throw { name, message };
