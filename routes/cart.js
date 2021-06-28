@@ -5,6 +5,7 @@ const {
   removeProductFromCart,
   updateCartQuantity,
   emptyCart,
+  getCheckout
 } = require("../db");
 
 cartRouter.use((req, res, next) => {
@@ -13,10 +14,10 @@ cartRouter.use((req, res, next) => {
   next();
 });
 
-cartRouter.get("/:id", async (req, res, next) => {
+cartRouter.get("/:userId", async (req, res, next) => {
   try {
-    const { userId } = req.body;
-    const cart = await getUserCart(userId);
+    const { userId } = req.params;
+    const cart = await getCheckout(userId);
     res.send(cart);
   } catch ({ name, message }) {
     next({ name, message });
@@ -27,6 +28,7 @@ cartRouter.post("/:productId/:quantity", async (req, res, next) => {
   try {
     const { productId, quantity } = req.params;
     const { userId, price } = req.body;
+<<<<<<< HEAD
     const cart = await getUserCart(userId);
     console.log(cart);
     const cartId = cart.id;
@@ -38,6 +40,17 @@ cartRouter.post("/:productId/:quantity", async (req, res, next) => {
       price,
     });
 
+=======
+
+    console.log("params", req.params)
+
+    console.log("body", req.body)
+
+    const cart = await getUserCart(userId)
+    console.log("cart", cart)
+    const product = await addProductToCart(cart.id, productId, quantity, price);
+    console.log("product", product)
+>>>>>>> 91cf88e1c45a2d259381c4e4d49aad328e179d34
     res.send(product);
   } catch ({ name, message }) {
     throw { name, message };
