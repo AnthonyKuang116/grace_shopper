@@ -38,13 +38,13 @@ apiRouter.use((req, res, next) => {
   next();
 });
 
-const usersRouter = require("./users");
+const usersRouter = require("./Users");
 apiRouter.use("/users", usersRouter);
 
-const productsRouter = require("./products");
+const productsRouter = require("./Products");
 apiRouter.use("/products", productsRouter);
 
-const cartRouter = require("./cart");
+const cartRouter = require("./Cart");
 apiRouter.use("/cart", cartRouter);
 
 apiRouter.use((error, req, res, next) => {
