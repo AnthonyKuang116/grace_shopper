@@ -4,23 +4,35 @@ const DB_NAME = "shopper-dev";
 const DB_URL =
   process.env.DATABASEURL || `postgres://localhost:5432/${DB_NAME}`;
 const client = new Client(DB_URL);
+const bcrypt = require("bcrypt");
 
-async function createUser({ username, password, email }) {
+async function hashPassword(password) {
+  const SALT_COUNT = 10;
+  const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
+  return hashedPassword;
+}
+
+const createUser = async ({ username, password }) => {
+  const hashedPassword = await hashPassword(password);
   try {
-    const { rows: [user] } = await client.query(`
-            INSERT into users(username, password, email)
-            VALUES ($1, $2, $3)
-            RETURNING *;
-        `, [username, password, email]);
+    const {
+      rows: [user],
+    } = await client.query(
+      `
+    INSERT INTO users(username, password, email) VALUES ($1, $2, $3)
+      RETURNING *;
+    `,
+      [username, hashedPassword, email]
+    );
 
-    await createCart(user.id);
+  await createCart(user.id)
 
     return user;
   } catch (error) {
     console.error("Create user error!", error);
     throw error;
   }
-}
+};
 
 async function createCart(userId) {
   try {
@@ -54,43 +66,9 @@ async function getUserCart(userId) {
       [userId]
     );
 
-    // const cartId = cart.id;
-    // const { rows: line_items } = await client.query(`
-    //   SELECT * FROM line_items
-    //   WHERE "cartId"=$1;
-    // `, [cartId])
-    // console.log(cart)
-    // console.log(line_items);
-    // return line_items;
-    return cart
+    return cart;
   } catch (error) {
     console.error("Could not grab cart!", error);
-    throw error;
-  }
-}
-
-async function getCheckout(userId) {
-  try {
-    const {
-      rows: [cart],
-    } = await client.query(
-      `
-            SELECT * FROM cart
-            WHERE ("userId"=$1 AND "isActive"=true);
-        `,
-      [userId]
-    );
-
-    const cartId = cart.id;
-    const { rows: line_items } = await client.query(`
-      SELECT * FROM line_items
-      WHERE "cartId"=$1;
-    `, [cartId])
-    console.log(cart)
-    console.log(line_items);
-    return line_items;
-  } catch (error) {
-    console.error("Could not view cart!", error);
     throw error;
   }
 }
@@ -157,6 +135,23 @@ async function getUserByUsername(username) {
     throw error;
   }
 }
+
+const getUser = async ({ username, password }) => {
+  const user = await getUserByUsername(username);
+  if (!user) {
+    return null;
+  }
+  const hashedPassword = user.password;
+
+  try {
+    if (await bcrypt.compare(password, hashedPassword)) {
+      delete user.password;
+      return user;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
 
 async function getAllUsers() {
   try {
@@ -347,9 +342,8 @@ async function decreaseCartQuantity(id) {
   }
 }
 
-async function addProductToCart( cartId, productId, quantity, price ) {
+async function addProductToCart({ cartId, productId, quantity, price }) {
   try {
-    console.log("index", cartId, productId, quantity, price)
     const {
       rows: [product],
     } = await client.query(
@@ -360,6 +354,7 @@ async function addProductToCart( cartId, productId, quantity, price ) {
         `,
       [cartId, productId, quantity, price]
     );
+
     return product;
   } catch (error) {
     console.error("Could not add item to cart!", error);
@@ -370,7 +365,6 @@ async function addProductToCart( cartId, productId, quantity, price ) {
 module.exports = {
   client,
   createUser,
-  getCheckout,
   getUserById,
   getAllUsers,
   deleteProduct,
@@ -387,4 +381,6 @@ module.exports = {
   createCart,
   closeCart,
   getUserByUsername,
+  getUser
 };
+
