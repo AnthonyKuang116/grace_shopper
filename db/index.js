@@ -212,11 +212,11 @@ async function createProduct({
 
 async function getAllProducts() {
   try {
-    const { rows } = await client.query(`
+    const { rows: products } = await client.query(`
             SELECT * FROM products;
         `);
-
-    return rows;
+    console.log(products);
+    return products;
   } catch (error) {
     console.error("Could not grab products!", error);
     throw error;
