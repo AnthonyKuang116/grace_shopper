@@ -4,6 +4,7 @@ const DB_NAME = "shopper-dev";
 const DB_URL =
   process.env.DATABASEURL || `postgres://localhost:5432/${DB_NAME}`;
 const client = new Client(DB_URL);
+const bcrypt = require("bcrypt");
 
 async function createUser({ username, password, email }) {
   try {
@@ -128,6 +129,23 @@ async function getUserByUsername(username) {
     throw error;
   }
 }
+
+const getUser = async ({ username, password }) => {
+  const user = await getUserByUsername(username);
+  if (!user) {
+    return null;
+  }
+  const hashedPassword = user.password;
+
+  try {
+    if (await bcrypt.compare(password, hashedPassword)) {
+      delete user.password;
+      return user;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
 
 async function getAllUsers() {
   try {
@@ -357,4 +375,5 @@ module.exports = {
   createCart,
   closeCart,
   getUserByUsername,
+  getUser,
 };
