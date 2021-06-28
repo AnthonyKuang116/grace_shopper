@@ -6,8 +6,8 @@ const DB_URL =
 const client = new Client(DB_URL);
 
 async function createUser({ username, password, email }) {
-    try {
-        const { rows: [user] } = await client.query(`
+  try {
+    const { rows: [user] } = await client.query(`
             INSERT into users(username, password, email)
             VALUES ($1, $2, $3)
             RETURNING *;
@@ -54,9 +54,43 @@ async function getUserCart(userId) {
       [userId]
     );
 
-    return cart;
+    // const cartId = cart.id;
+    // const { rows: line_items } = await client.query(`
+    //   SELECT * FROM line_items
+    //   WHERE "cartId"=$1;
+    // `, [cartId])
+    // console.log(cart)
+    // console.log(line_items);
+    // return line_items;
+    return cart
   } catch (error) {
     console.error("Could not grab cart!", error);
+    throw error;
+  }
+}
+
+async function getCheckout(userId) {
+  try {
+    const {
+      rows: [cart],
+    } = await client.query(
+      `
+            SELECT * FROM cart
+            WHERE ("userId"=$1 AND "isActive"=true);
+        `,
+      [userId]
+    );
+
+    const cartId = cart.id;
+    const { rows: line_items } = await client.query(`
+      SELECT * FROM line_items
+      WHERE "cartId"=$1;
+    `, [cartId])
+    console.log(cart)
+    console.log(line_items);
+    return line_items;
+  } catch (error) {
+    console.error("Could not view cart!", error);
     throw error;
   }
 }
@@ -313,8 +347,9 @@ async function decreaseCartQuantity(id) {
   }
 }
 
-async function addProductToCart({ cartId, productId, quantity, price }) {
+async function addProductToCart( cartId, productId, quantity, price ) {
   try {
+    console.log("index", cartId, productId, quantity, price)
     const {
       rows: [product],
     } = await client.query(
@@ -325,7 +360,6 @@ async function addProductToCart({ cartId, productId, quantity, price }) {
         `,
       [cartId, productId, quantity, price]
     );
-
     return product;
   } catch (error) {
     console.error("Could not add item to cart!", error);
@@ -336,6 +370,7 @@ async function addProductToCart({ cartId, productId, quantity, price }) {
 module.exports = {
   client,
   createUser,
+  getCheckout,
   getUserById,
   getAllUsers,
   deleteProduct,
