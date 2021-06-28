@@ -51,6 +51,7 @@ async function buildTables() {
                 "productId" INTEGER REFERENCES products(id),
                 quantity INTEGER NOT NULL,
                 price DECIMAL NOT NULL
+                UNIQUE ("cartId", "productId")
             );
         `);
     console.log("Finished creating tables!");

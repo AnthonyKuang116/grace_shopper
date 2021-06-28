@@ -18,18 +18,29 @@ cartRouter.get("/:id", async (req, res, next) => {
     const { userId } = req.body;
     const cart = await getUserCart(userId);
     res.send(cart);
-  } catch ({name, message}) {
-    next({name, message});
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 });
 
 cartRouter.post("/:productId/:quantity", async (req, res, next) => {
   try {
-    const { cartId, productId, quantity, price } = req.params;
-    const product = await addProductToCart(cartId, productId, quantity, price);
+    const { productId, quantity } = req.params;
+    const { userId, price } = req.body;
+    const cart = await getUserCart(userId);
+    console.log(cart);
+    const cartId = cart.id;
+
+    const product = await addProductToCart({
+      cartId,
+      productId,
+      quantity,
+      price,
+    });
+
     res.send(product);
-  } catch (error) {
-    next(error);
+  } catch ({ name, message }) {
+    throw { name, message };
   }
 });
 
@@ -37,12 +48,12 @@ cartRouter.patch("/:productId/:quantity", async (req, res, next) => {
   try {
     const { productId, quantity } = req.params;
     const { userId } = req.body;
-    const cart = getUserCart(userId);
+    const cart = await getUserCart(userId);
 
-    const product = await updateCartQuantity(cart.cartId, productId, quantity);
+    const product = await updateCartQuantity(cart.id, productId, quantity);
     res.send(product);
-  } catch (error) {
-    next(error);
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 });
 
@@ -52,8 +63,8 @@ cartRouter.delete("/:productId", async (req, res, next) => {
     const { userId } = req.body;
     const product = await removeProductFromCart(productId, userId);
     res.send(product);
-  } catch (error) {
-    next(error);
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 });
 
@@ -62,8 +73,8 @@ cartRouter.delete("/", (req, res, next) => {
     const { userId } = req.body;
     const cart = emptyCart(userId);
     res.send(cart);
-  } catch (error) {
-    next(error);
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 });
 
