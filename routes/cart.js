@@ -13,17 +13,17 @@ cartRouter.use((req, res, next) => {
   next();
 });
 
-cartRouter.get("/cart/:id", (req, res, next) => {
+cartRouter.get("/:id", async (req, res, next) => {
   try {
     const { userId } = req.body;
     const cart = await getUserCart(userId);
     res.send(cart);
-  } catch (error) {
-    next(error);
+  } catch ({name, message}) {
+    next({name, message});
   }
 });
 
-cartRouter.post("/cart/:productId/:quantity", async (req, res, next) => {
+cartRouter.post("/:productId/:quantity", async (req, res, next) => {
   try {
     const { cartId, productId, quantity, price } = req.params;
     const product = await addProductToCart(cartId, productId, quantity, price);
@@ -33,7 +33,7 @@ cartRouter.post("/cart/:productId/:quantity", async (req, res, next) => {
   }
 });
 
-cartRouter.patch("/cart/:productId/:quantity", async (req, res, next) => {
+cartRouter.patch("/:productId/:quantity", async (req, res, next) => {
   try {
     const { productId, quantity } = req.params;
     const { userId } = req.body;
@@ -46,7 +46,7 @@ cartRouter.patch("/cart/:productId/:quantity", async (req, res, next) => {
   }
 });
 
-cartRouter.delete("/cart/:productId", async (req, res, next) => {
+cartRouter.delete("/:productId", async (req, res, next) => {
   try {
     const { productId } = req.params;
     const { userId } = req.body;
@@ -57,7 +57,7 @@ cartRouter.delete("/cart/:productId", async (req, res, next) => {
   }
 });
 
-cartRouter.delete("/cart", (req, res, next) => {
+cartRouter.delete("/", (req, res, next) => {
   try {
     const { userId } = req.body;
     const cart = emptyCart(userId);

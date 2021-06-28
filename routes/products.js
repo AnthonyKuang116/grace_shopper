@@ -13,26 +13,26 @@ productsRouter.use((req, res, next) => {
   next();
 });
 
-productsRouter.get("/products", (req, res, next) => {
+productsRouter.get("/", async (req, res, next) => {
   try {
-    const products = getAllProducts();
-    res.send(products);
+    const products = await getAllProducts();
+    res.send({products});
   } catch (error) {
     next(error);
   }
 });
 
-productsRouter.post("/products", async (req, res, next) => {
+productsRouter.post("/", async (req, res, next) => {
   try {
-    const { category, subCategory, title, description, price, onHand, imgSrc } =
+    const { category, subCategory, name, description, price, quantity, imgSrc } =
       req.body;
     const newProduct = await createProduct({
       category,
       subCategory,
-      title,
+      name,
       description,
       price,
-      onHand,
+      quantity,
       imgSrc,
     });
     res.send(newProduct);
@@ -41,17 +41,17 @@ productsRouter.post("/products", async (req, res, next) => {
   }
 });
 
-productsRouter.patch("/products/:id", async (req, res, next) => {
+productsRouter.patch("/:id", async (req, res, next) => {
   try {
-    const { category, subCategory, title, description, price, onHand, imgSrc } =
-      req.body;
-    const updatedProduct = await updateProduct({
+    const { id } = req.params;
+    const { category, subCategory, name, description, price, quantity, imgSrc } = req.body;
+    const updatedProduct = await updateProduct(id, {
       category,
       subCategory,
-      title,
+      name,
       description,
       price,
-      onHand,
+      quantity,
       imgSrc,
     });
     res.send(updatedProduct);
@@ -60,7 +60,7 @@ productsRouter.patch("/products/:id", async (req, res, next) => {
   }
 });
 
-productsRouter.delete("/products/:id", (req, res, next) => {
+productsRouter.delete("/:id", (req, res, next) => {
   try {
     const { id } = req.params;
     const deletedProduct = deleteProduct(id);
