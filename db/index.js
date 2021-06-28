@@ -4,23 +4,35 @@ const DB_NAME = "shopper-dev";
 const DB_URL =
   process.env.DATABASEURL || `postgres://localhost:5432/${DB_NAME}`;
 const client = new Client(DB_URL);
+const bcrypt = require("bcrypt");
 
-async function createUser({ username, password, email }) {
-    try {
-        const { rows: [user] } = await client.query(`
-            INSERT into users(username, password, email)
-            VALUES ($1, $2, $3)
-            RETURNING *;
-        `, [username, password, email]);
+async function hashPassword(password) {
+  const SALT_COUNT = 10;
+  const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
+  return hashedPassword;
+}
 
-    await createCart(user.id);
+const createUser = async ({ username, password }) => {
+  const hashedPassword = await hashPassword(password);
+  try {
+    const {
+      rows: [user],
+    } = await client.query(
+      `
+    INSERT INTO users(username, password, email) VALUES ($1, $2, $3)
+      RETURNING *;
+    `,
+      [username, hashedPassword, email]
+    );
+
+  await createCart(user.id)
 
     return user;
   } catch (error) {
     console.error("Create user error!", error);
     throw error;
   }
-}
+};
 
 async function createCart(userId) {
   try {
@@ -123,6 +135,23 @@ async function getUserByUsername(username) {
     throw error;
   }
 }
+
+const getUser = async ({ username, password }) => {
+  const user = await getUserByUsername(username);
+  if (!user) {
+    return null;
+  }
+  const hashedPassword = user.password;
+
+  try {
+    if (await bcrypt.compare(password, hashedPassword)) {
+      delete user.password;
+      return user;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
 
 async function getAllUsers() {
   try {
@@ -352,4 +381,5 @@ module.exports = {
   createCart,
   closeCart,
   getUserByUsername,
+  getUser
 };
