@@ -50,7 +50,7 @@ async function buildTables() {
                 "cartId" INTEGER REFERENCES cart(id),
                 "productId" INTEGER REFERENCES products(id),
                 quantity INTEGER NOT NULL,
-                price DECIMAL NOT NULL
+                price DECIMAL NOT NULL,
                 UNIQUE ("cartId", "productId")
             );
         `);
