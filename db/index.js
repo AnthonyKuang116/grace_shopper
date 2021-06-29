@@ -238,7 +238,7 @@ async function getAllProducts() {
     const { rows: products } = await client.query(`
             SELECT * FROM products;
         `);
-    console.log(products);
+
     return products;
   } catch (error) {
     console.error("Could not grab products!", error);
@@ -377,4 +377,3 @@ module.exports = {
   getUserByUsername,
   getUser,
 };
-

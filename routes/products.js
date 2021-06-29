@@ -16,7 +16,7 @@ productsRouter.use((req, res, next) => {
 productsRouter.get("/", async (req, res, next) => {
   try {
     const products = await getAllProducts();
-    res.send({products});
+    res.send(products);
   } catch (error) {
     next(error);
   }
@@ -24,8 +24,15 @@ productsRouter.get("/", async (req, res, next) => {
 
 productsRouter.post("/", async (req, res, next) => {
   try {
-    const { category, subCategory, name, description, price, quantity, imgSrc } =
-      req.body;
+    const {
+      category,
+      subCategory,
+      name,
+      description,
+      price,
+      quantity,
+      imgSrc,
+    } = req.body;
     const newProduct = await createProduct({
       category,
       subCategory,
@@ -44,7 +51,15 @@ productsRouter.post("/", async (req, res, next) => {
 productsRouter.patch("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { category, subCategory, name, description, price, quantity, imgSrc } = req.body;
+    const {
+      category,
+      subCategory,
+      name,
+      description,
+      price,
+      quantity,
+      imgSrc,
+    } = req.body;
     const updatedProduct = await updateProduct(id, {
       category,
       subCategory,
