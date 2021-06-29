@@ -45,7 +45,7 @@ const createInitialProducts = async () => {
       {
         category: "Fruits",
         subCategory: "tropical",
-        name: "Bananas",
+        name: "Bananas, each",
         description:
           "Sold each. Used to elevate dessert and breakfast recipes.",
         price: "0.22",
@@ -55,16 +55,16 @@ const createInitialProducts = async () => {
       {
         category: "Fruits",
         subCategory: "tropical",
-        name: "Mango",
+        name: "Mango, each",
         description: "Sold each. Simply slice them for a healthy snack!",
         price: "0.57",
         quantity: 100,
-        imgSrc: "/images/mango.png",
+        imgSrc: "/images/mango.jpg",
       },
       {
         category: "Fruits",
         subCategory: "subTropical",
-        name: "Avocado",
+        name: "Avocado, each",
         description:
           "Sold each. Fresh avocados are great for using in avocado dip, salads and guacamole.",
         price: "0.86",
@@ -74,9 +74,9 @@ const createInitialProducts = async () => {
       {
         category: "Fruits",
         subCategory: "subTropical",
-        name: "Orange",
+        name: "Orange, each",
         description:
-          "Sold: Each. Suitable for use in all kinds of sweet and savory dishes.",
+          "Sold Each. Suitable for use in all kinds of sweet and savory dishes.",
         price: "0.84",
         quantity: 100,
         imgSrc: "/images/orange.jpg",
@@ -124,7 +124,7 @@ const createInitialProducts = async () => {
         subCategory: "pome",
         name: "Apple",
         description:
-          "Sold each. Red Delicious Apple. Classic sweet flavor and are crisp and juicy with higher antioxidants due to the rich deep red skin.",
+          "Sold each. Classic sweet flavor and are crisp and juicy with higher antioxidants due to the rich deep red skin.",
         price: "0.80",
         quantity: 100,
         imgSrc: "/images/apple.jpg",
@@ -166,7 +166,7 @@ const createInitialProducts = async () => {
           "Sold by 8oz containers. Sliced. Excellent addition to beef, wild game and vegetable dishes.",
         price: "2.18",
         quantity: 100,
-        imgSrc: "/images/portobello.png",
+        imgSrc: "/images/portobello.jpg",
       },
       {
         category: "Vegetables",
@@ -251,7 +251,7 @@ const createInitialProducts = async () => {
         subCategory: "Seeded",
         name: "Squash",
         description:
-          "Sold each.Roast the whole squash for a simple and flavorful side dish.",
+          "Sold each. Roast the whole squash for a simple and flavorful side dish.",
         price: "4.13",
         quantity: 100,
         imgSrc: "/images/squash.jpg",
@@ -268,7 +268,7 @@ const createInitialProducts = async () => {
       {
         category: "Vegetables",
         subCategory: "Seeded",
-        name: "Tomatoe",
+        name: "Tomato",
         description: "Sold each. Enjoy on burgers, sandwiches and more.",
         price: "0.86",
         quantity: 100,
@@ -341,7 +341,7 @@ const createInitialProducts = async () => {
         description: "Sold by the package. Add to salads, stir fry, and soup.",
         price: "1.42",
         quantity: 100,
-        imgSrc: "/images/celery.png",
+        imgSrc: "/images/celery.jpg",
       },
       {
         category: "Vegetables",
