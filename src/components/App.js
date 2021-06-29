@@ -1,13 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { Header } from "./";
-
+import { Header, Main} from "./";
+import getAllProducts from "../api/products/getAllProducts.js";
 const App = () => {
-    return (
-        <div>
-            <p>testing</p>
-           <Header />
-        </div>
-    )
-}
+  const [products, setProducts] = useState([]);
+  console.log("hi");
 
+  useEffect(() => {
+    async function fetchData() {
+      const data = await getAllProducts();
+
+      
+      setProducts(data);
+    }
+
+    fetchData();
+  }, []);
+
+  return (
+    <div className="App">
+      <Header />
+      <Main {...{ products }} />
+    </div>
+  );
+};
 export default App;
