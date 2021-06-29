@@ -8,3 +8,6 @@ export { default as emptyCart } from "./cart/emptyCart";
 export { default as getUserCart } from "./cart/getUserCart";
 export { default as removeProductFromCart } from "./cart/removeProductFromCart";
 export { default as updateCartQuantity } from "./cart/updateCartQuantity";
+
+export { default as login } from "./users/login";
+export { default as register } from "./users/register";
