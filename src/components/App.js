@@ -4,7 +4,6 @@ import { Header } from "./";
 const App = () => {
     return (
         <div>
-            <p>testing</p>
            <Header />
         </div>
     )
