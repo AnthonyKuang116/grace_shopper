@@ -12,8 +12,9 @@ const useStyles = makeStyles({
     width: 240,
     height: 350,
     display: "inline-grid",
-    boxShadow: "inset -5px -5px 10px black",
-    margin: "5px",
+    boxShadow:
+      "5px 5px 0px 0px #289FED, 10px 10px 0px 0px #5FB8FF, 15px 15px 0px 0px #A1D8FF, 20px 20px 0px 0px #CAE6FF, 25px 25px 0px 0px #E1EEFF, 5px 5px 15px 5px rgba(0,0,0,0)",
+    margin: "8px",
   },
   media: {
     height: 200,
@@ -40,14 +41,10 @@ const Main = ({ products }) => {
             <Typography variant="h7" component="h2">
               ${product.price}
             </Typography>
-            <Typography variant="h6" component="h2">
+            <Typography variant="body1" component="h3">
               {product.name}
             </Typography>
-
             <CardActions>
-              {/* <Typography variant="caption" color="textSecondary" component="p">
-                {product.description}
-              </Typography> */}
               <Button variant="outlined" color="primary">
                 Add to cart
               </Button>
