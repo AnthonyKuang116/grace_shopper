@@ -26,8 +26,12 @@ const useStyles = makeStyles({
   },
 });
 
-const Main = ({ products }) => {
+const Main = ({ products, setModalProduct, setOpenProduct }) => {
   const classes = useStyles();
+  const handleOpen = (product) => {
+    setModalProduct(product);
+    setOpenProduct(true);
+  };
   return (
     <>
       {products.map((product) => (
@@ -36,11 +40,10 @@ const Main = ({ products }) => {
             className={classes.media}
             title={product.name}
             image={product.imgSrc}
+            onClick={() => handleOpen(product)}
           />
           <CardContent className={classes.card}>
-            <Typography variant="h7" component="h2">
-              ${product.price}
-            </Typography>
+            <Typography component="h2">${product.price}</Typography>
             <Typography variant="body1" component="h3">
               {product.name}
             </Typography>
