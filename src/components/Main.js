@@ -1,11 +1,15 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
+import {
+  TextField,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Typography,
+  Card,
+  IconButton,
+} from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
@@ -24,6 +28,10 @@ const useStyles = makeStyles({
   card: {
     paddingTop: "0px",
   },
+  quantity: {
+    fontSize: "10px",
+    width: "4em",
+  },
 });
 
 const Main = ({ products, setModalProduct, setOpenProduct }) => {
@@ -32,6 +40,8 @@ const Main = ({ products, setModalProduct, setOpenProduct }) => {
     setModalProduct(product);
     setOpenProduct(true);
   };
+
+  const addToCart = (product, quantity) => {};
   return (
     <>
       {products.map((product) => (
@@ -48,9 +58,22 @@ const Main = ({ products, setModalProduct, setOpenProduct }) => {
               {product.name}
             </Typography>
             <CardActions>
-              <Button variant="outlined" color="primary">
-                Add to cart
-              </Button>
+              <IconButton
+                edge="start"
+                aria-label="add item to cart"
+                aria-haspopup="true"
+                color="inherit"
+              >
+                <AddShoppingCartIcon />
+              </IconButton>
+              <TextField
+                className={classes.quantity}
+                id="standard-number"
+                label="Quantity"
+                type="number"
+                defaultValue="1"
+                InputProps={{ inputProps: { min: 0, max: 10 } }}
+              />
             </CardActions>
           </CardContent>
         </Card>
