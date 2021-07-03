@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Header, Main } from "./";
 import getAllProducts from "../api/products/getAllProducts.js";
+import { getCurrentUser } from "../auth";
+
 const App = () => {
   const [products, setProducts] = useState([]);
+  const [currentUser, setCurrentUser] = useState(getCurrentUser);
 
   useEffect(() => {
     async function fetchData() {
@@ -14,9 +17,15 @@ const App = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if(!currentUser) {
+      return;
+    }
+  }, [currentUser])
+
   return (
     <div className="App">
-      <Header />
+      <Header currentUser={currentUser} setCurrentUser={setCurrentUser}/>
       <Main {...{ products }} />
     </div>
   );

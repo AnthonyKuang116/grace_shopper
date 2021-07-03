@@ -1,16 +1,3 @@
-const Header = () => {
-    return(
-        <div>
-            <p>testing</p>
-        </div>
-    )
-}
-
-
-
-
-
-
 import React, { useState, useEffect } from "react";
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -37,6 +24,8 @@ import { CropSharp } from "@material-ui/icons";
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+
+import { storeCurrentUser, clearCurrentUser } from '../auth';
 
 
 
@@ -141,7 +130,7 @@ const MenuProps = {
 };
 
 
-const Header = () => {
+const Header = (currentUser, setCurrentUser) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -151,6 +140,7 @@ const Header = () => {
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+    const [selectedUser, setSelectedUser] = useState();
     const [drawer, setDrawer] = useState(false);
 
     const toggleDrawer = (open) => (event) => {
@@ -165,11 +155,27 @@ const Header = () => {
             </List>
         </div>
     }
+
+    const handleUserLogin = (event) => {
+        storeCurrentUser(selectedUser);
+        setCurrentUser(selectedUser);
+    }
+
+    const handleUserLogout = (event) => {
+        clearCurrentUser();
+        setCurrentUser(null);
+        setSelectedUser(null);
+        setAnchorEl(null);
+        handleMobileMenuClose();
+    }
+
+    //Handles subcategory selections
     const handleSubCategoryChange = (event) => {
         event.preventDefault();
         setSubCategory(event.target.value);
     }
 
+    //handles profile account popout
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -201,7 +207,7 @@ const Header = () => {
             onClose={handleMenuClose}
         >
             <MenuItem onClick={handleMenuClose}>Purchase History</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+            <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
         </Menu>
     );
 
@@ -235,6 +241,13 @@ const Header = () => {
             </MenuItem>
         </Menu>
     );
+
+
+    useEffect(() => {
+        setSelectedUser(currentUser);
+    }, [currentUser]);
+
+
     return (
         <div className={classes.grow}>
             <AppBar position="static">
@@ -314,7 +327,7 @@ const Header = () => {
                         </Drawer>
                     </div>
                     <div className={classes.sectionDesktop}>
-                        {/* <IconButton
+                        {currentUser ? <IconButton
                             edge="end"
                             aria-label="account of current user"
                             aria-controls={menuId}
@@ -323,8 +336,7 @@ const Header = () => {
                             color="inherit"
                         >
                             <AccountCircle />
-                        </IconButton> */}
-                        <Button color="inherit">Login</Button>
+                        </IconButton> : <Button color="inherit" onClick={handleUserLogin}>Login</Button>}   
                     </div>
                     <div className={classes.sectionMobile}>
                         <IconButton
