@@ -130,7 +130,7 @@ const MenuProps = {
 };
 
 
-const Header = (currentUser, setCurrentUser) => {
+const Header = ({currentUser, setCurrentUser}) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -140,7 +140,7 @@ const Header = (currentUser, setCurrentUser) => {
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-    const [selectedUser, setSelectedUser] = useState();
+    const [selectedUser, setSelectedUser] = useState('');
     const [drawer, setDrawer] = useState(false);
 
     const toggleDrawer = (open) => (event) => {
@@ -149,7 +149,7 @@ const Header = (currentUser, setCurrentUser) => {
 
     //List items for inside drawer...doesn't work
     const items = () => {
-        <div onClick={toggleDrawer(false)}>
+        return <div onClick={toggleDrawer(false)}>
             <List>
                 <ListItem>PRODUCTS</ListItem>
             </List>
@@ -245,6 +245,7 @@ const Header = (currentUser, setCurrentUser) => {
 
     useEffect(() => {
         setSelectedUser(currentUser);
+        // console.log("Header level currentUser", currentUser)
     }, [currentUser]);
 
 
@@ -322,8 +323,6 @@ const Header = (currentUser, setCurrentUser) => {
                             width={'100px'}
                         >
                             {items()}
-                            <p>PRODUCT 1</p>
-                            <p>PRODUCT 2</p>
                         </Drawer>
                     </div>
                     <div className={classes.sectionDesktop}>
@@ -336,7 +335,7 @@ const Header = (currentUser, setCurrentUser) => {
                             color="inherit"
                         >
                             <AccountCircle />
-                        </IconButton> : <Button color="inherit" onClick={handleUserLogin}>Login</Button>}   
+                        </IconButton> : <Button color="inherit" onClick={handleUserLogin}>Login</Button>}
                     </div>
                     <div className={classes.sectionMobile}>
                         <IconButton
