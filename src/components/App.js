@@ -6,6 +6,8 @@ import { getCurrentUser } from "../auth";
 const App = () => {
   const [products, setProducts] = useState([]);
   const [currentUser, setCurrentUser] = useState(getCurrentUser);
+  const [modalProduct, setModalProduct] = useState(null);
+  const [openProduct, setOpenProduct] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -26,7 +28,8 @@ const App = () => {
   return (
     <div className="App">
       <Header currentUser={currentUser} setCurrentUser={setCurrentUser}/>
-      <Main {...{ products }} />
+      <Main {...{ products, setModalProduct, setOpenProduct }} />
+      <Product {...{ modalProduct, openProduct, setOpenProduct }} />
     </div>
   );
 };
