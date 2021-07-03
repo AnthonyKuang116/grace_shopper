@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Header, Main } from "./";
+import { Header, Main, Product } from "./";
 import getAllProducts from "../api/products/getAllProducts.js";
 import { getCurrentUser } from "../auth";
 
