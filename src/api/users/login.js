@@ -1,7 +1,7 @@
 import axios from "axios";
 async function login(username, password) {
   try {
-    const { data } = await axios.post("/api/users", { username, password });
+    const { data } = await axios.get("/api/users", { username, password });
     return data;
   } catch (error) {
     throw error;
