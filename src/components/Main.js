@@ -9,6 +9,8 @@ import {
   Typography,
   Card,
   IconButton,
+  Tooltip,
+  Zoom,
 } from "@material-ui/core";
 
 const useStyles = makeStyles({
@@ -58,22 +60,38 @@ const Main = ({ products, setModalProduct, setOpenProduct }) => {
               {product.name}
             </Typography>
             <CardActions>
-              <IconButton
-                edge="start"
-                aria-label="add item to cart"
-                aria-haspopup="true"
-                color="inherit"
+              <Tooltip
+                title="Add To Cart."
+                TransitionComponent={Zoom}
+                enterDelay={750}
+                enterNextDelay={750}
+                leaveDelay={200}
               >
-                <AddShoppingCartIcon />
-              </IconButton>
-              <TextField
-                className={classes.quantity}
-                id="standard-number"
-                label="Quantity"
-                type="number"
-                defaultValue="1"
-                InputProps={{ inputProps: { min: 0, max: 10 } }}
-              />
+                <IconButton
+                  edge="start"
+                  aria-label="add item to cart"
+                  aria-haspopup="true"
+                  color="inherit"
+                >
+                  <AddShoppingCartIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip
+                title={product.quantity + " available."}
+                TransitionComponent={Zoom}
+                enterDelay={750}
+                enterNextDelay={750}
+                leaveDelay={200}
+              >
+                <TextField
+                  className={classes.quantity}
+                  id="standard-number"
+                  label="Quantity"
+                  type="number"
+                  defaultValue="1"
+                  InputProps={{ inputProps: { min: 0, max: 10 } }}
+                />
+              </Tooltip>
             </CardActions>
           </CardContent>
         </Card>
