@@ -1,6 +1,8 @@
 const usersRouter = require("express").Router();
 const { getAllUsers, getUserByUsername, createUser } = require("../db");
 const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = process.env;
+
 
 usersRouter.use((req, res, next) => {
   console.log("A request is being made to /users");
@@ -33,7 +35,7 @@ usersRouter.get("/login", async (req, res, next) => {
       // create token & return to user
       const token = jwt.sign(
         { id: user.id, username: user.username },
-        process.env.JWT_SECRET,
+        JWT_SECRET,
         { expiresIn: "7d" }
       );
       res.send({ message: "you're logged in!", token: token });
@@ -73,18 +75,42 @@ usersRouter.post("/register", async (req, res, next) => {
         id: user.id,
         username,
       },
-      process.env.JWT_SECRET,
+      JWT_SECRET,
       {
         expiresIn: "1w",
       }
     );
 
     res.send({
-      message: "thank you for signing up",
+      message: "Thank you for signing up",
       token,
     });
   } catch ({ name, message }) {
     next({ name, message });
   }
 });
-module.exports = usersRouter;
+
+function requireUser(req, res, next) {
+  if (!req.user) {
+    next({
+      error: "MissingUserError",
+      message: "You must be logged in to perform this action.",
+    });
+  }
+  next();
+}
+
+usersRouter.get("/me", requireUser, async (req, res, next) => {
+  try {
+    if (req.user) {
+      res.send(req.user);
+    } else {
+      const error = new Error("no user found");
+      next(error);
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+module.exports = usersRouter, { requireUser };

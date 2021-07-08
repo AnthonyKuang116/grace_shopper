@@ -26,6 +26,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import { storeCurrentUser, clearCurrentUser } from '../auth';
+import { Auth } from './Auth';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -154,6 +155,8 @@ const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTe
     }
 
     const handleUserLogin = (event) => {
+        Auth;
+
         storeCurrentUser(selectedUser);
         setCurrentUser(selectedUser);
     }

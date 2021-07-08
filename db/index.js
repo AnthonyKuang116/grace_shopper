@@ -6,7 +6,14 @@ const DB_URL =
 const client = new Client(DB_URL);
 const bcrypt = require("bcrypt");
 
+async function hashPassword(password) {
+  const SALT_COUNT = 10;
+  const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
+  return hashedPassword;
+}
+
 async function createUser({ username, password, email }) {
+  const hashedPassword = await hashPassword(password);
   try {
     const {
       rows: [user],
@@ -16,7 +23,7 @@ async function createUser({ username, password, email }) {
             VALUES ($1, $2, $3)
             RETURNING *;
         `,
-      [username, password, email]
+      [username, hashedPassword, email]
     );
 
     await createCart(user.id);
