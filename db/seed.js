@@ -173,7 +173,7 @@ const createInitialProducts = async () => {
       {
         category: "Vegetables",
         subCategory: "Root",
-        name: "Carrots 1lb bag",
+        name: "Carrots, 1lb bag",
         description: `Approximately 6 carrots per lb  California carrots have a crunchy texture and a bold taste  Fun to eat in many different ways  Cut into slices for stews or a meat pie  Cut thin to add to a salad along with other vegetables  Ideal for use with dips and dressings  16 oz (1 lb./454g)  All-natural`,
         price: "0.67",
         quantity: 100,
