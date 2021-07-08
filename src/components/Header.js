@@ -29,112 +29,110 @@ import { storeCurrentUser, clearCurrentUser } from '../auth';
 
 
 const useStyles = makeStyles((theme) => ({
-  list: {
-    width: 250,
-  },
-  fullList: {
-    width: "auto",
-  },
-  grow: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    display: "none",
-    [theme.breakpoints.up("sm")]: {
-      display: "block",
+    list: {
+        width: 250,
     },
-  },
-  search: {
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
+    fullList: {
+        width: "auto",
     },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(3),
-      width: "auto",
+    grow: {
+        flexGrow: 1,
     },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  inputRoot: {
-    color: "inherit",
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "60ch",
+    menuButton: {
+        marginRight: theme.spacing(2),
     },
-  },
-  sectionDesktop: {
-    display: "none",
-    [theme.breakpoints.up("md")]: {
-      display: "flex",
+    title: {
+        display: "none",
+        [theme.breakpoints.up("sm")]: {
+            display: "block",
+        },
     },
-  },
-  sectionMobile: {
-    display: "flex",
-    [theme.breakpoints.up("md")]: {
-      display: "none",
+    search: {
+        position: "relative",
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: fade(theme.palette.common.white, 0.15),
+        "&:hover": {
+            backgroundColor: fade(theme.palette.common.white, 0.25),
+        },
+        marginRight: theme.spacing(2),
+        marginLeft: 0,
+        width: "100%",
+        [theme.breakpoints.up("sm")]: {
+            marginLeft: theme.spacing(3),
+            width: "auto",
+        },
     },
-  },
-  formControl: {
-    padding: theme.spacing(0, 0, 0, 0),
-    minWidth: 120,
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
+    searchIcon: {
+        padding: theme.spacing(0, 2),
+        height: "100%",
+        position: "absolute",
+        pointerEvents: "none",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
     },
-    height: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-      marginLeft: theme.spacing(3),
+    inputRoot: {
+        color: "inherit",
     },
-    alignItems: "left",
-    justifyContent: "center",
-    color: "white",
-  },
+    inputInput: {
+        padding: theme.spacing(1, 1, 1, 0),
+        // vertical padding + font size from searchIcon
+        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+        transition: theme.transitions.create("width"),
+        width: "100%",
+        [theme.breakpoints.up("md")]: {
+            width: "60ch",
+        },
+    },
+    sectionDesktop: {
+        display: "none",
+        [theme.breakpoints.up("md")]: {
+            display: "flex",
+        },
+    },
+    sectionMobile: {
+        display: "flex",
+        [theme.breakpoints.up("md")]: {
+            display: "none",
+        },
+    },
+    formControl: {
+        padding: theme.spacing(0, 0, 0, 0),
+        minWidth: 120,
+        position: "relative",
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: fade(theme.palette.common.white, 0.15),
+        "&:hover": {
+            backgroundColor: fade(theme.palette.common.white, 0.25),
+        },
+        height: "100%",
+        [theme.breakpoints.up("md")]: {
+            width: "20ch",
+            marginLeft: theme.spacing(3),
+        },
+        alignItems: "left",
+        justifyContent: "center",
+        color: "white",
+    },
 }));
 
 const ITEM_HEIGHT = 100;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
     },
-  },
 };
 
 
 
-const Header = ({currentUser, setCurrentUser}) => {
+const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTextChange, products, setProducts, handleSubCategoryChange, subCategory }) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
-    const [subCategory, setSubCategory] = useState([]);
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -167,12 +165,7 @@ const Header = ({currentUser, setCurrentUser}) => {
         setAnchorEl(null);
         handleMobileMenuClose();
     }
-
-    //Handles subcategory selections
-    const handleSubCategoryChange = (event) => {
-        event.preventDefault();
-        setSubCategory(event.target.value);
-    }
+   
 
     //handles profile account popout
     const handleProfileMenuOpen = (event) => {
@@ -210,8 +203,8 @@ const Header = ({currentUser, setCurrentUser}) => {
         </Menu>
     );
 
-    const allProducts = ["All Products"];
-    const subCategoryFruit = ["Tropical", "Sub-Tropical", "Stone", "Pome", "Melons"];
+    // const allProducts = ["All Products"];
+    const subCategoryFruit = ["Tropical", "Sub-Tropical", "Small", "Stone", "Pome", "Melons"];
     const subCategoryVeg = ["Fungi", "Sprouts", "Root", "Bulbs", "Seeded", "Herbs", "Row-Crops", "Other"];
 
 
@@ -241,12 +234,10 @@ const Header = ({currentUser, setCurrentUser}) => {
         </Menu>
     );
 
-
     useEffect(() => {
         setSelectedUser(currentUser);
         // console.log("Header level currentUser", currentUser)
     }, [currentUser]);
-
 
     return (
         <div className={classes.grow}>
@@ -267,6 +258,8 @@ const Header = ({currentUser, setCurrentUser}) => {
                                 input: classes.inputInput,
                             }}
                             inputProps={{ 'aria-label': 'search' }}
+                            value={currentSearchText}
+                            onChange={(e) => handleSearchTextChange(e)}
                         />
                     </div>
                     <FormControl className={classes.formControl}>
@@ -279,13 +272,13 @@ const Header = ({currentUser, setCurrentUser}) => {
                             renderValue={(selected) => selected.join(', ')}
                             MenuProps={MenuProps}
                         >
-                            <optgroup label="All Products"></optgroup>
+                            {/* <optgroup label="All Products"></optgroup>
                             {allProducts.map((all) => (
                                 <MenuItem key={all} value={all}>
                                     <Checkbox checked={subCategory.indexOf(all) > -1} />
                                     <ListItemText primary={all} />
                                 </MenuItem>
-                            ))}
+                            ))} */}
                             <optgroup label="Fruits"></optgroup>
                             {subCategoryFruit.map((fruit) => (
                                 <MenuItem key={fruit} value={fruit}>
