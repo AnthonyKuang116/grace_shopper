@@ -327,7 +327,12 @@ const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTe
                             color="inherit"
                         >
                             <AccountCircle />
-                        </IconButton> : <Button color="inherit" onClick={handleUserLogin}>Login</Button>}
+                        </IconButton> : 
+                        <>
+                            <Button color="inherit" onClick={handleUserLogin}>Admin</Button>
+                            <Button color="inherit" onClick={handleUserLogin}>Login</Button>
+                        </>
+                        }
                     </div>
                     <div className={classes.sectionMobile}>
                         <IconButton
