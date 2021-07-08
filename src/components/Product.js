@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
+    width: "500px",
   },
 }));
 
@@ -43,10 +44,21 @@ const Product = ({ modalProduct, openProduct, setOpenProduct }) => {
       >
         <Fade in={openProduct}>
           <div className={classes.paper}>
+            <header
+              style={{
+                backgroundImage: `url(${modalProduct.imgSrc})`,
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                height: "150px",
+              }}
+            ></header>
             <h2>{modalProduct.name}</h2>
+
             {descriptionArr.map((description) => (
               <p>✅{description}</p>
             ))}
+
             <Button variant="outlined" color="primary">
               Add to cart
             </Button>
