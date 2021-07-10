@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Header, Main, Product } from "./";
+import { Header, Main, Product, Cart } from "./";
 import getAllProducts from "../api/products/getAllProducts.js";
 import { getCurrentUser } from "../auth";
 import getUserCart from "../api/cart/getUserCart";
@@ -9,10 +9,10 @@ const App = () => {
   const [currentUser, setCurrentUser] = useState(1);
   const [modalProduct, setModalProduct] = useState(null);
   const [openProduct, setOpenProduct] = useState(false);
-  const [userCart, setUserCart] = useState([]);
+  const [userCart, setUserCart] = useState(null);
   const [currentSearchText, setCurrentSearchText] = useState("");
   const [subCategory, setSubCategory] = useState([]);
-
+  const [openCart, setOpenCart] = useState(false);
   //get all products and set the product state
   useEffect(() => {
     async function fetchProducts() {
@@ -87,6 +87,7 @@ const App = () => {
           setProducts,
           handleSubCategoryChange,
           subCategory,
+          setOpenCart,
         }}
       />
       <Main
@@ -94,6 +95,7 @@ const App = () => {
         products={filteredProducts()}
       />
       <Product {...{ modalProduct, openProduct, setOpenProduct }} />
+      <Cart {...{ products, openCart, setOpenCart, userCart }} />
     </div>
   );
 };

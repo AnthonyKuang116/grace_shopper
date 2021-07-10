@@ -137,6 +137,7 @@ const Header = ({
   setProducts,
   handleSubCategoryChange,
   subCategory,
+  setOpenCart,
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -147,19 +148,8 @@ const Header = ({
   const [selectedUser, setSelectedUser] = useState("");
   const [drawer, setDrawer] = useState(false);
 
-  const toggleDrawer = (open) => {
-    setDrawer(open);
-  };
-
-  //List items for inside drawer...doesn't work
-  const items = () => {
-    return (
-      <div onClick={toggleDrawer(false)}>
-        <List>
-          <ListItem>PRODUCTS</ListItem>
-        </List>
-      </div>
-    );
+  const handleOpen = () => {
+    setOpenCart(true);
   };
 
   const handleUserLogin = (event) => {
@@ -175,30 +165,6 @@ const Header = ({
     setSelectedUser(null);
     setAnchorEl(null);
     handleMobileMenuClose();
-  };
-
-  //List items for inside drawer...doesn't work
-  const Items = () => {
-    return (
-      <div onClick={() => toggleDrawer(false)}>
-        <List>
-          {userCart ? (
-            userCart.products.map((p) => {
-              const product = products.find(
-                (product) => product.id === p.productId
-              );
-              return (
-                <ListItem key={p.id}>
-                  {product.name} - {product.price} - {p.quantity}
-                </ListItem>
-              );
-            })
-          ) : (
-            <ListItem>No Items</ListItem>
-          )}
-        </List>
-      </div>
-    );
   };
 
   //handles profile account popout
@@ -236,7 +202,6 @@ const Header = ({
     </Menu>
   );
 
-  const allProducts = ["All Products"];
   const subCategoryFruit = [
     "Tropical",
     "Sub-Tropical",
@@ -340,19 +305,11 @@ const Header = ({
               aria-label="cart of current user"
               aria-controls={menuId}
               aria-haspopup="true"
-              onClick={() => toggleDrawer(true)}
+              onClick={handleOpen}
               color="inherit"
             >
               <ShoppingCartIcon />
             </IconButton>
-            <Drawer
-              anchor={"right"}
-              open={drawer}
-              onClose={() => toggleDrawer(false)}
-              width={"100px"}
-            >
-              <Items />
-            </Drawer>
           </div>
           <div className={classes.sectionDesktop}>
             {currentUser ? (
