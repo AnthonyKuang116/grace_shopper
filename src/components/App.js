@@ -10,11 +10,14 @@ const App = () => {
   const [modalProduct, setModalProduct] = useState(null);
   const [openProduct, setOpenProduct] = useState(false);
   const [userCart, setUserCart] = useState([]);
+  const [currentSearchText, setCurrentSearchText] = useState("");
+  const [subCategory, setSubCategory] = useState([]);
 
   //get all products and set the product state
   useEffect(() => {
     async function fetchProducts() {
       const data = await getAllProducts();
+      console.log("All Products", data);
       setProducts(data);
     }
     fetchProducts();
@@ -35,17 +38,60 @@ const App = () => {
     }
   }, [currentUser]);
 
+  const handleSearchTextChange = (e) => {
+    const newSearchText = e.currentTarget.value;
+    setCurrentSearchText((oldSearchText) => {
+      console.log(newSearchText);
+      return newSearchText;
+    });
+  };
+
+  const handleSubCategoryChange = (event) => {
+    event.preventDefault();
+    const subCategorySearch = event.target.value;
+    setSubCategory(() => {
+      return subCategorySearch;
+    });
+  };
+
+  const filteredProducts = () => {
+    let filteredResults = products;
+
+    if (currentSearchText) {
+      let searchTextLower = currentSearchText.toLowerCase();
+      filteredResults = filteredResults.filter((item) => {
+        return item.name.toLowerCase().includes(searchTextLower);
+      });
+    }
+
+    if (subCategory.length) {
+      filteredResults = filteredResults.filter((item) => {
+        return subCategory.some((search) =>
+          item.subCategory.startsWith(search)
+        );
+      });
+    }
+    return filteredResults;
+  };
+
   return (
     <div className="App">
-      <Header {...{ products, userCart, currentUser, setCurrentUser }} />
-      <Main
+      <Header
         {...{
           userCart,
           currentUser,
+          setCurrentUser,
+          currentSearchText,
+          handleSearchTextChange,
           products,
-          setModalProduct,
-          setOpenProduct,
+          setProducts,
+          handleSubCategoryChange,
+          subCategory,
         }}
+      />
+      <Main
+        {...{ userCart, currentUser, setModalProduct, setOpenProduct }}
+        products={filteredProducts()}
       />
       <Product {...{ modalProduct, openProduct, setOpenProduct }} />
     </div>

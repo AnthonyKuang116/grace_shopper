@@ -44,7 +44,7 @@ const createInitialProducts = async () => {
     const productsToCreate = [
       {
         category: "Fruits",
-        subCategory: "tropical",
+        subCategory: "Tropical",
         name: "Bananas, each",
         description:
           "Organic bananas are primarily ripened before the sale  Soft fruit is protected by easy-to-peel banana peel  Can be enjoyed raw or cooked  Usually used to elevate dessert and breakfast recipes",
@@ -54,7 +54,7 @@ const createInitialProducts = async () => {
       },
       {
         category: "Fruits",
-        subCategory: "tropical",
+        subCategory: "Tropical",
         name: "Mango, each",
         description:
           "Simply slice them for a healthy snack!  Great blended in smoothies  High in fiber  Low in cholesterol",
@@ -64,7 +64,7 @@ const createInitialProducts = async () => {
       },
       {
         category: "Fruits",
-        subCategory: "subTropical",
+        subCategory: "Sub-Tropical",
         name: "Avocado, each",
         description: `Creamy texture and mild flavor  A cholesterol free fruit that contains almost 20 vitamins, minerals and phytonutrients including Vitamin E, Vitamin K, Vitamin C and Vitamins B5 and B9  Avocados are the lowest sugar fruit and provide unsaturated “good fats” that help absorb Vitamin A, Vitamin D, Vitamin K and Vitamin E  Ripe avocados will have dark green to nearly black skin color, a bumpy texture and should yield to gentle pressure without leaving indentations  Fresh avocados are great for using in avocado dip, salads and guacamole`,
         price: "0.86",
@@ -73,7 +73,7 @@ const createInitialProducts = async () => {
       },
       {
         category: "Fruits",
-        subCategory: "subTropical",
+        subCategory: "Sub-Tropical",
         name: "Orange, each",
         description: `A good addition to a healthy diet  Easy to peel segments  Contains vitamin C and other nutrients  Can be juiced for a breakfast beverage Suitable for use in all kinds of sweet and savory dishes  Store fresh oranges at room temperature or refrigerate`,
         price: "0.84",
@@ -82,7 +82,7 @@ const createInitialProducts = async () => {
       },
       {
         category: "Fruits",
-        subCategory: "small",
+        subCategory: "Small",
         name: "Blueberries, 1 pint",
         description: `Best when enjoyed at room temperature  Light, refreshing taste  Healthy sweet treat  Prior to serving gently wash them with cool water  Refrigerate your berries in the original container to maintain freshness, they should approximately last 3-5 days after purchase  Keep dry for optimal freshness`,
         price: "2.88",
@@ -91,7 +91,7 @@ const createInitialProducts = async () => {
       },
       {
         category: "Fruits",
-        subCategory: "small",
+        subCategory: "Small",
         name: "Strawberries, 1lb",
         description: `Best when enjoyed at room temperature  Light, refreshing taste  Healthy sweet treat  Prior to serving gently wash them and remove leafy cap  Refrigerate your strawberries in the original container to maintain freshness for approximately 3-5 days after purchase  Keep dry until ready to wash and eat for optimal freshness`,
         price: "1.64",
@@ -100,7 +100,7 @@ const createInitialProducts = async () => {
       },
       {
         category: "Fruits",
-        subCategory: "stone",
+        subCategory: "Stone",
         name: "Apricots, 1lb",
         description: `Wonderfully smooth and sweet flavor  Great snack at any time of the day  Use to make a delicious yogurt parfait  Make a decadent apricot crisp and top with your favorite ice cream  Wonderful addition to smoothies`,
         price: "3.12",
@@ -109,7 +109,7 @@ const createInitialProducts = async () => {
       },
       {
         category: "Fruits",
-        subCategory: "stone",
+        subCategory: "Stone",
         name: "Cherries, 1lb",
         description: `Bursting with antioxidants, phytochemicals, vitamins, nutrients, and fiber  Rich source of vitamin C, potassium, and vitamin B complex  Versatile and delicious  Wonderful addition to entrees, desserts, and beverages  To enjoy fresh cherries: store in the refrigerator and wash just before eating`,
         price: "2.97",
@@ -118,7 +118,7 @@ const createInitialProducts = async () => {
       },
       {
         category: "Fruits",
-        subCategory: "pome",
+        subCategory: "Pome",
         name: "Apple, each",
         description: `Classic sweet flavor and are crisp and juicy with higher antioxidants due to the rich deep red skin  Perfect for snacking or baking  Chop them up and add to slow cooker with spices for apple sauce, add them to a smoothie or juice blend, or serve with peanut butter  They have a creamy white flesh with low acidity`,
         price: "0.80",
@@ -127,7 +127,7 @@ const createInitialProducts = async () => {
       },
       {
         category: "Fruits",
-        subCategory: "pome",
+        subCategory: "Pome",
         name: "Pear, each",
         description: `Signature sweet pear flavor and aroma with abundant juice  Enjoy as a snack or use to make cobbler, crisp, or cake`,
         price: "1.11",
@@ -136,7 +136,7 @@ const createInitialProducts = async () => {
       },
       {
         category: "Fruits",
-        subCategory: "melons",
+        subCategory: "Melons",
         name: "Cantaloupe, each",
         description: `Ideal addition to every kitchen  Flavorful addition to many recipes  Enjoy on its own or add to a mixed fruit salad  Add to your fresh garden salad  Get creative & make a cantaloupe cocktail or a refreshing sorbet  Explore all the delicious ways to add fresh cantaloupe to your favorite recipes`,
         price: "1.78",
@@ -145,7 +145,7 @@ const createInitialProducts = async () => {
       },
       {
         category: "Fruits",
-        subCategory: "melons",
+        subCategory: "Melons",
         name: "Watermelon, each",
         description: `Sweet, refreshing treat  Great for breakfast, lunch, dessert, or when you want a snack  Good source of vitamin C, vitamin A, and potassium  Cut into chunks and enjoy, infuse with water, or mix with feta and mint for a salad  Share with friends and family or keep for yourself`,
         price: "3.98",
@@ -173,7 +173,7 @@ const createInitialProducts = async () => {
       {
         category: "Vegetables",
         subCategory: "Root",
-        name: "Carrots 1lb bag",
+        name: "Carrots, 1lb bag",
         description: `Approximately 6 carrots per lb  California carrots have a crunchy texture and a bold taste  Fun to eat in many different ways  Cut into slices for stews or a meat pie  Cut thin to add to a salad along with other vegetables  Ideal for use with dips and dressings  16 oz (1 lb./454g)  All-natural`,
         price: "0.67",
         quantity: 100,
@@ -289,7 +289,7 @@ const createInitialProducts = async () => {
       },
       {
         category: "Vegetables",
-        subCategory: "RowCrops",
+        subCategory: "Row-Crops",
         name: "Artichoke, each",
         description: `Fresh and delicious  High in folate and vitamins C and K  Can be boiled, grilled, braised, or stuffed and baked  Turns tender and buttery when properly cooked  Great healthy appetizer, side dish, or snack option  Store artichokes in a plastic bag and refrigerate them`,
         price: "2.28",
@@ -298,7 +298,7 @@ const createInitialProducts = async () => {
       },
       {
         category: "Vegetables",
-        subCategory: "RowCrops",
+        subCategory: "Row-Crops",
         name: "Broccoli, per lb",
         description: `Approximately 2 heads per pound  Healthy side to any meal  Delicious when steamed, oven roasted, pan fried, or added to a stir fry or salad`,
         price: "1.48",
@@ -307,7 +307,7 @@ const createInitialProducts = async () => {
       },
       {
         category: "Vegetables",
-        subCategory: "RowCrops",
+        subCategory: "Row-Crops",
         name: "Asparagus, bunch",
         description: `Loaded with nutrients and have a great fresh taste  Saute them with olive oil, salt, pepper, and a hint of lemon juice for a healthy and flavorful vegetable side that will pair well with a wide array of main dishes  Get creative in the kitchen  Add these asparagus spears to pasta, salads, casseroles, and other inventive meal options  Add to quiches and frittatas for brunch`,
         price: "1.98",
@@ -316,7 +316,7 @@ const createInitialProducts = async () => {
       },
       {
         category: "Vegetables",
-        subCategory: "RowCrops",
+        subCategory: "Row-Crops",
         name: "Celery, 1lb bag",
         description: `Promotes healthy bones  Packed full of vitamin K, antioxidants, and fiber  Try dipping in a variety of sauces, like peanut butter, hummus, cheese sauce, and salad dressing  Add to salads, stir fry, and soup  Crispy, crunchy texture  Healthy snack option  Delicious and nutritious`,
         price: "1.42",
@@ -325,7 +325,7 @@ const createInitialProducts = async () => {
       },
       {
         category: "Vegetables",
-        subCategory: "RowCrops",
+        subCategory: "Row-Crops",
         name: "Lettuce, each",
         description: `Use it as a garnish or to make your salad of choice  Contains vitamin A, vitamin C, calcium, iron, vitamin E, vitamin K, vitamin B6 and more  Fat-free  No cholesterol, sodium or carbohydrates  You can use it whole or cut it up`,
         price: "1.48",
@@ -334,7 +334,7 @@ const createInitialProducts = async () => {
       },
       {
         category: "Vegetables",
-        subCategory: "RowCrops",
+        subCategory: "Row-Crops",
         name: "Baby Spinach, 1lb",
         description: `Washed and ready to eat  Great source of dietary fiber, calcium, iron and vitamins A and C  Create a salad tossed with your favorite vegetables, protein, nuts and dressing  Use it as a topping on sandwiches and pizzas or simply enjoy it as a healthy side  Comes inside a resealable container to help maintain freshness`,
         price: "3.66",

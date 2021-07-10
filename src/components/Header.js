@@ -26,6 +26,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
 import { storeCurrentUser, clearCurrentUser } from "../auth";
+import { Auth } from "./Auth";
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -126,13 +127,20 @@ const MenuProps = {
   },
 };
 
-const Header = ({ products, userCart, currentUser, setCurrentUser }) => {
+const Header = ({
+  userCart,
+  currentUser,
+  setCurrentUser,
+  currentSearchText,
+  handleSearchTextChange,
+  products,
+  setProducts,
+  handleSubCategoryChange,
+  subCategory,
+}) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
-  const [subCategory, setSubCategory] = useState([]);
-
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -144,28 +152,19 @@ const Header = ({ products, userCart, currentUser, setCurrentUser }) => {
   };
 
   //List items for inside drawer...doesn't work
-  const Items = () => {
+  const items = () => {
     return (
-      <div onClick={() => toggleDrawer(false)}>
+      <div onClick={toggleDrawer(false)}>
         <List>
-          {userCart ? (
-            userCart.products.map((p) => {
-              const product = products.find((product) => product.id === p.id);
-              return (
-                <ListItem key={p.id}>
-                  {product.name} - {product.price} - {p.quantity}
-                </ListItem>
-              );
-            })
-          ) : (
-            <ListItem>No Items</ListItem>
-          )}
+          <ListItem>PRODUCTS</ListItem>
         </List>
       </div>
     );
   };
 
   const handleUserLogin = (event) => {
+    Auth;
+
     storeCurrentUser(selectedUser);
     setCurrentUser(selectedUser);
   };
@@ -178,10 +177,28 @@ const Header = ({ products, userCart, currentUser, setCurrentUser }) => {
     handleMobileMenuClose();
   };
 
-  //Handles subcategory selections
-  const handleSubCategoryChange = (event) => {
-    event.preventDefault();
-    setSubCategory(event.target.value);
+  //List items for inside drawer...doesn't work
+  const Items = () => {
+    return (
+      <div onClick={() => toggleDrawer(false)}>
+        <List>
+          {userCart ? (
+            userCart.products.map((p) => {
+              const product = products.find(
+                (product) => product.id === p.productId
+              );
+              return (
+                <ListItem key={p.id}>
+                  {product.name} - {product.price} - {p.quantity}
+                </ListItem>
+              );
+            })
+          ) : (
+            <ListItem>No Items</ListItem>
+          )}
+        </List>
+      </div>
+    );
   };
 
   //handles profile account popout
@@ -286,6 +303,8 @@ const Header = ({ products, userCart, currentUser, setCurrentUser }) => {
                 input: classes.inputInput,
               }}
               inputProps={{ "aria-label": "search" }}
+              value={currentSearchText}
+              onChange={(e) => handleSearchTextChange(e)}
             />
           </div>
           <FormControl className={classes.formControl}>
@@ -298,13 +317,6 @@ const Header = ({ products, userCart, currentUser, setCurrentUser }) => {
               renderValue={(selected) => selected.join(", ")}
               MenuProps={MenuProps}
             >
-              <optgroup label="All Products"></optgroup>
-              {allProducts.map((all) => (
-                <MenuItem key={all} value={all}>
-                  <Checkbox checked={subCategory.indexOf(all) > -1} />
-                  <ListItemText primary={all} />
-                </MenuItem>
-              ))}
               <optgroup label="Fruits"></optgroup>
               {subCategoryFruit.map((fruit) => (
                 <MenuItem key={fruit} value={fruit}>
@@ -355,9 +367,14 @@ const Header = ({ products, userCart, currentUser, setCurrentUser }) => {
                 <AccountCircle />
               </IconButton>
             ) : (
-              <Button color="inherit" onClick={handleUserLogin}>
-                Login
-              </Button>
+              <>
+                <Button color="inherit" onClick={handleUserLogin}>
+                  Admin
+                </Button>
+                <Button color="inherit" onClick={handleUserLogin}>
+                  Login
+                </Button>
+              </>
             )}
           </div>
           <div className={classes.sectionMobile}>

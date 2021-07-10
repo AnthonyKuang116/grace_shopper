@@ -29,7 +29,13 @@ cartRouter.post("/:productId/:quantity", async (req, res, next) => {
     const { productId, quantity } = req.params;
     const { userId, price } = req.body;
     const cart = await getUserCart(userId);
-    const product = await addProductToCart(cart.id, productId, quantity, price);
+    const cartId = cart.id;
+    const product = await addProductToCart({
+      cartId,
+      productId,
+      quantity,
+      price,
+    });
     res.send(product);
   } catch ({ name, message }) {
     throw { name, message };
