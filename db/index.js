@@ -57,8 +57,20 @@ async function getUserCart(userId) {
             SELECT * FROM cart
             WHERE ("userId"=$1 AND "isActive"=true);
         `,
+
       [userId]
     );
+    if (cart) {
+      const { rows } = await client.query(
+        `
+            SELECT * FROM line_items
+            WHERE ("cartId"=$1 );
+        `,
+
+        [cart.id]
+      );
+      cart.products = rows;
+    }
 
     return cart;
   } catch (error) {
@@ -336,7 +348,7 @@ async function decreaseCartQuantity(id) {
   }
 }
 
-async function addProductToCart({ cartId, productId, quantity, price }) {
+async function addProductToCart(cartId, productId, quantity, price) {
   try {
     const {
       rows: [product],

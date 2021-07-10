@@ -21,12 +21,11 @@ import List from "@material-ui/core/List";
 import Drawer from "@material-ui/core/Drawer";
 import Divider from "@material-ui/core/Divider";
 import { CropSharp } from "@material-ui/icons";
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
 
-import { storeCurrentUser, clearCurrentUser } from '../auth';
-
+import { storeCurrentUser, clearCurrentUser } from "../auth";
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -127,241 +126,266 @@ const MenuProps = {
   },
 };
 
+const Header = ({ products, userCart, currentUser, setCurrentUser }) => {
+  const classes = useStyles();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
+  const [subCategory, setSubCategory] = useState([]);
 
-const Header = ({currentUser, setCurrentUser}) => {
-    const classes = useStyles();
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const isMenuOpen = Boolean(anchorEl);
+  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-    const [subCategory, setSubCategory] = useState([]);
+  const [selectedUser, setSelectedUser] = useState("");
+  const [drawer, setDrawer] = useState(false);
 
-    const isMenuOpen = Boolean(anchorEl);
-    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const toggleDrawer = (open) => {
+    setDrawer(open);
+  };
 
-    const [selectedUser, setSelectedUser] = useState('');
-    const [drawer, setDrawer] = useState(false);
-
-    const toggleDrawer = (open) => (event) => {
-        setDrawer(open)
-    };
-
-    //List items for inside drawer...doesn't work
-    const items = () => {
-        return <div onClick={toggleDrawer(false)}>
-            <List>
-                <ListItem>PRODUCTS</ListItem>
-            </List>
-        </div>
-    }
-
-    const handleUserLogin = (event) => {
-        storeCurrentUser(selectedUser);
-        setCurrentUser(selectedUser);
-    }
-
-    const handleUserLogout = (event) => {
-        clearCurrentUser();
-        setCurrentUser(null);
-        setSelectedUser(null);
-        setAnchorEl(null);
-        handleMobileMenuClose();
-    }
-
-    //Handles subcategory selections
-    const handleSubCategoryChange = (event) => {
-        event.preventDefault();
-        setSubCategory(event.target.value);
-    }
-
-    //handles profile account popout
-    const handleProfileMenuOpen = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-
-    //Mobile view handles
-    const handleMobileMenuClose = () => {
-        setMobileMoreAnchorEl(null);
-    };
-
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-        handleMobileMenuClose();
-    };
-
-    const handleMobileMenuOpen = (event) => {
-        setMobileMoreAnchorEl(event.currentTarget);
-    };
-
-    const menuId = 'primary-search-account-menu';
-    const renderMenu = (
-        <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            id={menuId}
-            keepMounted
-            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-            open={isMenuOpen}
-            onClose={handleMenuClose}
-        >
-            <MenuItem onClick={handleMenuClose}>Purchase History</MenuItem>
-            <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
-        </Menu>
-    );
-
-    const allProducts = ["All Products"];
-    const subCategoryFruit = ["Tropical", "Sub-Tropical", "Stone", "Pome", "Melons"];
-    const subCategoryVeg = ["Fungi", "Sprouts", "Root", "Bulbs", "Seeded", "Herbs", "Row-Crops", "Other"];
-
-
-
-    const mobileMenuId = 'primary-search-account-menu-mobile';
-    const renderMobileMenu = (
-        <Menu
-            anchorEl={mobileMoreAnchorEl}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            id={mobileMenuId}
-            keepMounted
-            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-            open={isMobileMenuOpen}
-            onClose={handleMobileMenuClose}
-        >
-            <MenuItem onClick={handleProfileMenuOpen}>
-                <IconButton
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="inherit"
-                >
-                    <AccountCircle />
-                </IconButton>
-                <p>Profile</p>
-            </MenuItem>
-        </Menu>
-    );
-
-
-    useEffect(() => {
-        setSelectedUser(currentUser);
-        // console.log("Header level currentUser", currentUser)
-    }, [currentUser]);
-
-
+  //List items for inside drawer...doesn't work
+  const Items = () => {
     return (
-        <div className={classes.grow}>
-            <AppBar position="static">
-                <Toolbar>
+      <div onClick={() => toggleDrawer(false)}>
+        <List>
+          {userCart ? (
+            userCart.products.map((p) => {
+              const product = products.find((product) => product.id === p.id);
+              return (
+                <ListItem key={p.id}>
+                  {product.name} - {product.price} - {p.quantity}
+                </ListItem>
+              );
+            })
+          ) : (
+            <ListItem>No Items</ListItem>
+          )}
+        </List>
+      </div>
+    );
+  };
 
-                    <Typography className={classes.title} variant="h6" noWrap>
-                        Froot Loops
-                    </Typography>
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                            placeholder="Search…"
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput,
-                            }}
-                            inputProps={{ 'aria-label': 'search' }}
-                        />
-                    </div>
-                    <FormControl className={classes.formControl}>
-                        <InputLabel id="">Categories</InputLabel>
-                        <Select
-                            multiple
-                            value={subCategory}
-                            onChange={handleSubCategoryChange}
-                            input={<Input />}
-                            renderValue={(selected) => selected.join(', ')}
-                            MenuProps={MenuProps}
-                        >
-                            <optgroup label="All Products"></optgroup>
-                            {allProducts.map((all) => (
-                                <MenuItem key={all} value={all}>
-                                    <Checkbox checked={subCategory.indexOf(all) > -1} />
-                                    <ListItemText primary={all} />
-                                </MenuItem>
-                            ))}
-                            <optgroup label="Fruits"></optgroup>
-                            {subCategoryFruit.map((fruit) => (
-                                <MenuItem key={fruit} value={fruit}>
-                                    <Checkbox checked={subCategory.indexOf(fruit) > -1} />
-                                    <ListItemText primary={fruit} />
-                                </MenuItem>
-                            ))}
-                            <optgroup label="Vegetables"></optgroup>
-                            {subCategoryVeg.map((veg) => (
-                                <MenuItem key={veg} value={veg}>
-                                    <Checkbox checked={subCategory.indexOf(veg) > -1} />
-                                    <ListItemText primary={veg} />
-                                </MenuItem>
-                            ))}
+  const handleUserLogin = (event) => {
+    storeCurrentUser(selectedUser);
+    setCurrentUser(selectedUser);
+  };
 
-                        </Select>
-                    </FormControl>
-                    <div className={classes.grow} />
-                    <div className={classes.sectionDesktop}>
-                        <IconButton
-                            edge="end"
-                            aria-label="cart of current user"
-                            aria-controls={menuId}
-                            aria-haspopup="true"
-                            onClick={toggleDrawer(true)}
-                            color="inherit"
-                        >
-                            <ShoppingCartIcon />
-                        </IconButton>
-                        <Drawer
-                            anchor={'right'}
-                            open={drawer}
-                            onClose={toggleDrawer(false)}
-                            width={'100px'}
-                        >
-                            {items()}
-                        </Drawer>
-                    </div>
-                    <div className={classes.sectionDesktop}>
-                        {currentUser ? <IconButton
-                            edge="end"
-                            aria-label="account of current user"
-                            aria-controls={menuId}
-                            aria-haspopup="true"
-                            onClick={handleProfileMenuOpen}
-                            color="inherit"
-                        >
-                            <AccountCircle />
-                        </IconButton> : <Button color="inherit" onClick={handleUserLogin}>Login</Button>}
-                    </div>
-                    <div className={classes.sectionMobile}>
-                        <IconButton
-                            edge="end"
-                            aria-label="cart of current user"
-                            aria-controls={menuId}
-                            aria-haspopup="true"
-                            color="inherit"
-                        >
-                            <ShoppingCartIcon />
-                        </IconButton>
-                        <IconButton
-                            aria-label="show more"
-                            aria-controls={mobileMenuId}
-                            aria-haspopup="true"
-                            onClick={handleMobileMenuOpen}
-                            color="inherit"
-                        >
-                            <MoreIcon />
-                        </IconButton>
-                    </div>
-                </Toolbar>
-            </AppBar>
-            {renderMobileMenu}
-            {renderMenu}
-        </div>
-    )
-}
+  const handleUserLogout = (event) => {
+    clearCurrentUser();
+    setCurrentUser(null);
+    setSelectedUser(null);
+    setAnchorEl(null);
+    handleMobileMenuClose();
+  };
+
+  //Handles subcategory selections
+  const handleSubCategoryChange = (event) => {
+    event.preventDefault();
+    setSubCategory(event.target.value);
+  };
+
+  //handles profile account popout
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  //Mobile view handles
+  const handleMobileMenuClose = () => {
+    setMobileMoreAnchorEl(null);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    handleMobileMenuClose();
+  };
+
+  const handleMobileMenuOpen = (event) => {
+    setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const menuId = "primary-search-account-menu";
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>Purchase History</MenuItem>
+      <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
+    </Menu>
+  );
+
+  const allProducts = ["All Products"];
+  const subCategoryFruit = [
+    "Tropical",
+    "Sub-Tropical",
+    "Stone",
+    "Pome",
+    "Melons",
+  ];
+  const subCategoryVeg = [
+    "Fungi",
+    "Sprouts",
+    "Root",
+    "Bulbs",
+    "Seeded",
+    "Herbs",
+    "Row-Crops",
+    "Other",
+  ];
+
+  const mobileMenuId = "primary-search-account-menu-mobile";
+  const renderMobileMenu = (
+    <Menu
+      anchorEl={mobileMoreAnchorEl}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      id={mobileMenuId}
+      keepMounted
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      open={isMobileMenuOpen}
+      onClose={handleMobileMenuClose}
+    >
+      <MenuItem onClick={handleProfileMenuOpen}>
+        <IconButton
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <AccountCircle />
+        </IconButton>
+        <p>Profile</p>
+      </MenuItem>
+    </Menu>
+  );
+
+  useEffect(() => {
+    setSelectedUser(currentUser);
+    // console.log("Header level currentUser", currentUser)
+  }, [currentUser]);
+
+  return (
+    <div className={classes.grow}>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography className={classes.title} variant="h6" noWrap>
+            Froot Loops
+          </Typography>
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ "aria-label": "search" }}
+            />
+          </div>
+          <FormControl className={classes.formControl}>
+            <InputLabel id="">Categories</InputLabel>
+            <Select
+              multiple
+              value={subCategory}
+              onChange={handleSubCategoryChange}
+              input={<Input />}
+              renderValue={(selected) => selected.join(", ")}
+              MenuProps={MenuProps}
+            >
+              <optgroup label="All Products"></optgroup>
+              {allProducts.map((all) => (
+                <MenuItem key={all} value={all}>
+                  <Checkbox checked={subCategory.indexOf(all) > -1} />
+                  <ListItemText primary={all} />
+                </MenuItem>
+              ))}
+              <optgroup label="Fruits"></optgroup>
+              {subCategoryFruit.map((fruit) => (
+                <MenuItem key={fruit} value={fruit}>
+                  <Checkbox checked={subCategory.indexOf(fruit) > -1} />
+                  <ListItemText primary={fruit} />
+                </MenuItem>
+              ))}
+              <optgroup label="Vegetables"></optgroup>
+              {subCategoryVeg.map((veg) => (
+                <MenuItem key={veg} value={veg}>
+                  <Checkbox checked={subCategory.indexOf(veg) > -1} />
+                  <ListItemText primary={veg} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <div className={classes.grow} />
+          <div className={classes.sectionDesktop}>
+            <IconButton
+              edge="end"
+              aria-label="cart of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={() => toggleDrawer(true)}
+              color="inherit"
+            >
+              <ShoppingCartIcon />
+            </IconButton>
+            <Drawer
+              anchor={"right"}
+              open={drawer}
+              onClose={() => toggleDrawer(false)}
+              width={"100px"}
+            >
+              <Items />
+            </Drawer>
+          </div>
+          <div className={classes.sectionDesktop}>
+            {currentUser ? (
+              <IconButton
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+            ) : (
+              <Button color="inherit" onClick={handleUserLogin}>
+                Login
+              </Button>
+            )}
+          </div>
+          <div className={classes.sectionMobile}>
+            <IconButton
+              edge="end"
+              aria-label="cart of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <ShoppingCartIcon />
+            </IconButton>
+            <IconButton
+              aria-label="show more"
+              aria-controls={mobileMenuId}
+              aria-haspopup="true"
+              onClick={handleMobileMenuOpen}
+              color="inherit"
+            >
+              <MoreIcon />
+            </IconButton>
+          </div>
+        </Toolbar>
+      </AppBar>
+      {renderMobileMenu}
+      {renderMenu}
+    </div>
+  );
+};
 
 export default Header;

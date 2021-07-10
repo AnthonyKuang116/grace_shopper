@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import {
@@ -12,6 +12,7 @@ import {
   Tooltip,
   Zoom,
 } from "@material-ui/core";
+import addProductToCart from "../api/cart/addProductToCart";
 
 const useStyles = makeStyles({
   root: {
@@ -25,7 +26,7 @@ const useStyles = makeStyles({
   media: {
     height: 200,
     margin: "10px",
-    width: 200,
+    width: 220,
   },
   card: {
     paddingTop: "0px",
@@ -36,21 +37,39 @@ const useStyles = makeStyles({
   },
 });
 
-const Main = ({ products, setModalProduct, setOpenProduct }) => {
+const Main = ({
+  userCart,
+  currentUser,
+  products,
+  setModalProduct,
+  setOpenProduct,
+}) => {
   const classes = useStyles();
+  const [quantity, setQuantity] = useState();
   const handleOpen = (product) => {
     setModalProduct(product);
     setOpenProduct(true);
   };
+  const qChange = (evt) => setQuantity(evt.target.value);
 
-  const addToCart = (product, quantity) => {};
+  const addToCart = async (product) => {
+    const data = await addProductToCart(
+      product.id,
+      quantity,
+      currentUser,
+      product.price
+    );
+    console.log(data);
+  };
+  console.log(userCart);
+  const qClickHandle = async (product) => {};
   return (
     <>
       {products.map((product) => (
         <Card key={product.id} className={classes.root}>
           <CardMedia
             className={classes.media}
-            title={product.name}
+            title="Click for more information."
             image={product.imgSrc}
             onClick={() => handleOpen(product)}
           />
@@ -72,6 +91,7 @@ const Main = ({ products, setModalProduct, setOpenProduct }) => {
                   aria-label="add item to cart"
                   aria-haspopup="true"
                   color="inherit"
+                  onClick={() => addToCart(product)}
                 >
                   <AddShoppingCartIcon />
                 </IconButton>
@@ -82,14 +102,16 @@ const Main = ({ products, setModalProduct, setOpenProduct }) => {
                 enterDelay={750}
                 enterNextDelay={750}
                 leaveDelay={200}
+                placement="right-end"
               >
                 <TextField
                   className={classes.quantity}
-                  id="standard-number"
+                  id={product.id + "q"}
                   label="Quantity"
                   type="number"
-                  defaultValue="1"
                   InputProps={{ inputProps: { min: 0, max: 10 } }}
+                  onChange={qChange}
+                  onClick={() => qClickHandle(product)}
                 />
               </Tooltip>
             </CardActions>
