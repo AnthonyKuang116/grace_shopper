@@ -11,3 +11,4 @@ export { default as updateCartQuantity } from "./cart/updateCartQuantity";
 
 export { default as login } from "./users/login";
 export { default as register } from "./users/register";
+export { default as allUsers } from "./users/allUsers";

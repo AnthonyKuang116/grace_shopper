@@ -21,388 +21,406 @@ import List from "@material-ui/core/List";
 import Drawer from "@material-ui/core/Drawer";
 import Divider from "@material-ui/core/Divider";
 import { CropSharp } from "@material-ui/icons";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 
-import { storeCurrentUser, clearCurrentUser } from "../auth";
-import { Auth } from "./Auth";
+import { storeCurrentUser, clearCurrentUser } from '../auth';
+import { Auth } from './Auth';
+
+
 
 const useStyles = makeStyles((theme) => ({
-  list: {
-    width: 250,
-  },
-  fullList: {
-    width: "auto",
-  },
-  grow: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    display: "none",
-    [theme.breakpoints.up("sm")]: {
-      display: "block",
+    list: {
+        width: 250,
     },
-  },
-  search: {
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
+    fullList: {
+        width: "auto",
     },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(3),
-      width: "auto",
+    grow: {
+        flexGrow: 1,
     },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  inputRoot: {
-    color: "inherit",
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "60ch",
+    menuButton: {
+        marginRight: theme.spacing(2),
     },
-  },
-  sectionDesktop: {
-    display: "none",
-    [theme.breakpoints.up("md")]: {
-      display: "flex",
+    title: {
+        display: "none",
+        [theme.breakpoints.up("sm")]: {
+            display: "block",
+        },
     },
-  },
-  sectionMobile: {
-    display: "flex",
-    [theme.breakpoints.up("md")]: {
-      display: "none",
+    search: {
+        position: "relative",
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: fade(theme.palette.common.white, 0.15),
+        "&:hover": {
+            backgroundColor: fade(theme.palette.common.white, 0.25),
+        },
+        marginRight: theme.spacing(2),
+        marginLeft: 0,
+        width: "100%",
+        [theme.breakpoints.up("sm")]: {
+            marginLeft: theme.spacing(3),
+            width: "auto",
+        },
     },
-  },
-  formControl: {
-    padding: theme.spacing(0, 0, 0, 0),
-    minWidth: 120,
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
+    searchIcon: {
+        padding: theme.spacing(0, 2),
+        height: "100%",
+        position: "absolute",
+        pointerEvents: "none",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
     },
-    height: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-      marginLeft: theme.spacing(3),
+    inputRoot: {
+        color: "inherit",
     },
-    alignItems: "left",
-    justifyContent: "center",
-    color: "white",
-  },
+    inputInput: {
+        padding: theme.spacing(1, 1, 1, 0),
+        // vertical padding + font size from searchIcon
+        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+        transition: theme.transitions.create("width"),
+        width: "100%",
+        [theme.breakpoints.up("md")]: {
+            width: "60ch",
+        },
+    },
+    sectionDesktop: {
+        display: "none",
+        [theme.breakpoints.up("md")]: {
+            display: "flex",
+        },
+    },
+    sectionMobile: {
+        display: "flex",
+        [theme.breakpoints.up("md")]: {
+            display: "none",
+        },
+    },
+    formControl: {
+        padding: theme.spacing(0, 0, 0, 0),
+        minWidth: 120,
+        position: "relative",
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: fade(theme.palette.common.white, 0.15),
+        "&:hover": {
+            backgroundColor: fade(theme.palette.common.white, 0.25),
+        },
+        height: "100%",
+        [theme.breakpoints.up("md")]: {
+            width: "20ch",
+            marginLeft: theme.spacing(3),
+        },
+        alignItems: "left",
+        justifyContent: "center",
+        color: "white",
+    },
 }));
 
 const ITEM_HEIGHT = 100;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
     },
-  },
 };
 
-const Header = ({
-  userCart,
-  currentUser,
-  setCurrentUser,
-  currentSearchText,
-  handleSearchTextChange,
-  products,
-  setProducts,
-  handleSubCategoryChange,
-  subCategory,
-}) => {
-  const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const [selectedUser, setSelectedUser] = useState("");
-  const [drawer, setDrawer] = useState(false);
 
-  const toggleDrawer = (open) => {
-    setDrawer(open);
-  };
+const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTextChange, handleSubCategoryChange, subCategory, setOpenUsers, setAddProduct }) => {
+    const classes = useStyles();
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
-  //List items for inside drawer...doesn't work
-  const items = () => {
-    return (
-      <div onClick={toggleDrawer(false)}>
-        <List>
-          <ListItem>PRODUCTS</ListItem>
-        </List>
-      </div>
-    );
-  };
+    const isMenuOpen = Boolean(anchorEl);
+    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleUserLogin = (event) => {
-    Auth;
+    const [selectedUser, setSelectedUser] = useState('');
+    const [drawer, setDrawer] = useState(false);
 
-    storeCurrentUser(selectedUser);
-    setCurrentUser(selectedUser);
-  };
 
-  const handleUserLogout = (event) => {
-    clearCurrentUser();
-    setCurrentUser(null);
-    setSelectedUser(null);
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
+    const toggleDrawer = (open) => (event) => {
+        setDrawer(open)
+    };
 
-  //List items for inside drawer...doesn't work
-  const Items = () => {
-    return (
-      <div onClick={() => toggleDrawer(false)}>
-        <List>
-          {userCart ? (
-            userCart.products.map((p) => {
-              const product = products.find(
-                (product) => product.id === p.productId
-              );
-              return (
-                <ListItem key={p.id}>
-                  {product.name} - {product.price} - {p.quantity}
-                </ListItem>
-              );
-            })
-          ) : (
-            <ListItem>No Items</ListItem>
-          )}
-        </List>
-      </div>
-    );
-  };
+    //List items for inside drawer...doesn't work
+    const items = () => {
+        return <div onClick={toggleDrawer(false)}>
+            <List>
+                <ListItem>PRODUCTS</ListItem>
+            </List>
+        </div>
+    }
 
-  //handles profile account popout
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+    const handleUserLogin = (event) => {
+        Auth;
 
-  //Mobile view handles
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
+        storeCurrentUser(selectedUser);
+        setCurrentUser(selectedUser);
+    }
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
+    const handleUserLogout = (event) => {
+        clearCurrentUser();
+        setCurrentUser(null);
+        setSelectedUser(null);
+        setAnchorEl(null);
+        handleMobileMenuClose();
+    }
 
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
 
-  const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Purchase History</MenuItem>
-      <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
-    </Menu>
-  );
+    //handles profile account popout
+    const handleProfileMenuOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
 
-  const allProducts = ["All Products"];
-  const subCategoryFruit = [
-    "Tropical",
-    "Sub-Tropical",
-    "Stone",
-    "Pome",
-    "Melons",
-  ];
-  const subCategoryVeg = [
-    "Fungi",
-    "Sprouts",
-    "Root",
-    "Bulbs",
-    "Seeded",
-    "Herbs",
-    "Row-Crops",
-    "Other",
-  ];
+    const handleAdminOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    }
 
-  const mobileMenuId = "primary-search-account-menu-mobile";
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
+    //handles admin menu popout
+    const handleViewUsers = () => {
+        setOpenUsers(true);
+        setAnchorEl(null);
+        handleMobileMenuClose();
+    }
+
+    const handleAddProduct = () => {
+        setAddProduct(true);
+        setAnchorEl(null);
+        handleMobileMenuClose();
+    }
+
+
+    //Mobile view handles
+    const handleMobileMenuClose = () => {
+        setMobileMoreAnchorEl(null);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+        handleMobileMenuClose();
+    };
+
+    const handleMobileMenuOpen = (event) => {
+        setMobileMoreAnchorEl(event.currentTarget);
+    };
+
+    const menuId = 'primary-search-account-menu';
+    const adminId = 'admin-account-menu'
+    // const renderMenu = (
+    //     <Menu
+    //         anchorEl={anchorEl}
+    //         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+    //         id={menuId}
+    //         keepMounted
+    //         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+    //         open={isMenuOpen}
+    //         onClose={handleMenuClose}
+    //     >
+    //         <MenuItem onClick={handleMenuClose}>Purchase History</MenuItem>
+    //         <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
+    //     </Menu>
+    // );
+
+    const renderAdminMenu = (
+        <Menu
+            anchorEl={anchorEl}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            id={adminId}
+            keepMounted
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            open={isMenuOpen}
+            onClose={handleMenuClose}
         >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
+            <MenuItem onClick={handleViewUsers}>View Users</MenuItem>
+            <MenuItem>Edit Users</MenuItem>
+            <MenuItem onClick={handleAddProduct}>Add Product</MenuItem>
+        </Menu>
+    )
 
-  useEffect(() => {
-    setSelectedUser(currentUser);
-    // console.log("Header level currentUser", currentUser)
-  }, [currentUser]);
+    // const allProducts = ["All Products"];
+    const subCategoryFruit = ["Tropical", "Sub-Tropical", "Small", "Stone", "Pome", "Melons"];
+    const subCategoryVeg = ["Fungi", "Sprouts", "Root", "Bulbs", "Seeded", "Herbs", "Row-Crops", "Other"];
 
-  return (
-    <div className={classes.grow}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Froot Loops
-          </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search" }}
-              value={currentSearchText}
-              onChange={(e) => handleSearchTextChange(e)}
-            />
-          </div>
-          <FormControl className={classes.formControl}>
-            <InputLabel id="">Categories</InputLabel>
-            <Select
-              multiple
-              value={subCategory}
-              onChange={handleSubCategoryChange}
-              input={<Input />}
-              renderValue={(selected) => selected.join(", ")}
-              MenuProps={MenuProps}
-            >
-              <optgroup label="Fruits"></optgroup>
-              {subCategoryFruit.map((fruit) => (
-                <MenuItem key={fruit} value={fruit}>
-                  <Checkbox checked={subCategory.indexOf(fruit) > -1} />
-                  <ListItemText primary={fruit} />
-                </MenuItem>
-              ))}
-              <optgroup label="Vegetables"></optgroup>
-              {subCategoryVeg.map((veg) => (
-                <MenuItem key={veg} value={veg}>
-                  <Checkbox checked={subCategory.indexOf(veg) > -1} />
-                  <ListItemText primary={veg} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <IconButton
-              edge="end"
-              aria-label="cart of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={() => toggleDrawer(true)}
-              color="inherit"
-            >
-              <ShoppingCartIcon />
-            </IconButton>
-            <Drawer
-              anchor={"right"}
-              open={drawer}
-              onClose={() => toggleDrawer(false)}
-              width={"100px"}
-            >
-              <Items />
-            </Drawer>
-          </div>
-          <div className={classes.sectionDesktop}>
-            {currentUser ? (
-              <IconButton
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-            ) : (
-              <>
-                <Button color="inherit" onClick={handleUserLogin}>
-                  Admin
-                </Button>
-                <Button color="inherit" onClick={handleUserLogin}>
-                  Login
-                </Button>
-              </>
-            )}
-          </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              edge="end"
-              aria-label="cart of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              color="inherit"
-            >
-              <ShoppingCartIcon />
-            </IconButton>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </div>
-        </Toolbar>
-      </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
-    </div>
-  );
-};
+
+
+    const mobileMenuId = 'primary-search-account-menu-mobile';
+    const renderMobileMenu = (
+        <Menu
+            anchorEl={mobileMoreAnchorEl}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            id={mobileMenuId}
+            keepMounted
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            open={isMobileMenuOpen}
+            onClose={handleMobileMenuClose}
+        >
+            <MenuItem onClick={handleProfileMenuOpen}>
+                <IconButton
+                    aria-label="account of current user"
+                    aria-controls="primary-search-account-menu"
+                    aria-haspopup="true"
+                    color="inherit"
+                >
+                    <AccountCircle />
+                </IconButton>
+                <p>Profile</p>
+            </MenuItem>
+            <MenuItem onClick={handleAdminOpen}>
+                <IconButton
+                    aria-label="Admin options"
+                    aria-controls="admin account menu"
+                    aria-haspopup="true"
+                    color="inherit"
+                >
+                    Admin
+                </IconButton>
+            </MenuItem>
+        </Menu>
+    );
+
+    useEffect(() => {
+        setSelectedUser(currentUser);
+        // console.log("Header level currentUser", currentUser)
+    }, [currentUser]);
+
+    return (
+        <div className={classes.grow}>
+            {/* {showUsers && <ViewUsers setOpenUsers={setOpenUsers} openUsers={openUsers}/>} */}
+            <AppBar position="static">
+                <Toolbar>
+
+                    <Typography className={classes.title} variant="h6" noWrap>
+                        Froot Loops
+                    </Typography>
+                    <div className={classes.search}>
+                        <div className={classes.searchIcon}>
+                            <SearchIcon />
+                        </div>
+                        <InputBase
+                            placeholder="Search…"
+                            classes={{
+                                root: classes.inputRoot,
+                                input: classes.inputInput,
+                            }}
+                            inputProps={{ 'aria-label': 'search' }}
+                            value={currentSearchText}
+                            onChange={(e) => handleSearchTextChange(e)}
+                        />
+                    </div>
+                    <FormControl className={classes.formControl}>
+                        <InputLabel id="">Categories</InputLabel>
+                        <Select
+                            multiple
+                            value={subCategory}
+                            onChange={handleSubCategoryChange}
+                            input={<Input />}
+                            renderValue={(selected) => selected.join(', ')}
+                            MenuProps={MenuProps}
+                        >
+                            {/* <optgroup label="All Products"></optgroup>
+                            {allProducts.map((all) => (
+                                <MenuItem key={all} value={all}>
+                                    <Checkbox checked={subCategory.indexOf(all) > -1} />
+                                    <ListItemText primary={all} />
+                                </MenuItem>
+                            ))} */}
+                            <optgroup label="Fruits"></optgroup>
+                            {subCategoryFruit.map((fruit) => (
+                                <MenuItem key={fruit} value={fruit}>
+                                    <Checkbox checked={subCategory.indexOf(fruit) > -1} />
+                                    <ListItemText primary={fruit} />
+                                </MenuItem>
+                            ))}
+                            <optgroup label="Vegetables"></optgroup>
+                            {subCategoryVeg.map((veg) => (
+                                <MenuItem key={veg} value={veg}>
+                                    <Checkbox checked={subCategory.indexOf(veg) > -1} />
+                                    <ListItemText primary={veg} />
+                                </MenuItem>
+                            ))}
+
+                        </Select>
+                    </FormControl>
+                    <div className={classes.grow} />
+                    <div className={classes.sectionDesktop}>
+                        <IconButton
+                            edge="end"
+                            aria-label="cart of current user"
+                            aria-controls={menuId}
+                            aria-haspopup="true"
+                            onClick={toggleDrawer(true)}
+                            color="inherit"
+                        >
+                            <ShoppingCartIcon />
+                        </IconButton>
+                        <Drawer
+                            anchor={'right'}
+                            open={drawer}
+                            onClose={toggleDrawer(false)}
+                            width={'100px'}
+                        >
+                            {items()}
+                        </Drawer>
+                    </div>
+                    <div className={classes.sectionDesktop}>
+                        {currentUser ?
+                            <>
+                                <Button
+                                    edge="end"
+                                    aria-label="Admin options"
+                                    aria-controls={adminId}
+                                    aria-haspopup="true"
+                                    onClick={handleAdminOpen}
+                                    color="inherit"
+                                >Admin</Button>
+                                <IconButton
+                                    edge="end"
+                                    aria-label="account of current user"
+                                    aria-controls={menuId}
+                                    aria-haspopup="true"
+                                    onClick={handleProfileMenuOpen}
+                                    color="inherit"
+                                >
+                                    <AccountCircle />
+                                </IconButton>
+                            </> :
+                            <>
+                                <Button color="inherit">Login</Button>
+                            </>
+                        }
+                    </div>
+                    <div className={classes.sectionMobile}>
+                        <IconButton
+                            edge="end"
+                            aria-label="cart of current user"
+                            aria-controls={menuId}
+                            aria-haspopup="true"
+                            color="inherit"
+                        >
+                            <ShoppingCartIcon />
+                        </IconButton>
+                        <IconButton
+                            aria-label="show more"
+                            aria-controls={mobileMenuId}
+                            aria-haspopup="true"
+                            onClick={handleMobileMenuOpen}
+                            color="inherit"
+                        >
+                            <MoreIcon />
+                        </IconButton>
+                    </div>
+                </Toolbar>
+            </AppBar>
+            {renderMobileMenu}
+            {/* {renderMenu} */}
+            {renderAdminMenu}
+        </div>
+    )
+}
 
 export default Header;

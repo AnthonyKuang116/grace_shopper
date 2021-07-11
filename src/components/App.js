@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Header, Main, Product } from "./";
 import getAllProducts from "../api/products/getAllProducts.js";
 import { getCurrentUser } from "../auth";
+import ViewUsers from './ViewUsers';
+import AdminAddProduct from './AdminAddProduct';
 import getUserCart from "../api/cart/getUserCart";
 
 const App = () => {
@@ -12,6 +14,8 @@ const App = () => {
   const [userCart, setUserCart] = useState([]);
   const [currentSearchText, setCurrentSearchText] = useState("");
   const [subCategory, setSubCategory] = useState([]);
+  const [openUsers, setOpenUsers] = useState(false);
+  const [addProduct, setAddProduct] = useState(false);
 
   //get all products and set the product state
   useEffect(() => {
@@ -87,6 +91,8 @@ const App = () => {
           setProducts,
           handleSubCategoryChange,
           subCategory,
+          setOpenUsers,
+          setAddProduct
         }}
       />
       <Main
@@ -94,6 +100,8 @@ const App = () => {
         products={filteredProducts()}
       />
       <Product {...{ modalProduct, openProduct, setOpenProduct }} />
+      <ViewUsers openUsers={openUsers} setOpenUsers={setOpenUsers}/>
+      <AdminAddProduct {...{addProduct, setAddProduct}}/>
     </div>
   );
 };
