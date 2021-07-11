@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   Drawer,
   Table,
@@ -14,6 +15,8 @@ const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
+  image: { maxWidth: "100px" },
+  cartTitle: { fontFamily: "Roboto", color: "red" },
 });
 
 const Cart = ({ products, userCart, openCart, setOpenCart }) => {
@@ -50,7 +53,7 @@ const Cart = ({ products, userCart, openCart, setOpenCart }) => {
         onClose={handleClose}
         width={"100px"}
       >
-        <h1>Cart</h1>
+        <h1 className={classes.cartTitle}>Cart</h1>
         <TableContainer component={Paper}>
           <Table
             className={classes.table}
@@ -59,8 +62,9 @@ const Cart = ({ products, userCart, openCart, setOpenCart }) => {
           >
             <TableHead>
               <TableRow>
+                <TableCell>Image</TableCell>
                 <TableCell>Name</TableCell>
-                <TableCell align="right">Category</TableCell>
+
                 <TableCell align="right">Price Per Unit</TableCell>
                 <TableCell align="right">Quantity</TableCell>
                 <TableCell align="right">Subtotal</TableCell>
@@ -73,10 +77,13 @@ const Cart = ({ products, userCart, openCart, setOpenCart }) => {
                 );
                 return (
                   <TableRow key={product.name}>
+                    <TableCell>
+                      <img className={classes.image} src={product.imgSrc} />
+                    </TableCell>
                     <TableCell component="th" scope="row">
                       {product.name}
                     </TableCell>
-                    <TableCell align="right">{product.category}</TableCell>
+
                     <TableCell align="right">${product.price}</TableCell>
                     <TableCell align="right">{p.quantity}</TableCell>
                     <TableCell align="right">
