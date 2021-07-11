@@ -12,7 +12,7 @@ import {
   Tooltip,
   Zoom,
 } from "@material-ui/core";
-import addProductToCart from "../api/cart/addProductToCart";
+import { addProductToCart } from "../api";
 
 const useStyles = makeStyles({
   root: {
@@ -33,16 +33,18 @@ const useStyles = makeStyles({
   },
   quantity: {
     fontSize: "10px",
-    width: "4em",
+    width: "8em",
   },
 });
 
 const Main = ({
   userCart,
+  setUserCart,
   currentUser,
   products,
   setModalProduct,
   setOpenProduct,
+  setOpenCart,
 }) => {
   const classes = useStyles();
   const [quantity, setQuantity] = useState();
@@ -53,13 +55,21 @@ const Main = ({
   const qChange = (evt) => setQuantity(evt.target.value);
 
   const addToCart = async (product) => {
+    if (!currentUser) {
+      setOpenCart(true);
+      return;
+    }
     const data = await addProductToCart(
       product.id,
       quantity,
       currentUser,
       product.price
     );
-    console.log(data);
+    const newProducts = [...userCart.products, data];
+    const newCart = Object.assign({}, userCart);
+    newCart.products = newProducts;
+    setUserCart(newCart);
+    setOpenCart(true);
   };
   console.log(userCart);
   const qClickHandle = async (product) => {};

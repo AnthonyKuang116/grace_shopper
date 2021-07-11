@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -10,8 +10,9 @@ import {
   Zoom,
   TextField,
 } from "@material-ui/core";
-import { Button } from "@material-ui/core";
+addProductToCart;
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
+import { addProductToCart } from "../api";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -28,12 +29,35 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Product = ({ modalProduct, openProduct, setOpenProduct }) => {
+const Product = ({
+  currentUser,
+  modalProduct,
+  openProduct,
+  setOpenProduct,
+  userCart,
+  setUserCart,
+}) => {
   if (!modalProduct) return <div></div>;
   const classes = useStyles();
   const descriptionArr = modalProduct.description.split("  ");
-
+  console.log(userCart);
   const handleClose = () => {
+    setOpenProduct(false);
+  };
+  const [quantity, setQuantity] = useState(1);
+  const qChange = (evt) => setQuantity(evt.target.value);
+  const addToCart = async () => {
+    const data = await addProductToCart(
+      modalProduct.id,
+      quantity,
+      currentUser,
+      modalProduct.price
+    );
+    console.log(userCart);
+    const newProducts = [...userCart.products, data];
+    const newCart = Object.assign({}, userCart);
+    newCart.products = newProducts;
+    setUserCart(newCart);
     setOpenProduct(false);
   };
 
@@ -63,7 +87,7 @@ const Product = ({ modalProduct, openProduct, setOpenProduct }) => {
             <h2>{modalProduct.name}</h2>
 
             {descriptionArr.map((description) => (
-              <p>✅{description}</p>
+              <p key={description}>✅{description}</p>
             ))}
 
             <Tooltip
@@ -78,6 +102,7 @@ const Product = ({ modalProduct, openProduct, setOpenProduct }) => {
                 aria-label="add item to cart"
                 aria-haspopup="true"
                 color="inherit"
+                onClick={() => addToCart()}
               >
                 <AddShoppingCartIcon />
               </IconButton>
@@ -96,6 +121,7 @@ const Product = ({ modalProduct, openProduct, setOpenProduct }) => {
                 label="Quantity"
                 type="number"
                 defaultValue="1"
+                onChange={qChange}
                 InputProps={{ inputProps: { min: 0, max: 10 } }}
               />
             </Tooltip>

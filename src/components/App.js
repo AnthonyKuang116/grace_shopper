@@ -102,13 +102,38 @@ const App = () => {
         }}
       />
       <Main
-        {...{ userCart, currentUser, setModalProduct, setOpenProduct }}
+        {...{
+          setOpenCart,
+          setUserCart,
+          userCart,
+          currentUser,
+          setModalProduct,
+          setOpenProduct,
+        }}
         products={filteredProducts()}
       />
-      <Product {...{ modalProduct, openProduct, setOpenProduct }} />
+      <Product
+        {...{
+          userCart,
+          setUserCart,
+          currentUser,
+          modalProduct,
+          openProduct,
+          setOpenProduct,
+        }}
+      />
 
       {userCart ? (
-        <Cart {...{ products, openCart, setOpenCart, userCart }} />
+        <Cart
+          {...{
+            currentUser,
+            products,
+            openCart,
+            setOpenCart,
+            userCart,
+            setUserCart,
+          }}
+        />
       ) : (
         ""
       )}
