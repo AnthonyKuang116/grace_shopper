@@ -29,6 +29,7 @@ import { storeCurrentUser, clearCurrentUser } from '../auth';
 import { Auth } from './Auth';
 
 
+
 const useStyles = makeStyles((theme) => ({
     list: {
         width: 250,
@@ -130,16 +131,17 @@ const MenuProps = {
 
 
 
-const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTextChange, products, setProducts, handleSubCategoryChange, subCategory }) => {
+const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTextChange, handleSubCategoryChange, subCategory, setOpenUsers, setAddProduct }) => {
     const classes = useStyles();
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
     const [selectedUser, setSelectedUser] = useState('');
     const [drawer, setDrawer] = useState(false);
+    
 
     const toggleDrawer = (open) => (event) => {
         setDrawer(open)
@@ -168,12 +170,30 @@ const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTe
         setAnchorEl(null);
         handleMobileMenuClose();
     }
-   
+
 
     //handles profile account popout
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
     };
+
+    const handleAdminOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    }
+
+    //handles admin menu popout
+    const handleViewUsers = () => {
+        setOpenUsers(true)
+        setAnchorEl(null);
+        handleMobileMenuClose();
+    }
+
+    const handleAddProduct = () => {
+        setAddProduct(true)
+        console.log("Testing add product handler")
+        setAnchorEl(null);
+        handleMobileMenuClose();
+    }
 
 
     //Mobile view handles
@@ -191,6 +211,7 @@ const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTe
     };
 
     const menuId = 'primary-search-account-menu';
+    const adminId = 'admin-account-menu'
     const renderMenu = (
         <Menu
             anchorEl={anchorEl}
@@ -205,6 +226,22 @@ const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTe
             <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
         </Menu>
     );
+
+    const renderAdminMenu = (
+        <Menu
+            anchorEl={anchorEl}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            id={adminId}
+            keepMounted
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            open={isMenuOpen}
+            onClose={handleMenuClose}
+        >
+            <MenuItem onClick={handleViewUsers}>View Users</MenuItem>
+            <MenuItem>Edit Product</MenuItem>
+            <MenuItem onClick={handleAddProduct}>Add Product</MenuItem>
+        </Menu>
+    )
 
     // const allProducts = ["All Products"];
     const subCategoryFruit = ["Tropical", "Sub-Tropical", "Small", "Stone", "Pome", "Melons"];
@@ -234,6 +271,16 @@ const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTe
                 </IconButton>
                 <p>Profile</p>
             </MenuItem>
+            <MenuItem onClick={handleAdminOpen}>
+                <IconButton
+                    aria-label="Admin options"
+                    aria-controls="admin account menu"
+                    aria-haspopup="true"
+                    color="inherit"
+                >
+                    Admin
+                </IconButton>
+            </MenuItem>
         </Menu>
     );
 
@@ -244,6 +291,7 @@ const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTe
 
     return (
         <div className={classes.grow}>
+            {/* {showUsers && <ViewUsers setOpenUsers={setOpenUsers} openUsers={openUsers}/>} */}
             <AppBar position="static">
                 <Toolbar>
 
@@ -330,11 +378,18 @@ const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTe
                             color="inherit"
                         >
                             <AccountCircle />
-                        </IconButton> : 
-                        <>
-                            <Button color="inherit" onClick={handleUserLogin}>Admin</Button>
-                            <Button color="inherit" onClick={handleUserLogin}>Login</Button>
-                        </>
+                        </IconButton> :
+                            <>
+                                <Button
+                                    edge="end"
+                                    aria-label="Admin options"
+                                    aria-controls={adminId}
+                                    aria-haspopup="true"
+                                    onClick={handleAdminOpen}
+                                    color="inherit"
+                                >Admin</Button>
+                                <Button color="inherit">Login</Button>
+                            </>
                         }
                     </div>
                     <div className={classes.sectionMobile}>
@@ -360,7 +415,9 @@ const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTe
                 </Toolbar>
             </AppBar>
             {renderMobileMenu}
-            {renderMenu}
+            {/* {renderMenu && renderAdminMenu} */}
+            {renderAdminMenu}
+            {/* {renderMenu} */}
         </div>
     )
 }

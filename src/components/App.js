@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Header, Main, Product } from "./";
 import getAllProducts from "../api/products/getAllProducts.js";
 import { getCurrentUser } from "../auth";
+import ViewUsers from './ViewUsers';
+import AdminAddProduct from './AdminAddProduct';
+
 
 const App = () => {
   const [products, setProducts] = useState([]);
@@ -10,6 +13,8 @@ const App = () => {
   const [openProduct, setOpenProduct] = useState(false);
   const [currentSearchText, setCurrentSearchText] = useState("");
   const [subCategory, setSubCategory] = useState([]);
+  const [openUsers, setOpenUsers] = useState(false);
+  const [addProduct, setAddProduct] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -72,9 +77,13 @@ const App = () => {
         setProducts={setProducts}
         handleSubCategoryChange={handleSubCategoryChange}
         subCategory={subCategory}
+        setOpenUsers={setOpenUsers}
+        setAddProduct={setAddProduct}
       />
       <Main {...{ setModalProduct, setOpenProduct }} products={filteredProducts()} />
       <Product {...{ modalProduct, openProduct, setOpenProduct }} />
+      <ViewUsers openUsers={openUsers} setOpenUsers={setOpenUsers}/>
+      <AdminAddProduct {...{addProduct, setAddProduct}}/>
     </div>
   );
 };
