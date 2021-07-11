@@ -130,297 +130,225 @@ const MenuProps = {
 };
 
 
+const Header = ({
+  userCart,
+  currentUser,
+  setCurrentUser,
+  currentSearchText,
+  handleSearchTextChange,
+  products,
+  setProducts,
+  handleSubCategoryChange,
+  subCategory,
+  setOpenCart,
+}) => {
+  const classes = useStyles();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const isMenuOpen = Boolean(anchorEl);
+  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTextChange, handleSubCategoryChange, subCategory, setOpenUsers, setAddProduct }) => {
-    const classes = useStyles();
-    const [anchorEl, setAnchorEl] = useState(null);
-    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [selectedUser, setSelectedUser] = useState("");
+  const [drawer, setDrawer] = useState(false);
 
-    const isMenuOpen = Boolean(anchorEl);
-    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const handleOpen = () => {
+    setOpenCart(true);
+  };
 
-    const [selectedUser, setSelectedUser] = useState('');
-    const [drawer, setDrawer] = useState(false);
+  //handles profile account popout
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
+  //Mobile view handles
+  const handleMobileMenuClose = () => {
+    setMobileMoreAnchorEl(null);
+  };
 
-    const toggleDrawer = (open) => (event) => {
-        setDrawer(open)
-    };
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    handleMobileMenuClose();
+  };
 
-    //List items for inside drawer...doesn't work
-    const items = () => {
-        return <div onClick={toggleDrawer(false)}>
-            <List>
-                <ListItem>PRODUCTS</ListItem>
-            </List>
-        </div>
-    }
+  const handleMobileMenuOpen = (event) => {
+    setMobileMoreAnchorEl(event.currentTarget);
+  };
 
-    const handleUserLogin = (event) => {
-        Auth;
+  const menuId = "primary-search-account-menu";
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>Purchase History</MenuItem>
+      <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
+    </Menu>
+  );
 
-        storeCurrentUser(selectedUser);
-        setCurrentUser(selectedUser);
-    }
+  const subCategoryFruit = [
+    "Tropical",
+    "Sub-Tropical",
+    "Stone",
+    "Pome",
+    "Melons",
+  ];
+  const subCategoryVeg = [
+    "Fungi",
+    "Sprouts",
+    "Root",
+    "Bulbs",
+    "Seeded",
+    "Herbs",
+    "Row-Crops",
+    "Other",
+  ];
 
-    const handleUserLogout = (event) => {
-        clearCurrentUser();
-        setCurrentUser(null);
-        setSelectedUser(null);
-        setAnchorEl(null);
-        handleMobileMenuClose();
-    }
-
-
-    //handles profile account popout
-    const handleProfileMenuOpen = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleAdminOpen = (event) => {
-        setAnchorEl(event.currentTarget);
-    }
-
-    //handles admin menu popout
-    const handleViewUsers = () => {
-        setOpenUsers(true);
-        setAnchorEl(null);
-        handleMobileMenuClose();
-    }
-
-    const handleAddProduct = () => {
-        setAddProduct(true);
-        setAnchorEl(null);
-        handleMobileMenuClose();
-    }
-
-
-    //Mobile view handles
-    const handleMobileMenuClose = () => {
-        setMobileMoreAnchorEl(null);
-    };
-
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-        handleMobileMenuClose();
-    };
-
-    const handleMobileMenuOpen = (event) => {
-        setMobileMoreAnchorEl(event.currentTarget);
-    };
-
-    const menuId = 'primary-search-account-menu';
-    const adminId = 'admin-account-menu'
-    // const renderMenu = (
-    //     <Menu
-    //         anchorEl={anchorEl}
-    //         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-    //         id={menuId}
-    //         keepMounted
-    //         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-    //         open={isMenuOpen}
-    //         onClose={handleMenuClose}
-    //     >
-    //         <MenuItem onClick={handleMenuClose}>Purchase History</MenuItem>
-    //         <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
-    //     </Menu>
-    // );
-
-    const renderAdminMenu = (
-        <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            id={adminId}
-            keepMounted
-            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-            open={isMenuOpen}
-            onClose={handleMenuClose}
+  const mobileMenuId = "primary-search-account-menu-mobile";
+  const renderMobileMenu = (
+    <Menu
+      anchorEl={mobileMoreAnchorEl}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      id={mobileMenuId}
+      keepMounted
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      open={isMobileMenuOpen}
+      onClose={handleMobileMenuClose}
+    >
+      <MenuItem onClick={handleProfileMenuOpen}>
+        <IconButton
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
         >
-            <MenuItem onClick={handleViewUsers}>View Users</MenuItem>
-            <MenuItem>Edit Users</MenuItem>
-            <MenuItem onClick={handleAddProduct}>Add Product</MenuItem>
-        </Menu>
-    )
+          <AccountCircle />
+        </IconButton>
+        <p>Profile</p>
+      </MenuItem>
+    </Menu>
+  );
 
-    // const allProducts = ["All Products"];
-    const subCategoryFruit = ["Tropical", "Sub-Tropical", "Small", "Stone", "Pome", "Melons"];
-    const subCategoryVeg = ["Fungi", "Sprouts", "Root", "Bulbs", "Seeded", "Herbs", "Row-Crops", "Other"];
+  useEffect(() => {
+    setSelectedUser(currentUser);
+    // console.log("Header level currentUser", currentUser)
+  }, [currentUser]);
 
+  return (
+    <div className={classes.grow}>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography className={classes.title} variant="h6" noWrap>
+            Froot Loops
+          </Typography>
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ "aria-label": "search" }}
+              value={currentSearchText}
+              onChange={(e) => handleSearchTextChange(e)}
+            />
+          </div>
+          <FormControl className={classes.formControl}>
+            <InputLabel id="">Categories</InputLabel>
+            <Select
+              multiple
+              value={subCategory}
+              onChange={handleSubCategoryChange}
+              input={<Input />}
+              renderValue={(selected) => selected.join(", ")}
+              MenuProps={MenuProps}
+            >
+              <optgroup label="Fruits"></optgroup>
+              {subCategoryFruit.map((fruit) => (
+                <MenuItem key={fruit} value={fruit}>
+                  <Checkbox checked={subCategory.indexOf(fruit) > -1} />
+                  <ListItemText primary={fruit} />
+                </MenuItem>
+              ))}
+              <optgroup label="Vegetables"></optgroup>
+              {subCategoryVeg.map((veg) => (
+                <MenuItem key={veg} value={veg}>
+                  <Checkbox checked={subCategory.indexOf(veg) > -1} />
+                  <ListItemText primary={veg} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <div className={classes.grow} />
+          <div className={classes.sectionDesktop}>
+            <IconButton
+              edge="end"
+              aria-label="cart of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleOpen}
+              color="inherit"
+            >
+              <ShoppingCartIcon />
+            </IconButton>
+          </div>
+          <div className={classes.sectionDesktop}>
+            {currentUser ? (
+              <IconButton
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+            ) : (
+              <>
+                <Button color="inherit" onClick={handleUserLogin}>
+                  Admin
+                </Button>
+                <Button color="inherit" onClick={handleUserLogin}>
+                  Login
+                </Button>
+              </>
+            )}
+          </div>
+          <div className={classes.sectionMobile}>
+            <IconButton
+              edge="end"
+              aria-label="cart of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <ShoppingCartIcon />
+            </IconButton>
+            <IconButton
+              aria-label="show more"
+              aria-controls={mobileMenuId}
+              aria-haspopup="true"
+              onClick={handleMobileMenuOpen}
+              color="inherit"
+            >
+              <MoreIcon />
+            </IconButton>
+          </div>
+        </Toolbar>
+      </AppBar>
+      {renderMobileMenu}
+      {renderMenu}
+    </div>
+  );
+};
 
-
-    const mobileMenuId = 'primary-search-account-menu-mobile';
-    const renderMobileMenu = (
-        <Menu
-            anchorEl={mobileMoreAnchorEl}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            id={mobileMenuId}
-            keepMounted
-            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-            open={isMobileMenuOpen}
-            onClose={handleMobileMenuClose}
-        >
-            <MenuItem onClick={handleProfileMenuOpen}>
-                <IconButton
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="inherit"
-                >
-                    <AccountCircle />
-                </IconButton>
-                <p>Profile</p>
-            </MenuItem>
-            <MenuItem onClick={handleAdminOpen}>
-                <IconButton
-                    aria-label="Admin options"
-                    aria-controls="admin account menu"
-                    aria-haspopup="true"
-                    color="inherit"
-                >
-                    Admin
-                </IconButton>
-            </MenuItem>
-        </Menu>
-    );
-
-    useEffect(() => {
-        setSelectedUser(currentUser);
-        // console.log("Header level currentUser", currentUser)
-    }, [currentUser]);
-
-    return (
-        <div className={classes.grow}>
-            {/* {showUsers && <ViewUsers setOpenUsers={setOpenUsers} openUsers={openUsers}/>} */}
-            <AppBar position="static">
-                <Toolbar>
-
-                    <Typography className={classes.title} variant="h6" noWrap>
-                        Froot Loops
-                    </Typography>
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                            placeholder="Search…"
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput,
-                            }}
-                            inputProps={{ 'aria-label': 'search' }}
-                            value={currentSearchText}
-                            onChange={(e) => handleSearchTextChange(e)}
-                        />
-                    </div>
-                    <FormControl className={classes.formControl}>
-                        <InputLabel id="">Categories</InputLabel>
-                        <Select
-                            multiple
-                            value={subCategory}
-                            onChange={handleSubCategoryChange}
-                            input={<Input />}
-                            renderValue={(selected) => selected.join(', ')}
-                            MenuProps={MenuProps}
-                        >
-                            {/* <optgroup label="All Products"></optgroup>
-                            {allProducts.map((all) => (
-                                <MenuItem key={all} value={all}>
-                                    <Checkbox checked={subCategory.indexOf(all) > -1} />
-                                    <ListItemText primary={all} />
-                                </MenuItem>
-                            ))} */}
-                            <optgroup label="Fruits"></optgroup>
-                            {subCategoryFruit.map((fruit) => (
-                                <MenuItem key={fruit} value={fruit}>
-                                    <Checkbox checked={subCategory.indexOf(fruit) > -1} />
-                                    <ListItemText primary={fruit} />
-                                </MenuItem>
-                            ))}
-                            <optgroup label="Vegetables"></optgroup>
-                            {subCategoryVeg.map((veg) => (
-                                <MenuItem key={veg} value={veg}>
-                                    <Checkbox checked={subCategory.indexOf(veg) > -1} />
-                                    <ListItemText primary={veg} />
-                                </MenuItem>
-                            ))}
-
-                        </Select>
-                    </FormControl>
-                    <div className={classes.grow} />
-                    <div className={classes.sectionDesktop}>
-                        <IconButton
-                            edge="end"
-                            aria-label="cart of current user"
-                            aria-controls={menuId}
-                            aria-haspopup="true"
-                            onClick={toggleDrawer(true)}
-                            color="inherit"
-                        >
-                            <ShoppingCartIcon />
-                        </IconButton>
-                        <Drawer
-                            anchor={'right'}
-                            open={drawer}
-                            onClose={toggleDrawer(false)}
-                            width={'100px'}
-                        >
-                            {items()}
-                        </Drawer>
-                    </div>
-                    <div className={classes.sectionDesktop}>
-                        {currentUser ?
-                            <>
-                                <Button
-                                    edge="end"
-                                    aria-label="Admin options"
-                                    aria-controls={adminId}
-                                    aria-haspopup="true"
-                                    onClick={handleAdminOpen}
-                                    color="inherit"
-                                >Admin</Button>
-                                <IconButton
-                                    edge="end"
-                                    aria-label="account of current user"
-                                    aria-controls={menuId}
-                                    aria-haspopup="true"
-                                    onClick={handleProfileMenuOpen}
-                                    color="inherit"
-                                >
-                                    <AccountCircle />
-                                </IconButton>
-                            </> :
-                            <>
-                                <Button color="inherit">Login</Button>
-                            </>
-                        }
-                    </div>
-                    <div className={classes.sectionMobile}>
-                        <IconButton
-                            edge="end"
-                            aria-label="cart of current user"
-                            aria-controls={menuId}
-                            aria-haspopup="true"
-                            color="inherit"
-                        >
-                            <ShoppingCartIcon />
-                        </IconButton>
-                        <IconButton
-                            aria-label="show more"
-                            aria-controls={mobileMenuId}
-                            aria-haspopup="true"
-                            onClick={handleMobileMenuOpen}
-                            color="inherit"
-                        >
-                            <MoreIcon />
-                        </IconButton>
-                    </div>
-                </Toolbar>
-            </AppBar>
-            {renderMobileMenu}
-            {/* {renderMenu} */}
-            {renderAdminMenu}
-        </div>
-    )
-}
 
 export default Header;
