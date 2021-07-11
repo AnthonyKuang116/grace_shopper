@@ -95,7 +95,11 @@ const App = () => {
         products={filteredProducts()}
       />
       <Product {...{ modalProduct, openProduct, setOpenProduct }} />
-      <Cart {...{ products, openCart, setOpenCart, userCart }} />
+      {userCart ? (
+        <Cart {...{ products, openCart, setOpenCart, userCart }} />
+      ) : (
+        ""
+      )}
     </div>
   );
 };
