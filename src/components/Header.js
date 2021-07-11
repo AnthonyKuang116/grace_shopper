@@ -131,7 +131,7 @@ const MenuProps = {
 
 
 
-const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTextChange, handleSubCategoryChange, subCategory, setOpenUsers}) => {
+const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTextChange, handleSubCategoryChange, subCategory, setOpenUsers, setAddProduct }) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
@@ -141,7 +141,7 @@ const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTe
 
     const [selectedUser, setSelectedUser] = useState('');
     const [drawer, setDrawer] = useState(false);
-    
+
 
     const toggleDrawer = (open) => (event) => {
         setDrawer(open)
@@ -183,8 +183,13 @@ const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTe
 
     //handles admin menu popout
     const handleViewUsers = () => {
-        setOpenUsers(true)
-        console.log("test")
+        setOpenUsers(true);
+        setAnchorEl(null);
+        handleMobileMenuClose();
+    }
+
+    const handleAddProduct = () => {
+        setAddProduct(true);
         setAnchorEl(null);
         handleMobileMenuClose();
     }
@@ -233,6 +238,7 @@ const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTe
         >
             <MenuItem onClick={handleViewUsers}>View Users</MenuItem>
             <MenuItem>Edit Users</MenuItem>
+            <MenuItem onClick={handleAddProduct}>Add Product</MenuItem>
         </Menu>
     )
 
@@ -362,16 +368,7 @@ const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTe
                         </Drawer>
                     </div>
                     <div className={classes.sectionDesktop}>
-                        {currentUser ? <IconButton
-                            edge="end"
-                            aria-label="account of current user"
-                            aria-controls={menuId}
-                            aria-haspopup="true"
-                            onClick={handleProfileMenuOpen}
-                            color="inherit"
-                        >
-                            <AccountCircle />
-                        </IconButton> :
+                        {currentUser ?
                             <>
                                 <Button
                                     edge="end"
@@ -381,6 +378,18 @@ const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTe
                                     onClick={handleAdminOpen}
                                     color="inherit"
                                 >Admin</Button>
+                                <IconButton
+                                    edge="end"
+                                    aria-label="account of current user"
+                                    aria-controls={menuId}
+                                    aria-haspopup="true"
+                                    onClick={handleProfileMenuOpen}
+                                    color="inherit"
+                                >
+                                    <AccountCircle />
+                                </IconButton>
+                            </> :
+                            <>
                                 <Button color="inherit">Login</Button>
                             </>
                         }
