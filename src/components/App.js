@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Header, Main, Product, Cart } from "./";
 import getAllProducts from "../api/products/getAllProducts.js";
 import { getCurrentUser } from "../auth";
+import ViewUsers from './ViewUsers';
+import AdminAddProduct from './AdminAddProduct';
 import getUserCart from "../api/cart/getUserCart";
 
 const App = () => {
@@ -12,7 +14,13 @@ const App = () => {
   const [userCart, setUserCart] = useState(null);
   const [currentSearchText, setCurrentSearchText] = useState("");
   const [subCategory, setSubCategory] = useState([]);
+
   const [openCart, setOpenCart] = useState(false);
+
+  const [openUsers, setOpenUsers] = useState(false);
+  const [addProduct, setAddProduct] = useState(false);
+
+
   //get all products and set the product state
   useEffect(() => {
     async function fetchProducts() {
@@ -87,7 +95,12 @@ const App = () => {
           setProducts,
           handleSubCategoryChange,
           subCategory,
+
           setOpenCart,
+
+          setOpenUsers,
+          setAddProduct
+
         }}
       />
       <Main
@@ -95,11 +108,16 @@ const App = () => {
         products={filteredProducts()}
       />
       <Product {...{ modalProduct, openProduct, setOpenProduct }} />
+
       {userCart ? (
         <Cart {...{ products, openCart, setOpenCart, userCart }} />
       ) : (
         ""
       )}
+
+      <ViewUsers openUsers={openUsers} setOpenUsers={setOpenUsers}/>
+      <AdminAddProduct {...{addProduct, setAddProduct}}/>
+
     </div>
   );
 };

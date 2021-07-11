@@ -11,10 +11,15 @@ usersRouter.use((req, res, next) => {
 });
 
 usersRouter.get("/", async (req, res) => {
-  const users = await getAllUsers();
-  res.send({
-    users,
-  });
+  try {
+    const users = await getAllUsers();
+    res.send({
+      users
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
 });
 
 usersRouter.get("/login", async (req, res, next) => {
