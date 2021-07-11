@@ -38,7 +38,7 @@ const AdminAddProduct = ({ addProduct, setAddProduct }) => {
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState(0);
     const [quantity, setQuantity] = useState(0);
-    const [image, setImage] = useState("");
+    const [imgSrc, setImgSrc] = useState("");
 
     //handles closing modal
     const handleClose = () => {
@@ -52,13 +52,13 @@ const AdminAddProduct = ({ addProduct, setAddProduct }) => {
     const handleDescription = (e) => {setDescription(e.target.value)}
     const handlePrice = (e) => {setPrice(e.target.value)}
     const handleQuantity = (e) => {setQuantity(e.target.value)}
-    const handleImage = (e) => {setImage(e.target.value)}
+    const handleImage = (e) => {setImgSrc(e.target.value)}
 
     //handles submitting the form
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-             const newProduct = await createProduct({category, subCategory, name, description, price, quantity, image})
+             const newProduct = await createProduct({category, subCategory, name, description, price, quantity, imgSrc})
             console.log(newProduct)
         } catch (error) {
             console.error(error)
