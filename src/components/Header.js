@@ -131,7 +131,7 @@ const MenuProps = {
 
 
 
-const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTextChange, handleSubCategoryChange, subCategory, setOpenUsers, setAddProduct }) => {
+const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTextChange, handleSubCategoryChange, subCategory, setOpenUsers, openUsers }) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
@@ -184,13 +184,7 @@ const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTe
     //handles admin menu popout
     const handleViewUsers = () => {
         setOpenUsers(true)
-        setAnchorEl(null);
-        handleMobileMenuClose();
-    }
-
-    const handleAddProduct = () => {
-        setAddProduct(true)
-        console.log("Testing add product handler")
+        console.log("test")
         setAnchorEl(null);
         handleMobileMenuClose();
     }
@@ -212,20 +206,20 @@ const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTe
 
     const menuId = 'primary-search-account-menu';
     const adminId = 'admin-account-menu'
-    const renderMenu = (
-        <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            id={menuId}
-            keepMounted
-            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-            open={isMenuOpen}
-            onClose={handleMenuClose}
-        >
-            <MenuItem onClick={handleMenuClose}>Purchase History</MenuItem>
-            <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
-        </Menu>
-    );
+    // const renderMenu = (
+    //     <Menu
+    //         anchorEl={anchorEl}
+    //         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+    //         id={menuId}
+    //         keepMounted
+    //         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+    //         open={isMenuOpen}
+    //         onClose={handleMenuClose}
+    //     >
+    //         <MenuItem onClick={handleMenuClose}>Purchase History</MenuItem>
+    //         <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
+    //     </Menu>
+    // );
 
     const renderAdminMenu = (
         <Menu
@@ -238,8 +232,7 @@ const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTe
             onClose={handleMenuClose}
         >
             <MenuItem onClick={handleViewUsers}>View Users</MenuItem>
-            <MenuItem>Edit Product</MenuItem>
-            <MenuItem onClick={handleAddProduct}>Add Product</MenuItem>
+            <MenuItem>Edit Users</MenuItem>
         </Menu>
     )
 
@@ -415,9 +408,8 @@ const Header = ({ currentUser, setCurrentUser, currentSearchText, handleSearchTe
                 </Toolbar>
             </AppBar>
             {renderMobileMenu}
-            {/* {renderMenu && renderAdminMenu} */}
-            {renderAdminMenu}
             {/* {renderMenu} */}
+            {renderAdminMenu}
         </div>
     )
 }

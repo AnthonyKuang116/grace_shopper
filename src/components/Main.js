@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
+import {
+  TextField,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Typography,
+  Card,
+  IconButton,
+  Tooltip,
+  Zoom,
+} from "@material-ui/core";
+import addProductToCart from "../api/cart/addProductToCart";
 
 const useStyles = makeStyles({
   root: {
@@ -19,26 +26,50 @@ const useStyles = makeStyles({
   media: {
     height: 200,
     margin: "10px",
-    width: 200,
+    width: 220,
   },
   card: {
     paddingTop: "0px",
   },
+  quantity: {
+    fontSize: "10px",
+    width: "4em",
+  },
 });
 
-const Main = ({ products, setModalProduct, setOpenProduct }) => {
+const Main = ({
+  userCart,
+  currentUser,
+  products,
+  setModalProduct,
+  setOpenProduct,
+}) => {
   const classes = useStyles();
+  const [quantity, setQuantity] = useState();
   const handleOpen = (product) => {
     setModalProduct(product);
     setOpenProduct(true);
   };
+  const qChange = (evt) => setQuantity(evt.target.value);
+
+  const addToCart = async (product) => {
+    const data = await addProductToCart(
+      product.id,
+      quantity,
+      currentUser,
+      product.price
+    );
+    console.log(data);
+  };
+  console.log(userCart);
+  const qClickHandle = async (product) => {};
   return (
     <>
       {products.map((product) => (
         <Card key={product.id} className={classes.root}>
           <CardMedia
             className={classes.media}
-            title={product.name}
+            title="Click for more information."
             image={product.imgSrc}
             onClick={() => handleOpen(product)}
           />
@@ -48,9 +79,41 @@ const Main = ({ products, setModalProduct, setOpenProduct }) => {
               {product.name}
             </Typography>
             <CardActions>
-              <Button variant="outlined" color="primary">
-                Add to cart
-              </Button>
+              <Tooltip
+                title="Add To Cart."
+                TransitionComponent={Zoom}
+                enterDelay={750}
+                enterNextDelay={750}
+                leaveDelay={200}
+              >
+                <IconButton
+                  edge="start"
+                  aria-label="add item to cart"
+                  aria-haspopup="true"
+                  color="inherit"
+                  onClick={() => addToCart(product)}
+                >
+                  <AddShoppingCartIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip
+                title={product.quantity + " available."}
+                TransitionComponent={Zoom}
+                enterDelay={750}
+                enterNextDelay={750}
+                leaveDelay={200}
+                placement="right-end"
+              >
+                <TextField
+                  className={classes.quantity}
+                  id={product.id + "q"}
+                  label="Quantity"
+                  type="number"
+                  InputProps={{ inputProps: { min: 0, max: 10 } }}
+                  onChange={qChange}
+                  onClick={() => qClickHandle(product)}
+                />
+              </Tooltip>
             </CardActions>
           </CardContent>
         </Card>
