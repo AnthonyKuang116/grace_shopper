@@ -21,126 +21,122 @@ import List from "@material-ui/core/List";
 import Drawer from "@material-ui/core/Drawer";
 import Divider from "@material-ui/core/Divider";
 import { CropSharp } from "@material-ui/icons";
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
 
-import { storeCurrentUser, clearCurrentUser } from '../auth';
-import { Auth } from './Auth';
-
-
+import { storeCurrentUser, clearCurrentUser } from "../auth";
+import { Auth } from "./Auth";
 
 const useStyles = makeStyles((theme) => ({
-    list: {
-        width: 250,
+  list: {
+    width: 250,
+  },
+  fullList: {
+    width: "auto",
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    display: "none",
+    [theme.breakpoints.up("sm")]: {
+      display: "block",
     },
-    fullList: {
-        width: "auto",
+  },
+  search: {
+    position: "relative",
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    "&:hover": {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
     },
-    grow: {
-        flexGrow: 1,
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      marginLeft: theme.spacing(3),
+      width: "auto",
     },
-    menuButton: {
-        marginRight: theme.spacing(2),
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  inputRoot: {
+    color: "inherit",
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "60ch",
     },
-    title: {
-        display: "none",
-        [theme.breakpoints.up("sm")]: {
-            display: "block",
-        },
+  },
+  sectionDesktop: {
+    display: "none",
+    [theme.breakpoints.up("md")]: {
+      display: "flex",
     },
-    search: {
-        position: "relative",
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.common.white, 0.15),
-        "&:hover": {
-            backgroundColor: fade(theme.palette.common.white, 0.25),
-        },
-        marginRight: theme.spacing(2),
-        marginLeft: 0,
-        width: "100%",
-        [theme.breakpoints.up("sm")]: {
-            marginLeft: theme.spacing(3),
-            width: "auto",
-        },
+  },
+  sectionMobile: {
+    display: "flex",
+    [theme.breakpoints.up("md")]: {
+      display: "none",
     },
-    searchIcon: {
-        padding: theme.spacing(0, 2),
-        height: "100%",
-        position: "absolute",
-        pointerEvents: "none",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+  },
+  formControl: {
+    padding: theme.spacing(0, 0, 0, 0),
+    minWidth: 120,
+    position: "relative",
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    "&:hover": {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
     },
-    inputRoot: {
-        color: "inherit",
+    height: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
+      marginLeft: theme.spacing(3),
     },
-    inputInput: {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-        transition: theme.transitions.create("width"),
-        width: "100%",
-        [theme.breakpoints.up("md")]: {
-            width: "60ch",
-        },
-    },
-    sectionDesktop: {
-        display: "none",
-        [theme.breakpoints.up("md")]: {
-            display: "flex",
-        },
-    },
-    sectionMobile: {
-        display: "flex",
-        [theme.breakpoints.up("md")]: {
-            display: "none",
-        },
-    },
-    formControl: {
-        padding: theme.spacing(0, 0, 0, 0),
-        minWidth: 120,
-        position: "relative",
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.common.white, 0.15),
-        "&:hover": {
-            backgroundColor: fade(theme.palette.common.white, 0.25),
-        },
-        height: "100%",
-        [theme.breakpoints.up("md")]: {
-            width: "20ch",
-            marginLeft: theme.spacing(3),
-        },
-        alignItems: "left",
-        justifyContent: "center",
-        color: "white",
-    },
+    alignItems: "left",
+    justifyContent: "center",
+    color: "white",
+  },
 }));
 
 const ITEM_HEIGHT = 100;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
     },
+  },
 };
 
-
 const Header = ({
-  userCart,
   currentUser,
   setCurrentUser,
   currentSearchText,
   handleSearchTextChange,
-  products,
-  setProducts,
   handleSubCategoryChange,
   subCategory,
   setOpenCart,
+  setOpenUsers,
+  setAddProduct,
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -149,17 +145,44 @@ const Header = ({
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const [selectedUser, setSelectedUser] = useState("");
-  const [drawer, setDrawer] = useState(false);
 
   const handleOpen = () => {
     setOpenCart(true);
   };
 
+  const handleUserLogin = (event) => {
+    Auth;
+
+    storeCurrentUser(selectedUser);
+    setCurrentUser(selectedUser);
+  };
+
+  const handleUserLogout = (event) => {
+    clearCurrentUser();
+    setCurrentUser(null);
+    setSelectedUser(null);
+    setAnchorEl(null);
+    handleMobileMenuClose();
+  };
   //handles profile account popout
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
+  const handleAdminOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleViewUsers = () => {
+    setOpenUsers(true);
+    setAnchorEl(null);
+    handleMobileMenuClose();
+  };
+
+  const handleAddProduct = () => {
+    setAddProduct(true);
+    setAnchorEl(null);
+    handleMobileMenuClose();
+  };
   //Mobile view handles
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -175,6 +198,7 @@ const Header = ({
   };
 
   const menuId = "primary-search-account-menu";
+  const adminId = "admin-account-menu";
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -187,6 +211,22 @@ const Header = ({
     >
       <MenuItem onClick={handleMenuClose}>Purchase History</MenuItem>
       <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
+    </Menu>
+  );
+
+  const renderAdminMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      id={adminId}
+      keepMounted
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleViewUsers}>View Users</MenuItem>
+      <MenuItem>Edit Users</MenuItem>
+      <MenuItem onClick={handleAddProduct}>Add Product</MenuItem>
     </Menu>
   );
 
@@ -301,24 +341,31 @@ const Header = ({
           </div>
           <div className={classes.sectionDesktop}>
             {currentUser ? (
-              <IconButton
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-            ) : (
               <>
-                <Button color="inherit" onClick={handleUserLogin}>
+                <Button
+                  edge="end"
+                  aria-label="Admin options"
+                  aria-controls={adminId}
+                  aria-haspopup="true"
+                  onClick={handleAdminOpen}
+                  color="inherit"
+                >
                   Admin
                 </Button>
-                <Button color="inherit" onClick={handleUserLogin}>
-                  Login
-                </Button>
+                <IconButton
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+              </>
+            ) : (
+              <>
+                <Button color="inherit">Login</Button>
               </>
             )}
           </div>
@@ -346,9 +393,9 @@ const Header = ({
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+      {/* {renderAdminMenu} */}
     </div>
   );
 };
-
 
 export default Header;
