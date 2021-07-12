@@ -91,7 +91,7 @@ const AdminAddProduct = ({ addProduct, setAddProduct, products, setProducts }) =
                             <TextField id="addProductDesc" label="Description" onChange={handleDescription} />
                             <TextField id="addProductPrice" label="Price" onChange={handlePrice} />
                             <TextField id="addProductQuant" label="Quantity" onChange={handleQuantity} />
-                            <TextField id="addProductImg" label="Image URL" onChange={handleImage} />
+                            <TextField id="addProductImg" label="Image URL Pathway" onChange={handleImage} />
                             <Button variant="contained" color="primary" onClick={handleSubmit}>Create Product</Button>
                         </form>
                     </div>
