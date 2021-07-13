@@ -1,6 +1,5 @@
 import axios from "axios";
 async function addProductToCart(productId, quantity, userId, price) {
-  console.log(productId, quantity, userId, price);
   try {
     const { data } = await axios.post(`/api/cart/${productId}/${quantity}`, {
       userId,
