@@ -40,7 +40,7 @@ const Product = ({
   if (!modalProduct) return <div></div>;
   const classes = useStyles();
   const descriptionArr = modalProduct.description.split("  ");
-  console.log(userCart);
+
   const handleClose = () => {
     setOpenProduct(false);
   };

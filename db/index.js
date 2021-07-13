@@ -282,13 +282,17 @@ async function emptyCart(cartId) {
 
 async function removeProductFromCart(cartId, productId) {
   try {
-    await client.query(
+    const {
+      rows: { deleted },
+    } = await client.query(
       `
             DELETE FROM line_items
             WHERE ("cartId"=$1 AND "productId" =$2);
+            
         `,
       [cartId, productId]
     );
+    return deleted;
   } catch (error) {
     console.error("Could not remove product!", error);
     throw error;

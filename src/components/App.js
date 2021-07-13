@@ -24,7 +24,6 @@ const App = () => {
   useEffect(() => {
     async function fetchProducts() {
       const data = await getAllProducts();
-      console.log("All Products", data);
       setProducts(data);
     }
     fetchProducts();

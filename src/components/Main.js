@@ -47,7 +47,7 @@ const Main = ({
   setOpenCart,
 }) => {
   const classes = useStyles();
-  const [quantity, setQuantity] = useState();
+  const [quantity, setQuantity] = useState(1);
   const handleOpen = (product) => {
     setModalProduct(product);
     setOpenProduct(true);
@@ -59,20 +59,24 @@ const Main = ({
       setOpenCart(true);
       return;
     }
+    console.log("products", products);
+
     const data = await addProductToCart(
       product.id,
       quantity,
       currentUser,
       product.price
     );
+    console.log("products", products);
     const newProducts = [...userCart.products, data];
     const newCart = Object.assign({}, userCart);
     newCart.products = newProducts;
     setUserCart(newCart);
     setOpenCart(true);
+    setQuantity(1);
+    console.log("products", products);
   };
-  console.log(userCart);
-  const qClickHandle = async (product) => {};
+
   return (
     <>
       {products.map((product) => (
@@ -121,7 +125,6 @@ const Main = ({
                   type="number"
                   InputProps={{ inputProps: { min: 0, max: 10 } }}
                   onChange={qChange}
-                  onClick={() => qClickHandle(product)}
                 />
               </Tooltip>
             </CardActions>
