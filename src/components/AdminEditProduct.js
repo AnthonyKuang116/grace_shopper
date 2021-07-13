@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const AdminEditProduct = ({ setEditProduct, editProduct }) => {
+const AdminEditProduct = ({ setEditProduct, editProduct, products, setProducts }) => {
     let columns = [
         { field: 'id', headerName: 'ID', width: 200 },
         { field: 'name', headerName: 'Product Name', width: 300 },
@@ -34,16 +34,16 @@ const AdminEditProduct = ({ setEditProduct, editProduct }) => {
 
     const classes = useStyles();
 
-    const [adminEdit, setAdminEdit] = useState([])
+    const [rows, setRows] = useState([])
     const handleClose = () => {
         setEditProduct(false);
     };
 
-    useEffect(() => {
-        getAllProducts()
-            .then((product) => setAdminEdit(product))
-            .catch(console.error);
-    }, [])
+    // useEffect(() => {
+    //     getAllProducts()
+    //         .then((product) => setRows(product))
+    //         .catch(console.error);
+    // }, [])
 
     return (
         <div>
@@ -59,7 +59,7 @@ const AdminEditProduct = ({ setEditProduct, editProduct }) => {
             >
                 <Fade in={editProduct}>
                     <div className={classes.paper} style={{ height: 500, width: '100%' }}>
-                        <DataGrid rows={adminEdit} columns={columns} pageSize={10} />
+                        <DataGrid rows={rows} columns={columns} pageSize={10} />
                     </div>
                 </Fade>
             </Modal>

@@ -45,7 +45,7 @@ const Main = ({
   setOpenProduct,
 }) => {
   const classes = useStyles();
-  const [quantity, setQuantity] = useState();
+  const [quantity, setQuantity] = useState(1);
   const handleOpen = (product) => {
     setModalProduct(product);
     setOpenProduct(true);
