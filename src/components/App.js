@@ -116,7 +116,7 @@ const App = () => {
 
       <ViewUsers openUsers={openUsers} setOpenUsers={setOpenUsers} />
       <AdminAddProduct {...{ addProduct, setAddProduct }} />
-      <AdminEditProduct {...{editProduct, setEditProduct}}/>
+      <AdminEditProduct {...{editProduct, setEditProduct, products}}/>
     </div>
   );
 };
