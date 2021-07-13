@@ -139,12 +139,8 @@ const App = () => {
       )}
 
       <ViewUsers openUsers={openUsers} setOpenUsers={setOpenUsers} />
-<<<<<<< HEAD
       <AdminAddProduct {...{ addProduct, setAddProduct }} />
       <AdminEditProduct {...{editProduct, setEditProduct, products}}/>
-=======
-      <AdminAddProduct {...{ addProduct, setAddProduct, products, setProducts }} />
->>>>>>> master
     </div>
   );
 };

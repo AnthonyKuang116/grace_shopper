@@ -4,11 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import Modal from "@material-ui/core/Modal";
-<<<<<<< HEAD
 import Button from "@material-ui/core/Button";
-=======
-import { getAllProducts } from '../api/index';
->>>>>>> master
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -21,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
         border: "2px solid #000",
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
-<<<<<<< HEAD
     }
 }));
 
@@ -43,31 +38,10 @@ const AdminEditProduct = ({ setEditProduct, editProduct, products, setProducts }
         { field: 'delete', headerName: 'Delete', width: 120, renderCell: ()=>(<Button variant="contained" color="secondary" onClick={deleteProduct}>Delete</Button>)}
     ]
 
-=======
-    },
-}));
-
-const AdminEditProduct = ({ setEditProduct, editProduct, products, setProducts }) => {
-    let columns = [
-        { field: 'id', headerName: 'ID', width: 200 },
-        { field: 'name', headerName: 'Product Name', width: 300 },
-        { field: 'category', headerName: 'Category', width: 600 },
-        { field: 'subCategory', headerName: 'Sub-Category', width: 300 },
-        { field: 'description', headerName: 'Description', width: 120 },
-        { field: 'price', headerName: 'Price', width: 120 },
-        { field: 'quantity', headerName: 'Quantity', width: 120 },
-        { field: 'imgSrc', headerName: 'Image URL Pathway', width: 120 }
-    ]
-
-    const classes = useStyles();
-
-    const [rows, setRows] = useState([])
->>>>>>> master
     const handleClose = () => {
         setEditProduct(false);
     };
 
-<<<<<<< HEAD
     const deleteProduct = (e) => {
         // console.log(selected)
         console.log(select)
@@ -76,13 +50,6 @@ const AdminEditProduct = ({ setEditProduct, editProduct, products, setProducts }
     const editRow = (e) => {
         console.log("Edit Button is work")
     }
-=======
-    // useEffect(() => {
-    //     getAllProducts()
-    //         .then((product) => setRows(product))
-    //         .catch(console.error);
-    // }, [])
->>>>>>> master
 
     return (
         <div>
@@ -97,13 +64,8 @@ const AdminEditProduct = ({ setEditProduct, editProduct, products, setProducts }
                 }}
             >
                 <Fade in={editProduct}>
-<<<<<<< HEAD
                     <div className={classes.paper} style={{ height: 650, width: '100%' }}>
                         <DataGrid className={classes.root} rows={products} columns={columns} pageSize={10} onRowSelected={(row) => setSelection(row.api.current.getSelectedRows())}/>
-=======
-                    <div className={classes.paper} style={{ height: 500, width: '100%' }}>
-                        <DataGrid rows={rows} columns={columns} pageSize={10} />
->>>>>>> master
                     </div>
                 </Fade>
             </Modal>
