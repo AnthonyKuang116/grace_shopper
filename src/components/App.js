@@ -114,7 +114,7 @@ const App = () => {
       )}
 
       <ViewUsers openUsers={openUsers} setOpenUsers={setOpenUsers} />
-      <AdminAddProduct {...{ addProduct, setAddProduct }} />
+      <AdminAddProduct {...{ addProduct, setAddProduct, products, setProducts }} />
     </div>
   );
 };
