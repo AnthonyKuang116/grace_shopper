@@ -225,7 +225,7 @@ const Header = ({
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleViewUsers}>View Users</MenuItem>
-      <MenuItem>Edit Users</MenuItem>
+      <MenuItem>Edit Products</MenuItem>
       <MenuItem onClick={handleAddProduct}>Add Product</MenuItem>
     </Menu>
   );
@@ -392,8 +392,8 @@ const Header = ({
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
-      {renderMenu}
-      {/* {renderAdminMenu} */}
+      {/* {renderMenu} */}
+      {renderAdminMenu}
     </div>
   );
 };

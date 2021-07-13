@@ -12,7 +12,7 @@ import {
   Tooltip,
   Zoom,
 } from "@material-ui/core";
-import addProductToCart from "../api/cart/addProductToCart";
+import { addProductToCart } from "../api";
 
 const useStyles = makeStyles({
   root: {
@@ -33,19 +33,21 @@ const useStyles = makeStyles({
   },
   quantity: {
     fontSize: "10px",
-    width: "4em",
+    width: "8em",
   },
 });
 
 const Main = ({
   userCart,
+  setUserCart,
   currentUser,
   products,
   setModalProduct,
   setOpenProduct,
+  setOpenCart,
 }) => {
   const classes = useStyles();
-  const [quantity, setQuantity] = useState();
+  const [quantity, setQuantity] = useState(1);
   const handleOpen = (product) => {
     setModalProduct(product);
     setOpenProduct(true);
@@ -53,16 +55,28 @@ const Main = ({
   const qChange = (evt) => setQuantity(evt.target.value);
 
   const addToCart = async (product) => {
+    if (!currentUser) {
+      setOpenCart(true);
+      return;
+    }
+    console.log("products", products);
+
     const data = await addProductToCart(
       product.id,
       quantity,
       currentUser,
       product.price
     );
-    console.log(data);
+    console.log("products", products);
+    const newProducts = [...userCart.products, data];
+    const newCart = Object.assign({}, userCart);
+    newCart.products = newProducts;
+    setUserCart(newCart);
+    setOpenCart(true);
+    setQuantity(1);
+    console.log("products", products);
   };
-  console.log(userCart);
-  const qClickHandle = async (product) => {};
+
   return (
     <>
       {products.map((product) => (
@@ -111,7 +125,6 @@ const Main = ({
                   type="number"
                   InputProps={{ inputProps: { min: 0, max: 10 } }}
                   onChange={qChange}
-                  onClick={() => qClickHandle(product)}
                 />
               </Tooltip>
             </CardActions>

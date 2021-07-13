@@ -5,6 +5,8 @@ const {
   removeProductFromCart,
   updateCartQuantity,
   emptyCart,
+  closeCart,
+  createCart,
   // getCheckout,
 } = require("../db");
 
@@ -38,7 +40,7 @@ cartRouter.post("/:productId/:quantity", async (req, res, next) => {
     });
     res.send(product);
   } catch ({ name, message }) {
-    throw { name, message };
+    next({ name, message });
   }
 });
 
@@ -59,7 +61,9 @@ cartRouter.delete("/:productId", async (req, res, next) => {
   try {
     const { productId } = req.params;
     const { userId } = req.body;
-    const product = await removeProductFromCart(productId, userId);
+    const cart = await getUserCart(userId);
+
+    const product = await removeProductFromCart(cart.id, productId);
     res.send(product);
   } catch ({ name, message }) {
     next({ name, message });
@@ -76,4 +80,25 @@ cartRouter.delete("/", (req, res, next) => {
   }
 });
 
+cartRouter.patch("/:cartId", (req, res, next) => {
+  try {
+    const { cartId } = req.params;
+    const cart = closeCart(cartId);
+    res.send(cart);
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
+cartRouter.post("/", (req, res, next) => {
+  try {
+    const { userId } = req.body;
+    const cart = createCart(userId);
+    res.send(cart);
+  } catch ({ name, message }) {
+    next({
+      name,
+      message,
+    });
+  }
+});
 module.exports = cartRouter;
