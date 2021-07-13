@@ -137,6 +137,7 @@ const Header = ({
   setOpenCart,
   setOpenUsers,
   setAddProduct,
+  setEditProduct
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -177,7 +178,11 @@ const Header = ({
     setAnchorEl(null);
     handleMobileMenuClose();
   };
-
+  const handleEditProduct = () => {
+    setEditProduct(true);
+    setAnchorEl(null);
+    handleMobileMenuClose();
+  }
   const handleAddProduct = () => {
     setAddProduct(true);
     setAnchorEl(null);
@@ -225,7 +230,7 @@ const Header = ({
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleViewUsers}>View Users</MenuItem>
-      <MenuItem>Edit Users</MenuItem>
+      <MenuItem onClick={handleEditProduct}>Edit Product</MenuItem>
       <MenuItem onClick={handleAddProduct}>Add Product</MenuItem>
     </Menu>
   );
@@ -392,8 +397,8 @@ const Header = ({
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
-      {renderMenu}
-      {/* {renderAdminMenu} */}
+      {/* {renderMenu} */}
+      {renderAdminMenu}
     </div>
   );
 };

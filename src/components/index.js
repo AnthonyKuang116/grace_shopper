@@ -10,4 +10,5 @@ export { default as Cart } from "./Cart";
 
 export { default as ViewUsers } from "./ViewUsers";
 export { default as AdminAddProduct } from "./AdminAddProduct";
+export { default as AdminEditProduct } from "./AdminEditProduct";
 
