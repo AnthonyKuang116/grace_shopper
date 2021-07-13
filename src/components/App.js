@@ -4,6 +4,7 @@ import getAllProducts from "../api/products/getAllProducts.js";
 import { getCurrentUser } from "../auth";
 import ViewUsers from "./ViewUsers";
 import AdminAddProduct from "./AdminAddProduct";
+import AdminEditProduct from "./AdminEditProduct";
 import getUserCart from "../api/cart/getUserCart";
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
 
   const [openUsers, setOpenUsers] = useState(false);
   const [addProduct, setAddProduct] = useState(false);
+  const [editProduct, setEditProduct] = useState(false);
 
   //get all products and set the product state
   useEffect(() => {
@@ -93,11 +95,10 @@ const App = () => {
           setProducts,
           handleSubCategoryChange,
           subCategory,
-
           setOpenCart,
-
           setOpenUsers,
           setAddProduct,
+          setEditProduct
         }}
       />
       <Main
@@ -138,7 +139,8 @@ const App = () => {
       )}
 
       <ViewUsers openUsers={openUsers} setOpenUsers={setOpenUsers} />
-      <AdminAddProduct {...{ addProduct, setAddProduct, products, setProducts }} />
+      <AdminAddProduct {...{ addProduct, setAddProduct }} />
+      <AdminEditProduct {...{editProduct, setEditProduct, products}}/>
     </div>
   );
 };
