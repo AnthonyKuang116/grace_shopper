@@ -230,7 +230,11 @@ const Header = ({
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleViewUsers}>View Users</MenuItem>
+<<<<<<< HEAD
       <MenuItem onClick={handleEditProduct}>Edit Product</MenuItem>
+=======
+      <MenuItem>Edit Products</MenuItem>
+>>>>>>> master
       <MenuItem onClick={handleAddProduct}>Add Product</MenuItem>
     </Menu>
   );

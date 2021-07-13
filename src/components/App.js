@@ -26,7 +26,6 @@ const App = () => {
   useEffect(() => {
     async function fetchProducts() {
       const data = await getAllProducts();
-      console.log("All Products", data);
       setProducts(data);
     }
     fetchProducts();
@@ -103,20 +102,49 @@ const App = () => {
         }}
       />
       <Main
-        {...{ userCart, currentUser, setModalProduct, setOpenProduct }}
+        {...{
+          setOpenCart,
+          setUserCart,
+          userCart,
+          currentUser,
+          setModalProduct,
+          setOpenProduct,
+        }}
         products={filteredProducts()}
       />
-      <Product {...{ modalProduct, openProduct, setOpenProduct }} />
+      <Product
+        {...{
+          userCart,
+          setUserCart,
+          currentUser,
+          modalProduct,
+          openProduct,
+          setOpenProduct,
+        }}
+      />
 
       {userCart ? (
-        <Cart {...{ products, openCart, setOpenCart, userCart }} />
+        <Cart
+          {...{
+            currentUser,
+            products,
+            openCart,
+            setOpenCart,
+            userCart,
+            setUserCart,
+          }}
+        />
       ) : (
         ""
       )}
 
       <ViewUsers openUsers={openUsers} setOpenUsers={setOpenUsers} />
+<<<<<<< HEAD
       <AdminAddProduct {...{ addProduct, setAddProduct }} />
       <AdminEditProduct {...{editProduct, setEditProduct, products}}/>
+=======
+      <AdminAddProduct {...{ addProduct, setAddProduct, products, setProducts }} />
+>>>>>>> master
     </div>
   );
 };
