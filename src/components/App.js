@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Header, Main, Product, Cart } from "./";
+import { Header, Main, Product, Cart, Auth } from "./";
 import getAllProducts from "../api/products/getAllProducts.js";
 import { getCurrentUser } from "../auth";
 import ViewUsers from "./ViewUsers";
@@ -9,13 +9,13 @@ import getUserCart from "../api/cart/getUserCart";
 
 const App = () => {
   const [products, setProducts] = useState([]);
-  const [currentUser, setCurrentUser] = useState(1);
+  const [currentUser, setCurrentUser] = useState(null);
   const [modalProduct, setModalProduct] = useState(null);
   const [openProduct, setOpenProduct] = useState(false);
   const [userCart, setUserCart] = useState(null);
   const [currentSearchText, setCurrentSearchText] = useState("");
   const [subCategory, setSubCategory] = useState([]);
-
+  const [showSignUp, setShowSignUp] = useState(false);
   const [openCart, setOpenCart] = useState(false);
 
   const [openUsers, setOpenUsers] = useState(false);
@@ -95,6 +95,9 @@ const App = () => {
           setProducts,
           handleSubCategoryChange,
           subCategory,
+
+setShowSignUp,
+
           setOpenCart,
           setOpenUsers,
           setAddProduct,
@@ -137,10 +140,16 @@ const App = () => {
       ) : (
         ""
       )}
-
+      <Auth {...{ showSignUp, setShowSignUp }} />
       <ViewUsers openUsers={openUsers} setOpenUsers={setOpenUsers} />
-      <AdminAddProduct {...{ addProduct, setAddProduct }} />
+
+      <AdminAddProduct
+        {...{ addProduct, setAddProduct, products, setProducts }}
+      />
+
+     
       <AdminEditProduct {...{editProduct, setEditProduct, products}}/>
+
     </div>
   );
 };

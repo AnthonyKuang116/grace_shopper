@@ -4,7 +4,7 @@ async function register(username, password, email) {
     const { data } = await axios.post("/api/users/register", {
       username,
       password,
-      email,
+      email
     });
     return data;
   } catch (error) {

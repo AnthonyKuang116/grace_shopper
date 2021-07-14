@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
+import Login from "./LogIn";
+import registerUser from "./SignUp"
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -26,7 +28,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
 import { storeCurrentUser, clearCurrentUser } from "../auth";
-import { Auth } from "./Auth";
+import { Auth } from "./";
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -137,26 +139,38 @@ const Header = ({
   setOpenCart,
   setOpenUsers,
   setAddProduct,
+
+  setShowSignUp,
+
   setEditProduct
+
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
+  const isProfileMenuOpen = Boolean(menuAnchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const [selectedUser, setSelectedUser] = useState("");
+  const [loginMenu, setLoginMenu] = useState(false);
+  const [registerMenu, setRegisterMenu] = useState("");
 
   const handleOpen = () => {
     setOpenCart(true);
   };
+const handleOpenSignUp = () => {setShowSignUp(true)}
 
-  const handleUserLogin = (event) => {
-    Auth;
-
+  const openLogin = () => {
+    setLoginMenu(true);
     storeCurrentUser(selectedUser);
     setCurrentUser(selectedUser);
   };
+
+  const closeLogin = () => {
+    setLoginMenu(false)
+  }
 
   const handleUserLogout = (event) => {
     clearCurrentUser();
@@ -164,15 +178,17 @@ const Header = ({
     setSelectedUser(null);
     setAnchorEl(null);
     handleMobileMenuClose();
+    handleProfileMenuClose();
   };
   //handles profile account popout
   const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+    setMenuAnchorEl(event.currentTarget);
   };
 
   const handleAdminOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleViewUsers = () => {
     setOpenUsers(true);
     setAnchorEl(null);
@@ -188,6 +204,7 @@ const Header = ({
     setAnchorEl(null);
     handleMobileMenuClose();
   };
+
   //Mobile view handles
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -195,6 +212,11 @@ const Header = ({
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+    handleMobileMenuClose();
+  };
+
+  const handleProfileMenuClose = () => {
+    setMenuAnchorEl(null);
     handleMobileMenuClose();
   };
 
@@ -206,15 +228,15 @@ const Header = ({
   const adminId = "admin-account-menu";
   const renderMenu = (
     <Menu
-      anchorEl={anchorEl}
+      anchorEl={menuAnchorEl}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={menuId}
       keepMounted
       transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
+      open={isProfileMenuOpen}
+      onClose={handleProfileMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Purchase History</MenuItem>
+      <MenuItem onClick={handleProfileMenuClose}>Purchase History</MenuItem>
       <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
     </Menu>
   );
@@ -370,7 +392,10 @@ const Header = ({
               </>
             ) : (
               <>
-                <Button color="inherit">Login</Button>
+                <Button color="inherit" onClick={handleOpenSignUp}>
+                  Login
+                </Button>
+                {loginMenu ? <Login /> : null}
               </>
             )}
           </div>
@@ -397,7 +422,7 @@ const Header = ({
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
-      {/* {renderMenu} */}
+      {renderMenu}
       {renderAdminMenu}
     </div>
   );

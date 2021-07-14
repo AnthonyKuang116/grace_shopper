@@ -26,6 +26,7 @@ const setToken = (token) => {
 export const LogIn = ({ setUser, setShowSignUp }) => {
   const [usernameInput, setUsernameInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
+  const [emailInput, setEmailInput] = useState("");
   const submitHandler = (e) => {
     e.preventDefault();
   };
@@ -35,13 +36,14 @@ export const LogIn = ({ setUser, setShowSignUp }) => {
     setUsernameInput(event.target.value);
   };
 
+  const emailChangeHandler = (event) => {
+    event.preventDefault();
+    setEmailInput(event.target.value);
+  };
+
   const passwordChangeHandler = (event) => {
     event.preventDefault();
     setPasswordInput(event.target.value);
-  };
-
-  const handleClick = () => {
-    setShowSignUp(true);
   };
 
   const handleLogIn = async (event) => {
@@ -60,11 +62,14 @@ export const LogIn = ({ setUser, setShowSignUp }) => {
     }
   };
 
+  const handleClick = () => {
+    setShowSignUp(true);
+  };
+
   return (
     <>
       <div className="auth_form">
         <form onSubmit={submitHandler}>
-          <label for="username">Username</label>
           <input
             type="text"
             className="username"
@@ -73,7 +78,6 @@ export const LogIn = ({ setUser, setShowSignUp }) => {
             onChange={usernameChangeHandler}
             required
           />
-          <label for="password">Password</label>
           <input
             type="password"
             className="password"
@@ -82,13 +86,21 @@ export const LogIn = ({ setUser, setShowSignUp }) => {
             onChange={passwordChangeHandler}
             required
           />
+          <input
+            type="text"
+            className="email"
+            placeholder="Email Address"
+            value={emailInput}
+            onChange={emailChangeHandler}
+            required
+          />
           <button className="auth_button" onClick={handleLogIn}>
             Log In
           </button>
         </form>
       </div>
       <div id="toggle_link">
-        <span onClick={handleClick}>Sign up</span> for an account
+        <span onClick={handleClick}>Sign up for an account</span>
       </div>
     </>
   );

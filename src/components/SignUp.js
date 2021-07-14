@@ -27,7 +27,7 @@ const setToken = (token) => {
 export const SignUp = ({ setUser, setShowSignUp }) => {
   const [usernameInput, setUsernameInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
-  const [verifyPasswordInput, setVerifyPasswordInput] = useState("");
+  const [emailInput, setEmailInput] = useState("");
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -38,14 +38,14 @@ export const SignUp = ({ setUser, setShowSignUp }) => {
     setUsernameInput(event.target.value);
   };
 
+  const emailChangeHandler = (event) => {
+    event.preventDefault();
+    setEmailInput(event.target.value);
+  };
+
   const passwordChangeHandler = (event) => {
     event.preventDefault();
     setPasswordInput(event.target.value);
-  };
-
-  const verifyPasswordChangeHandler = (event) => {
-    event.preventDefault();
-    setVerifyPasswordInput(event.target.value);
   };
 
   const handleClick = () => {
@@ -54,12 +54,6 @@ export const SignUp = ({ setUser, setShowSignUp }) => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    if (passwordInput !== verifyPasswordInput) {
-      alert("Passwords do not match!");
-      setPasswordInput("");
-      setVerifyPasswordInput("");
-      return;
-    }
     try {
       const user = await registerUser(usernameInput, passwordInput);
       if (!user.token) {
@@ -79,31 +73,28 @@ export const SignUp = ({ setUser, setShowSignUp }) => {
     <>
       <div className="auth_form">
         <form onSubmit={submitHandler}>
-          <label for="username">Username</label>
           <input
             type="text"
             className="username"
-            placeholder="username"
+            placeholder="Username"
             value={usernameInput}
             onChange={usernameChangeHandler}
             required
           />
-          <label for="password">Password</label>
           <input
             type="password"
             className="password"
-            placeholder="password"
+            placeholder="Password"
             value={passwordInput}
             onChange={passwordChangeHandler}
             required
           />
-          <label for="verify_password">Verify password</label>
           <input
-            type="password"
-            className="verify_password"
-            placeholder="password"
-            value={verifyPasswordInput}
-            onChange={verifyPasswordChangeHandler}
+            type="text"
+            className="email"
+            placeholder="Email Address"
+            value={emailInput}
+            onChange={emailChangeHandler}
             required
           />
           <button className="auth_button" onClick={handleSignUp}>
@@ -113,7 +104,7 @@ export const SignUp = ({ setUser, setShowSignUp }) => {
       </div>
       <div id="toggle_link">
         Already have an account?
-        <span onClick={handleClick}> Log in here.</span>
+        <span onClick={handleClick}> Log In</span>
       </div>
     </>
   );
