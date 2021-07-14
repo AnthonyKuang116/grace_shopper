@@ -6,6 +6,8 @@ import Fade from "@material-ui/core/Fade";
 import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
 
+import { deleteProduct, getAllProducts } from "../api"
+
 const useStyles = makeStyles((theme) => ({
     modal: {
         display: "flex",
@@ -20,10 +22,10 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const AdminEditProduct = ({ setEditProduct, editProduct, products, setProducts }) => {
+const AdminEditProduct = ({ setEditProduct, editProduct, products, setProducts, setEditModal, rowData, setRowData }) => {
     const classes = useStyles();
-    
-    const [select, setSelection] = useState();
+
+    const [select, setSelection] = useState(0);
 
     let columns = [
         { field: 'id', headerName: 'ID', width: 100 },
@@ -34,22 +36,34 @@ const AdminEditProduct = ({ setEditProduct, editProduct, products, setProducts }
         { field: 'price', headerName: 'Price', width: 120 },
         { field: 'quantity', headerName: 'Quantity', width: 150 },
         { field: 'imgSrc', headerName: 'Image URL Pathway', width: 250 },
-        { field: 'edit', headerName: 'Edit', width: 105, renderCell: ()=>(<Button variant="contained" color="primary" onClick={editRow}style={{marginRight: "30px"}}>Edit</Button>)},
-        { field: 'delete', headerName: 'Delete', width: 120, renderCell: ()=>(<Button variant="contained" color="secondary" onClick={deleteProduct}>Delete</Button>)}
+        { field: 'edit', headerName: 'Edit', width: 105, renderCell: () => (<Button variant="contained" color="primary" onClick={editRow} style={{ marginRight: "30px" }}>Edit</Button>) },
+        { field: 'delete', headerName: 'Delete', width: 120, renderCell: () => (<Button variant="contained" color="secondary" onClick={deleteSelectedProduct}>Delete</Button>) }
     ]
 
     const handleClose = () => {
         setEditProduct(false);
     };
 
-    const deleteProduct = (e) => {
-        // console.log(selected)
-        console.log(select)
+    const deleteSelectedProduct = (e) => {
+        console.log("delete product", select.id)
+        deleteProduct(select.id)
     }
 
     const editRow = (e) => {
         console.log("Edit Button is work")
+        setRowData(select)
+        setEditModal(true);
     }
+
+    // useEffect(() => {
+    //     getAllProducts()
+    //     .then((productList) => setProducts(productList))
+    //     .catch(console.error)
+    // }, [])
+
+    useEffect(() => {
+        console.log("use Effect", select.id)
+    }, [select])
 
     return (
         <div>
@@ -65,7 +79,15 @@ const AdminEditProduct = ({ setEditProduct, editProduct, products, setProducts }
             >
                 <Fade in={editProduct}>
                     <div className={classes.paper} style={{ height: 650, width: '100%' }}>
-                        <DataGrid className={classes.root} rows={products} columns={columns} pageSize={10} onRowSelected={(row) => setSelection(row.api.current.getSelectedRows())}/>
+                        <DataGrid
+                            className={classes.root}
+                            rows={products}
+                            columns={columns}
+                            pageSize={10}
+                            onRowSelected = {(row) => setSelection(row.data)}
+                            // onRowSelected = {(row) => setRowData(row.data)}
+                            // onRowSelected={(row) => setSelection(row.api.current.getSelectedRows())}
+                        />
                     </div>
                 </Fade>
             </Modal>

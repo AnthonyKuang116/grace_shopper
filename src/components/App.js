@@ -6,6 +6,7 @@ import ViewUsers from "./ViewUsers";
 import AdminAddProduct from "./AdminAddProduct";
 import AdminEditProduct from "./AdminEditProduct";
 import getUserCart from "../api/cart/getUserCart";
+import { AdminEditModal } from "./index";
 
 const App = () => {
   const [products, setProducts] = useState([]);
@@ -15,12 +16,14 @@ const App = () => {
   const [userCart, setUserCart] = useState(null);
   const [currentSearchText, setCurrentSearchText] = useState("");
   const [subCategory, setSubCategory] = useState([]);
+  const [rowData, setRowData] = useState([]);
 
   const [openCart, setOpenCart] = useState(false);
 
   const [openUsers, setOpenUsers] = useState(false);
   const [addProduct, setAddProduct] = useState(false);
   const [editProduct, setEditProduct] = useState(false);
+  const [editModal, setEditModal] = useState(false);
 
   //get all products and set the product state
   useEffect(() => {
@@ -140,7 +143,8 @@ const App = () => {
 
       <ViewUsers openUsers={openUsers} setOpenUsers={setOpenUsers} />
       <AdminAddProduct {...{ addProduct, setAddProduct }} />
-      <AdminEditProduct {...{editProduct, setEditProduct, products}}/>
+      <AdminEditProduct {...{editProduct, setEditProduct, products, setProducts, setEditModal, rowData, setRowData}}/>
+      <AdminEditModal {...{editModal, setEditModal, rowData, setRowData, products, setProducts}}/>
     </div>
   );
 };

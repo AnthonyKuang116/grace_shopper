@@ -181,6 +181,11 @@ async function getAllUsers() {
 
 async function deleteProduct(id) {
   try {
+    await client.query(`
+      DELETE FROM line_items
+      WHERE "productId"=$1;
+    `, [id]);
+
     await client.query(
       `
             DELETE FROM products
@@ -213,6 +218,7 @@ async function updateProduct(id, fields = {}) {
             UPDATE products
             SET ${setString}
             WHERE id=${id}
+            RETURNING *;
         `,
       Object.values(fields)
     );
