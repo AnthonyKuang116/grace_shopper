@@ -139,7 +139,11 @@ const Header = ({
   setOpenCart,
   setOpenUsers,
   setAddProduct,
+
   setShowSignUp,
+
+  setEditProduct
+
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -190,7 +194,11 @@ const handleOpenSignUp = () => {setShowSignUp(true)}
     setAnchorEl(null);
     handleMobileMenuClose();
   };
-
+  const handleEditProduct = () => {
+    setEditProduct(true);
+    setAnchorEl(null);
+    handleMobileMenuClose();
+  }
   const handleAddProduct = () => {
     setAddProduct(true);
     setAnchorEl(null);
@@ -244,7 +252,7 @@ const handleOpenSignUp = () => {setShowSignUp(true)}
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleViewUsers}>View Users</MenuItem>
-      <MenuItem>Edit Products</MenuItem>
+      <MenuItem onClick={handleEditProduct}>Edit Product</MenuItem>
       <MenuItem onClick={handleAddProduct}>Add Product</MenuItem>
     </Menu>
   );
