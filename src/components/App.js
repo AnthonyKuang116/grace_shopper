@@ -10,13 +10,14 @@ import { AdminEditModal } from "./index";
 
 const App = () => {
   const [products, setProducts] = useState([]);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(0);
   const [modalProduct, setModalProduct] = useState(null);
   const [openProduct, setOpenProduct] = useState(false);
   const [userCart, setUserCart] = useState(null);
   const [currentSearchText, setCurrentSearchText] = useState("");
   const [subCategory, setSubCategory] = useState([]);
   const [rowData, setRowData] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const [showSignUp, setShowSignUp] = useState(false);
   const [showAuth, setShowAuth ] = useState(false);
@@ -106,7 +107,8 @@ const App = () => {
           setOpenCart,
           setOpenUsers,
           setAddProduct,
-          setEditProduct
+          setEditProduct,
+          isAdmin
         }}
       />
       <Main
@@ -145,7 +147,7 @@ const App = () => {
       ) : (
         ""
       )}
-      <Auth {...{ setCurrentUser, showAuth, setShowAuth, showLogIn,  setShowLogIn,  }} />
+      <Auth {...{ setCurrentUser, showAuth, setShowAuth, showLogIn, setShowLogIn, setIsAdmin}} />
       <ViewUsers openUsers={openUsers} setOpenUsers={setOpenUsers} />
       <AdminAddProduct {...{ addProduct, setAddProduct, products, setProducts }} />
       <AdminEditProduct {...{editProduct, setEditProduct, products, setProducts, setEditModal, rowData, setRowData}}/>

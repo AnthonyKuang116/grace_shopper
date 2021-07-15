@@ -45,7 +45,7 @@ usersRouter.post("/login", async (req, res, next) => {
         JWT_SECRET,
         { expiresIn: "7d" }
       );
-      res.send({ message: "you're logged in!", token: token, user: user.id });
+      res.send({ message: "you're logged in!", token: token, user: user.id, userAdmin: user.admin });
     } else {
       next({
         name: "IncorrectCredentialsError",
@@ -59,7 +59,7 @@ usersRouter.post("/login", async (req, res, next) => {
 });
 
 usersRouter.post("/register", async (req, res, next) => {
-  const { username, password, email } = req.body;
+  const { username, password, email, admin } = req.body;
 
   try {
     const _user = await getUserByUsername(username);
@@ -75,6 +75,7 @@ usersRouter.post("/register", async (req, res, next) => {
       username,
       password,
       email,
+      admin
     });
 
     const token = jwt.sign(

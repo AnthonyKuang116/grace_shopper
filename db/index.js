@@ -12,18 +12,18 @@ async function hashPassword(password) {
   return hashedPassword;
 }
 
-async function createUser({ username, password, email }) {
+async function createUser({ username, password, email, admin }) {
   const hashedPassword = await hashPassword(password);
   try {
     const {
       rows: [user],
     } = await client.query(
       `
-            INSERT into users(username, password, email)
-            VALUES ($1, $2, $3)
+            INSERT into users(username, password, email, admin)
+            VALUES ($1, $2, $3, $4)
             RETURNING *;
         `,
-      [username, hashedPassword, email]
+      [username, hashedPassword, email, admin]
     );
 
     await createCart(user.id);
