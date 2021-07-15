@@ -21,22 +21,22 @@ export const LogIn = ({ setCurrentUser, setShowAuth, setShowLogIn, setIsAdmin })
     setPasswordInput(event.target.value);
     
   };
-  useEffect(()=>console.log("pw", passwordInput), [passwordInput]);
-  useEffect(()=>console.log("un", usernameInput), [usernameInput]);
+  // useEffect(()=>console.log("pw", passwordInput), [passwordInput]);
+  // useEffect(()=>console.log("un", usernameInput), [usernameInput]);
 
   const handleLogIn = async (event) => {
     event.preventDefault();
     try {
       const user = await login(usernameInput, passwordInput);
-      console.log("user", user)
+      // console.log("user", user)
       if (!user.token) {
         alert(user.message);
         setPasswordInput("");
         return;
       }
-      console.log(usernameInput, passwordInput)
-      console.log("THIS IS USER ID", user.user)
-      console.log("this is user admin", user.userAdmin)
+      // console.log(usernameInput, passwordInput)
+      // console.log("THIS IS USER ID", user.user)
+      // console.log("this is user admin", user.userAdmin)
       setIsAdmin(user.userAdmin);
       setToken(user.token);
       setCurrentUser(user.user);

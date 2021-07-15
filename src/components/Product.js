@@ -53,7 +53,7 @@ const Product = ({
       currentUser,
       modalProduct.price
     );
-    console.log(userCart);
+    // console.log(userCart);
     const newProducts = [...userCart.products, data];
     const newCart = Object.assign({}, userCart);
     newCart.products = newProducts;

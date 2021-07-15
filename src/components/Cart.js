@@ -128,7 +128,7 @@ const Cart = ({
                     const product = products.find(
                       (product) => product.id === p.productId
                     );
-                    console.log(product.imgSrc);
+                    // console.log(product.imgSrc);
                     return (
                       <TableRow key={product.name}>
                         <TableCell>

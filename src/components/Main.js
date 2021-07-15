@@ -59,7 +59,7 @@ const Main = ({
       setOpenCart(true);
       return;
     }
-    console.log("products", products);
+    // console.log("products", products);
 
     const data = await addProductToCart(
       product.id,
@@ -67,14 +67,14 @@ const Main = ({
       currentUser,
       product.price
     );
-    console.log("products", products);
+    // console.log("products", products);
     const newProducts = [...userCart.products, data];
     const newCart = Object.assign({}, userCart);
     newCart.products = newProducts;
     setUserCart(newCart);
     setOpenCart(true);
     setQuantity(1);
-    console.log("products", products);
+    // console.log("products", products);
   };
 
   return (

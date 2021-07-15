@@ -1,11 +1,11 @@
 import axios from "axios";
 async function removeProductFromCart(userId, productId) {
-  console.log(userId, productId);
+  // console.log(userId, productId);
   try {
     const { data } = await axios.delete(`/api/cart/${productId}`, {
       data: { userId },
     });
-    console.log("data", data);
+    // console.log("data", data);
 
     return data;
   } catch (error) {

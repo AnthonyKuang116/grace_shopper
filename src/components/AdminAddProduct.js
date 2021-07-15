@@ -59,10 +59,10 @@ const AdminAddProduct = ({ addProduct, setAddProduct, products, setProducts }) =
         try {
             const newProduct = await createProduct({ category, subCategory, name, description, price, quantity, imgSrc })
             const newProductList = [...products, newProduct]
-            console.log("new product list", newProductList)
+            // console.log("new product list", newProductList)
             setProducts(newProductList)
             setAddProduct(false)
-            console.log("new product", newProduct)
+            // console.log("new product", newProduct)
         } catch (error) {
             console.error(error)
         }

@@ -159,7 +159,7 @@ const Header = ({
   const [registerMenu, setRegisterMenu] = useState("");
 
   const handleOpen = () => {
-    console.log("current user in header", currentUser)
+    // console.log("current user in header", currentUser)
     setOpenCart(true);
   };
   const handleOpenSignUp = () => { setShowAuth(true) }
