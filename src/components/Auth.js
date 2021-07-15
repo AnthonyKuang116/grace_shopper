@@ -19,16 +19,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Auth = ({ setUser, showSignUp, setShowSignUp }) => {
+const Auth = ({ setCurrentUser, showAuth, setShowAuth, showLogIn, setShowLogIn }) => {
   const classes = useStyles()
-const handleClose = () => {setShowSignUp(false)};
-console.log(showSignUp)
+const handleClose = () => {setShowAuth(false)};
+console.log(showAuth)
 
   return (
     <div>
       <Modal
-         className={classes.modal}
-        open={showSignUp}
+        className={classes.modal}
+        open={showAuth}
         onClose={handleClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
@@ -38,10 +38,10 @@ console.log(showSignUp)
       >
         
           <div className={classes.paper}>
-            {showSignUp ? (
-              <SignUp setUser={setUser} setShowSignUp={setShowSignUp} />
+            {showLogIn ? (
+              <LogIn {...{setCurrentUser, setShowAuth, setShowLogIn}} />
             ) : (
-              <LogIn setUser={setUser} setShowSignUp={setShowSignUp} />
+              <SignUp {...{setCurrentUser, setShowAuth, setShowLogIn}} />
             )}
           </div>
         

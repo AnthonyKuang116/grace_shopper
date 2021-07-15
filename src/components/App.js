@@ -19,6 +19,9 @@ const App = () => {
   const [rowData, setRowData] = useState([]);
 
   const [showSignUp, setShowSignUp] = useState(false);
+  const [showAuth, setShowAuth ] = useState(false);
+  const [showLogIn, setShowLogIn ]= useState(false)
+  
   const [openCart, setOpenCart] = useState(false);
 
   const [openUsers, setOpenUsers] = useState(false);
@@ -99,9 +102,7 @@ const App = () => {
           setProducts,
           handleSubCategoryChange,
           subCategory,
-
-setShowSignUp,
-
+          setShowAuth,
           setOpenCart,
           setOpenUsers,
           setAddProduct,
@@ -144,7 +145,7 @@ setShowSignUp,
       ) : (
         ""
       )}
-      <Auth {...{ showSignUp, setShowSignUp }} />
+      <Auth {...{ setCurrentUser, showAuth, setShowAuth, showLogIn,  setShowLogIn,  }} />
       <ViewUsers openUsers={openUsers} setOpenUsers={setOpenUsers} />
       <AdminAddProduct {...{ addProduct, setAddProduct, products, setProducts }} />
       <AdminEditProduct {...{editProduct, setEditProduct, products, setProducts, setEditModal, rowData, setRowData}}/>

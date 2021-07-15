@@ -140,7 +140,7 @@ const Header = ({
   setOpenUsers,
   setAddProduct,
 
-  setShowSignUp,
+  setShowAuth,
 
   setEditProduct
 
@@ -158,9 +158,10 @@ const Header = ({
   const [registerMenu, setRegisterMenu] = useState("");
 
   const handleOpen = () => {
+    console.log("anything")
     setOpenCart(true);
   };
-const handleOpenSignUp = () => {setShowSignUp(true)}
+const handleOpenSignUp = () => {setShowAuth(true)}
 
   const openLogin = () => {
     setLoginMenu(true);
@@ -226,20 +227,6 @@ const handleOpenSignUp = () => {setShowSignUp(true)}
 
   const menuId = "primary-search-account-menu";
   const adminId = "admin-account-menu";
-  const renderMenu = (
-    <Menu
-      anchorEl={menuAnchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isProfileMenuOpen}
-      onClose={handleProfileMenuClose}
-    >
-      <MenuItem onClick={handleProfileMenuClose}>Purchase History</MenuItem>
-      <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
-    </Menu>
-  );
 
   const renderAdminMenu = (
     <Menu
@@ -379,16 +366,8 @@ const handleOpenSignUp = () => {setShowSignUp(true)}
                 >
                   Admin
                 </Button>
-                <IconButton
-                  edge="end"
-                  aria-label="account of current user"
-                  aria-controls={menuId}
-                  aria-haspopup="true"
-                  onClick={handleProfileMenuOpen}
-                  color="inherit"
-                >
-                  <AccountCircle />
-                </IconButton>
+  
+                <Button color="inherit" onClick={handleUserLogout}>Logout</Button>
               </>
             ) : (
               <>
@@ -422,7 +401,6 @@ const handleOpenSignUp = () => {setShowSignUp(true)}
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
-      {renderMenu}
       {renderAdminMenu}
     </div>
   );
