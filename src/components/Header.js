@@ -241,10 +241,10 @@ const Header = ({
     "Stone",
     "Pome",
     "Melons",
+    "Small",
   ];
   const subCategoryVeg = [
     "Fungi",
-    "Sprouts",
     "Root",
     "Bulbs",
     "Seeded",

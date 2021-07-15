@@ -58,21 +58,38 @@ const AdminEditModal = ({editModal, setEditModal, rowData, setRowData, products,
     //handles submitting the form
     const handleSubmit = async (e) => {
         try {
-            // const newProduct = await updateProduct(rowData.id, category, subCategory, name, description, price, quantity, imgSrc);
-            // console.log("New edited product", newProduct)
+            await updateProduct(rowData.id, category, subCategory, name, description, price, quantity, imgSrc);
             setEditModal(false);
 
-            console.log(rowData)
-            console.log("This should be the product name", rowData.name)
-            console.log("Name state", name)
+            let newProductList = [...products]
+
+            newProductList = newProductList.map((product) => {
+                if(product.id === rowData.id){
+                    product.name = name;
+                    product.category = category;
+                    product.subCategory = subCategory;
+                    product.description = description;
+                    product.price = price;
+                    product.quantity = quantity;
+                    product.imgSrc = imgSrc;
+                }
+                return product;
+            })
+            setProducts(newProductList);
         } catch (error) {
             console.error(error)
         }
     }
 
-    // useEffect(() => {
-    //     console.log("Product name", name)
-    // }, [name, category, subCategory, description, price, quantity, imgSrc])\
+    useEffect(() => {
+        setName(rowData.name);
+        setCategory(rowData.category);
+        setSubCategory(rowData.subCategory);
+        setDescription(rowData.description);
+        setPrice(rowData.price);
+        setQuantity(rowData.quantity);
+        setImgSrc(rowData.imgSrc);
+    }, [rowData])
 
 
     return (
@@ -92,13 +109,13 @@ const AdminEditModal = ({editModal, setEditModal, rowData, setRowData, products,
                         <form className={classes.root} noValidate autoComplete="off"
                             style={{ height: 500, width: '100%', display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
                             <h2 style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>Edit Product</h2>
-                            <TextField id="addProductName" label="Name" defaultValue={rowData.name} onChange={handleName} />
-                            <TextField id="addProductCat" label="Category" defaultValue={rowData.category} onChange={handleCategory} />
-                            <TextField id="addProductSub" label="Sub-Category" defaultValue={rowData.subCategory} onChange={handleSubCategory} />
-                            <TextField id="addProductDesc" multiline rowsMax="4" label="Description (Double-Space for new bullet)" defaultValue={rowData.description} onChange={handleDescription} />
-                            <TextField id="addProductPrice" label="Price" defaultValue={rowData.price} onChange={handlePrice} />
-                            <TextField id="addProductQuant" label="Quantity" defaultValue={rowData.quantity} onChange={handleQuantity} />
-                            <TextField id="addProductImg" label="Image Pathway" defaultValue={rowData.imgSrc} onChange={handleImage} />
+                            <TextField id="addProductName" label="Name" value={name} onChange={handleName} />
+                            <TextField id="addProductCat" label="Category" value={category} onChange={handleCategory} />
+                            <TextField id="addProductSub" label="Sub-Category" value={subCategory} onChange={handleSubCategory} />
+                            <TextField id="addProductDesc" multiline rowsMax="4" label="Description (Double-Space for new bullet)" value={description} onChange={handleDescription} />
+                            <TextField id="addProductPrice" label="Price" value={price} onChange={handlePrice} />
+                            <TextField id="addProductQuant" label="Quantity" value={quantity} onChange={handleQuantity} />
+                            <TextField id="addProductImg" label="Image Pathway" value={imgSrc} onChange={handleImage} />
                             <Button variant="contained" color="primary" onClick={handleSubmit}>Save Edits</Button>
                         </form>
                     </div>

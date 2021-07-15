@@ -201,33 +201,64 @@ async function deleteProduct(id) {
   }
 }
 
-async function updateProduct(id, fields = {}) {
+async function updateCartQuantity(cartId, productId, quantity) {
   try {
-    const setString = Object.keys(fields)
-      .map((key, index) => `"${key}"=$${index + 1}`)
-      .join(", ");
-
-    if (setString.length === 0) {
-      return;
-    }
-
     const {
-      rows: [product],
+      rows: { quant },
     } = await client.query(
       `
-            UPDATE products
-            SET ${setString}
-            WHERE id=${id}
-            RETURNING *;
+            UPDATE line_items
+            SET quantity=$3
+            WHERE ("cartId"=$1 AND "productId"=$2);
         `,
-      Object.values(fields)
+      [cartId, productId, quantity]
     );
 
+    return quant;
+  } catch (error) {
+    console.error("Could not update quantity!", error);
+    throw error;
+  }
+}
+
+async function updateProduct(id, category, subCategory, name, description, price, quantity, imgSrc) {
+  try{
+    const { rows: {product} } = await client.query(`
+      UPDATE products
+      SET category=$2, "subCategory"=$3, name=$4, description=$5, price=$6, quantity=$7, "imgSrc"=$8
+      WHERE id=$1;
+    `, [id, category, subCategory, name, description, price, quantity, imgSrc])
     return product;
   } catch (error) {
     console.error("Could not update product!", error);
     throw error;
   }
+  // try {
+  //   const setString = Object.keys(fields)
+  //     .map((key, index) => `"${key}"=$${index + 1}`)
+  //     .join(", ");
+
+  //   if (setString.length === 0) {
+  //     return;
+  //   }
+
+  //   const {
+  //     rows: [product],
+  //   } = await client.query(
+  //     `
+  //           UPDATE products
+  //           SET ${setString}
+  //           WHERE id=${id}
+  //           RETURNING *;
+  //       `,
+  //     Object.values(fields)
+  //   );
+
+  //   return product;
+  // } catch (error) {
+  //   console.error("Could not update product!", error);
+  //   throw error;
+  // }
 }
 
 async function createProduct({

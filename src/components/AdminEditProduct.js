@@ -46,7 +46,15 @@ const AdminEditProduct = ({ setEditProduct, editProduct, products, setProducts, 
 
     const deleteSelectedProduct = (e) => {
         console.log("delete product", select.id)
+
+
+        const newProductList = [...products].filter(
+            (product) => product.id != select.id
+        )
+
         deleteProduct(select.id)
+
+        setProducts(newProductList)
     }
 
     const editRow = (e) => {
@@ -55,14 +63,14 @@ const AdminEditProduct = ({ setEditProduct, editProduct, products, setProducts, 
         setEditModal(true);
     }
 
-    // useEffect(() => {
-    //     getAllProducts()
-    //     .then((productList) => setProducts(productList))
-    //     .catch(console.error)
-    // }, [])
-
     useEffect(() => {
-        console.log("use Effect", select.id)
+        // setRowData(select)
+        // console.log(rowData)
+
+        setRowData((oldRowData) => {
+            console.log(select)       
+            return select;
+        })
     }, [select])
 
     return (
@@ -84,9 +92,9 @@ const AdminEditProduct = ({ setEditProduct, editProduct, products, setProducts, 
                             rows={products}
                             columns={columns}
                             pageSize={10}
-                            onRowSelected = {(row) => setSelection(row.data)}
-                            // onRowSelected = {(row) => setRowData(row.data)}
-                            // onRowSelected={(row) => setSelection(row.api.current.getSelectedRows())}
+                            onRowSelected={(row) => setSelection(row.data)}
+                        // onRowSelected = {(row) => setRowData(row.data)}
+                        // onRowSelected={(row) => setSelection(row.api.current.getSelectedRows())}
                         />
                     </div>
                 </Fade>

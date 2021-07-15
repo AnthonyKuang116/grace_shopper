@@ -70,16 +70,6 @@ productsRouter.patch("/:id", async (req, res, next) => {
       imgSrc,
     );
 
-    // const updatedProduct = await updateProduct(id, {
-    //   category,
-    //   subCategory,
-    //   name,
-    //   description,
-    //   price,
-    //   quantity,
-    //   imgSrc,
-    // });
-
     res.send(updatedProduct);
   } catch (error) {
     next(error);
