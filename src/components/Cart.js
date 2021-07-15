@@ -25,7 +25,7 @@ const useStyles = makeStyles({
     minWidth: 650,
   },
   image: { maxWidth: "100px" },
-  cartTitle: { fontFamily: "Roboto", color: "red" },
+  cartTitle: { marginLeft: "50px", fontFamily: "sans-serif", color: "red" },
   cartLogin: {
     display: "grid",
 
@@ -35,6 +35,13 @@ const useStyles = makeStyles({
     gridRowStart: 2,
     gridRowEnd: 3,
     maxWidth: "8em",
+  },
+  button: {
+    maxWidth: "10em",
+    background: "red",
+    alignSelf: "right",
+    marginLeft: "540px",
+    marginTop: "10px",
   },
 });
 
@@ -188,7 +195,11 @@ const Cart = ({
                 </TableBody>
               </Table>
             </TableContainer>
-            <Button onClick={handleCheckout} variant="outlined">
+            <Button
+              className={classes.button}
+              onClick={handleCheckout}
+              variant="outlined"
+            >
               Check Out
             </Button>
           </>
