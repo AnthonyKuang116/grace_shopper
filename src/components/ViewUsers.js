@@ -40,7 +40,7 @@ const ViewUsers = ({setOpenUsers, openUsers}) => {
         allUsers()
         .then((users) => setUsers(users))
         .catch(console.error);
-    }, [])
+    }, [users])
 
     return (
         <div>
