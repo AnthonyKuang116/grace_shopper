@@ -10,7 +10,7 @@ import {
   Zoom,
   TextField,
 } from "@material-ui/core";
-addProductToCart;
+
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import { addProductToCart } from "../api";
 
