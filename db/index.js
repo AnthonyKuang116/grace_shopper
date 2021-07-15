@@ -2,7 +2,7 @@ const { Client } = require("pg");
 
 const DB_NAME = "shopper-dev";
 const DB_URL =
-  process.env.DATABASEURL || `postgres://localhost:5432/${DB_NAME}`;
+  process.env.DATABASE_URL || `postgres://localhost:5432/${DB_NAME}`;
 const client = new Client(DB_URL);
 const bcrypt = require("bcrypt");
 
