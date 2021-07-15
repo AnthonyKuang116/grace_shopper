@@ -12,18 +12,18 @@ async function hashPassword(password) {
   return hashedPassword;
 }
 
-async function createUser({ username, password, email }) {
+async function createUser({ username, password, email, admin }) {
   const hashedPassword = await hashPassword(password);
   try {
     const {
       rows: [user],
     } = await client.query(
       `
-            INSERT into users(username, password, email)
-            VALUES ($1, $2, $3)
+            INSERT into users(username, password, email, admin)
+            VALUES ($1, $2, $3, $4)
             RETURNING *;
         `,
-      [username, hashedPassword, email]
+      [username, hashedPassword, email, admin]
     );
 
     await createCart(user.id);
@@ -181,6 +181,11 @@ async function getAllUsers() {
 
 async function deleteProduct(id) {
   try {
+    await client.query(`
+      DELETE FROM line_items
+      WHERE "productId"=$1;
+    `, [id]);
+
     await client.query(
       `
             DELETE FROM products
@@ -196,32 +201,64 @@ async function deleteProduct(id) {
   }
 }
 
-async function updateProduct(id, fields = {}) {
+async function updateCartQuantity(cartId, productId, quantity) {
   try {
-    const setString = Object.keys(fields)
-      .map((key, index) => `"${key}"=$${index + 1}`)
-      .join(", ");
-
-    if (setString.length === 0) {
-      return;
-    }
-
     const {
-      rows: [product],
+      rows: { quant },
     } = await client.query(
       `
-            UPDATE products
-            SET ${setString}
-            WHERE id=${id}
+            UPDATE line_items
+            SET quantity=$3
+            WHERE ("cartId"=$1 AND "productId"=$2);
         `,
-      Object.values(fields)
+      [cartId, productId, quantity]
     );
 
+    return quant;
+  } catch (error) {
+    console.error("Could not update quantity!", error);
+    throw error;
+  }
+}
+
+async function updateProduct(id, category, subCategory, name, description, price, quantity, imgSrc) {
+  try{
+    const { rows: {product} } = await client.query(`
+      UPDATE products
+      SET category=$2, "subCategory"=$3, name=$4, description=$5, price=$6, quantity=$7, "imgSrc"=$8
+      WHERE id=$1;
+    `, [id, category, subCategory, name, description, price, quantity, imgSrc])
     return product;
   } catch (error) {
     console.error("Could not update product!", error);
     throw error;
   }
+  // try {
+  //   const setString = Object.keys(fields)
+  //     .map((key, index) => `"${key}"=$${index + 1}`)
+  //     .join(", ");
+
+  //   if (setString.length === 0) {
+  //     return;
+  //   }
+
+  //   const {
+  //     rows: [product],
+  //   } = await client.query(
+  //     `
+  //           UPDATE products
+  //           SET ${setString}
+  //           WHERE id=${id}
+  //           RETURNING *;
+  //       `,
+  //     Object.values(fields)
+  //   );
+
+  //   return product;
+  // } catch (error) {
+  //   console.error("Could not update product!", error);
+  //   throw error;
+  // }
 }
 
 async function createProduct({

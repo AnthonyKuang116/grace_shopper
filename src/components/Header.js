@@ -142,7 +142,8 @@ const Header = ({
 
   setShowAuth,
 
-  setEditProduct
+  setEditProduct,
+  isAdmin
 
 }) => {
   const classes = useStyles();
@@ -158,10 +159,10 @@ const Header = ({
   const [registerMenu, setRegisterMenu] = useState("");
 
   const handleOpen = () => {
-    console.log("anything")
+    console.log("current user in header", currentUser)
     setOpenCart(true);
   };
-const handleOpenSignUp = () => {setShowAuth(true)}
+  const handleOpenSignUp = () => { setShowAuth(true) }
 
   const openLogin = () => {
     setLoginMenu(true);
@@ -250,10 +251,10 @@ const handleOpenSignUp = () => {setShowAuth(true)}
     "Stone",
     "Pome",
     "Melons",
+    "Small",
   ];
   const subCategoryVeg = [
     "Fungi",
-    "Sprouts",
     "Root",
     "Bulbs",
     "Seeded",
@@ -353,7 +354,7 @@ const handleOpenSignUp = () => {setShowAuth(true)}
               <ShoppingCartIcon />
             </IconButton>
           </div>
-          <div className={classes.sectionDesktop}>
+          {/* <div className={classes.sectionDesktop}>
             {currentUser ? (
               <>
                 <Button
@@ -374,6 +375,23 @@ const handleOpenSignUp = () => {setShowAuth(true)}
                 <Button color="inherit" onClick={handleOpenSignUp}>
                   Login
                 </Button>
+                {loginMenu ? <Login /> : null}
+              </>
+            )}
+          </div> */}
+          <div className={classes.sectionDesktop}>
+            {currentUser ? (
+              <>
+                {isAdmin === true ?
+                  <>
+                    <Button edge="end" aria-label="Admin options" aria-controls={adminId} aria-haspopup="true" onClick={handleAdminOpen} color="inherit">Admin</Button>
+                    <Button color="inherit" onClick={handleUserLogout}>Logout</Button>
+                  </> : <Button color="inherit" onClick={handleUserLogout}>Logout</Button>
+                }
+              </>
+            ) : (
+              <>
+                <Button color="inherit" onClick={handleOpenSignUp}>Login</Button>
                 {loginMenu ? <Login /> : null}
               </>
             )}

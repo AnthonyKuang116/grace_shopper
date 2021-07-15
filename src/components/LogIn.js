@@ -5,7 +5,7 @@ const setToken = (token) => {
   localStorage.setItem("token", token);
 };
 
-export const LogIn = ({ setCurrentUser, setShowAuth, setShowLogIn }) => {
+export const LogIn = ({ setCurrentUser, setShowAuth, setShowLogIn, setIsAdmin }) => {
   const [usernameInput, setUsernameInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const submitHandler = (e) => {
@@ -13,15 +13,7 @@ export const LogIn = ({ setCurrentUser, setShowAuth, setShowLogIn }) => {
   };
 
   const usernameChangeHandler = (event) => {
-    
     setUsernameInput(event.target.value);
-    // console.log("un", usernameInput)
-    // const newTextChange = e.currentTarget.value;
-    // setUsernameInput((oldText) => {
-    //   console.log(nextTextChange);
-    //   return newTextChange;
-    // })
-    
   };
 
   const passwordChangeHandler = (event) => {
@@ -43,6 +35,9 @@ export const LogIn = ({ setCurrentUser, setShowAuth, setShowLogIn }) => {
         return;
       }
       console.log(usernameInput, passwordInput)
+      console.log("THIS IS USER ID", user.user)
+      console.log("this is user admin", user.userAdmin)
+      setIsAdmin(user.userAdmin);
       setToken(user.token);
       setCurrentUser(user.user);
       setShowAuth(false)

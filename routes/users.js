@@ -36,8 +36,8 @@ usersRouter.post("/login", async (req, res, next) => {
   try {
     const user = await getUserByUsername(username);
     const passwordMatch = await bcrypt.compare(password, user.password)
-console.log("user", user)
-console.log("pwm", passwordMatch)
+    console.log("user", user)
+    console.log("pwm", passwordMatch)
     if (user && passwordMatch) {
       // create token & return to user
       const token = jwt.sign(
@@ -45,7 +45,7 @@ console.log("pwm", passwordMatch)
         JWT_SECRET,
         { expiresIn: "7d" }
       );
-      res.send({ message: "you're logged in!", token: token, user: user.id });
+      res.send({ message: "you're logged in!", token: token, user: user.id, userAdmin: user.admin });
     } else {
       next({
         name: "IncorrectCredentialsError",
@@ -59,7 +59,7 @@ console.log("pwm", passwordMatch)
 });
 
 usersRouter.post("/register", async (req, res, next) => {
-  const { username, password, email } = req.body;
+  const { username, password, email, admin } = req.body;
 
   try {
     const _user = await getUserByUsername(username);
@@ -75,6 +75,7 @@ usersRouter.post("/register", async (req, res, next) => {
       username,
       password,
       email,
+      admin
     });
 
     const token = jwt.sign(

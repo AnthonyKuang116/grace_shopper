@@ -60,7 +60,7 @@ productsRouter.patch("/:id", async (req, res, next) => {
       quantity,
       imgSrc,
     } = req.body;
-    const updatedProduct = await updateProduct(id, {
+    const updatedProduct = await updateProduct(id,
       category,
       subCategory,
       name,
@@ -68,7 +68,8 @@ productsRouter.patch("/:id", async (req, res, next) => {
       price,
       quantity,
       imgSrc,
-    });
+    );
+
     res.send(updatedProduct);
   } catch (error) {
     next(error);

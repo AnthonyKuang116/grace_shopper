@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Auth = ({ setCurrentUser, showAuth, setShowAuth, showLogIn, setShowLogIn }) => {
+const Auth = ({ setCurrentUser, showAuth, setShowAuth, showLogIn, setShowLogIn, setIsAdmin }) => {
   const classes = useStyles()
 const handleClose = () => {setShowAuth(false)};
 console.log(showAuth)
@@ -39,7 +39,7 @@ console.log(showAuth)
         
           <div className={classes.paper}>
             {showLogIn ? (
-              <LogIn {...{setCurrentUser, setShowAuth, setShowLogIn}} />
+              <LogIn {...{setCurrentUser, setShowAuth, setShowLogIn, setIsAdmin}} />
             ) : (
               <SignUp {...{setCurrentUser, setShowAuth, setShowLogIn}} />
             )}
