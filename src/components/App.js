@@ -45,8 +45,14 @@ const App = () => {
       const data = await getUserCart(currentUser);
       setUserCart(data);
     }
+    async function fetchEmptyCart() {
+      //everyone starts out with an empty cart if they're logged in
+      const data = await getUserCart(4); 
+      setUserCart(data);
+    }
     if (currentUser) fetchCart();
-  }, []);
+    if(!currentUser) fetchEmptyCart();
+  }, [currentUser]);
 
   useEffect(() => {
     if (!currentUser) {
@@ -57,7 +63,7 @@ const App = () => {
   const handleSearchTextChange = (e) => {
     const newSearchText = e.currentTarget.value;
     setCurrentSearchText((oldSearchText) => {
-      console.log(newSearchText);
+      // console.log(newSearchText);
       return newSearchText;
     });
   };

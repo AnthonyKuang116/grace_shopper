@@ -45,7 +45,7 @@ const AdminEditProduct = ({ setEditProduct, editProduct, products, setProducts, 
     };
 
     const deleteSelectedProduct = (e) => {
-        console.log("delete product", select.id)
+        // console.log("delete product", select.id)
 
 
         const newProductList = [...products].filter(
@@ -58,7 +58,7 @@ const AdminEditProduct = ({ setEditProduct, editProduct, products, setProducts, 
     }
 
     const editRow = (e) => {
-        console.log("Edit Button is work")
+        // console.log("Edit Button is work")
         setRowData(select)
         setEditModal(true);
     }
@@ -68,7 +68,7 @@ const AdminEditProduct = ({ setEditProduct, editProduct, products, setProducts, 
         // console.log(rowData)
 
         setRowData((oldRowData) => {
-            console.log(select)       
+            // console.log(select)       
             return select;
         })
     }, [select])

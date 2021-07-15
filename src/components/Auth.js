@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Auth = ({ setCurrentUser, showAuth, setShowAuth, showLogIn, setShowLogIn, setIsAdmin }) => {
   const classes = useStyles()
-const handleClose = () => {setShowAuth(false)};
-console.log(showAuth)
+  const handleClose = () => { setShowAuth(false) };
+  // console.log(showAuth)
 
   return (
     <div>
@@ -36,18 +36,18 @@ console.log(showAuth)
           timeout: 500,
         }}
       >
-        
-          <div className={classes.paper}>
-            {showLogIn ? (
-              <LogIn {...{setCurrentUser, setShowAuth, setShowLogIn, setIsAdmin}} />
-            ) : (
-              <SignUp {...{setCurrentUser, setShowAuth, setShowLogIn}} />
-            )}
-          </div>
-        
+
+        <div className={classes.paper}>
+          {showLogIn ? (
+            <LogIn {...{ setCurrentUser, setShowAuth, setShowLogIn, setIsAdmin }} />
+          ) : (
+            <SignUp {...{ setCurrentUser, setShowAuth, setShowLogIn }} />
+          )}
+        </div>
+
       </Modal>
     </div>
   );
 };
 
-export default Auth; 
+export default Auth;

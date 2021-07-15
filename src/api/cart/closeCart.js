@@ -1,6 +1,6 @@
 import axios from "axios";
 async function closeCart(id) {
-  console.log(id);
+  // console.log(id);
   try {
     const { data } = await axios.patch(`/api/cart/${id}`);
 
