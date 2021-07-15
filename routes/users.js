@@ -2,7 +2,7 @@ const usersRouter = require("express").Router();
 const { getAllUsers, getUserByUsername, createUser } = require("../db");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = process.env;
-
+const bcrypt = require("bcrypt")
 
 usersRouter.use((req, res, next) => {
   console.log("A request is being made to /users");
@@ -22,7 +22,7 @@ usersRouter.get("/", async (req, res) => {
   }
 });
 
-usersRouter.get("/login", async (req, res, next) => {
+usersRouter.post("/login", async (req, res, next) => {
   const { username, password } = req.body;
 
   // request must have both
@@ -35,15 +35,17 @@ usersRouter.get("/login", async (req, res, next) => {
 
   try {
     const user = await getUserByUsername(username);
-
-    if (user && user.password == password) {
+    const passwordMatch = await bcrypt.compare(password, user.password)
+console.log("user", user)
+console.log("pwm", passwordMatch)
+    if (user && passwordMatch) {
       // create token & return to user
       const token = jwt.sign(
         { id: user.id, username: user.username },
         JWT_SECRET,
         { expiresIn: "7d" }
       );
-      res.send({ message: "you're logged in!", token: token });
+      res.send({ message: "you're logged in!", token: token, user: user.id });
     } else {
       next({
         name: "IncorrectCredentialsError",

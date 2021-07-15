@@ -1,69 +1,59 @@
-import React, { useState } from "react";
-
-const logInUser = async (username, password) => {
-  try {
-    const response = await fetch(`/api/users/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: username,
-        password: password,
-      }),
-    });
-    const user = await response.json();
-    return user;
-  } catch (error) {
-    console.error(error);
-  }
-};
+import React, { useState, useEffect } from "react";
+import {login} from "../api";
 
 const setToken = (token) => {
   localStorage.setItem("token", token);
 };
 
-export const LogIn = ({ setUser, setShowSignUp }) => {
+export const LogIn = ({ setCurrentUser, setShowAuth, setShowLogIn }) => {
   const [usernameInput, setUsernameInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
-  const [emailInput, setEmailInput] = useState("");
   const submitHandler = (e) => {
     e.preventDefault();
   };
 
   const usernameChangeHandler = (event) => {
-    event.preventDefault();
+    
     setUsernameInput(event.target.value);
-  };
-
-  const emailChangeHandler = (event) => {
-    event.preventDefault();
-    setEmailInput(event.target.value);
+    // console.log("un", usernameInput)
+    // const newTextChange = e.currentTarget.value;
+    // setUsernameInput((oldText) => {
+    //   console.log(nextTextChange);
+    //   return newTextChange;
+    // })
+    
   };
 
   const passwordChangeHandler = (event) => {
-    event.preventDefault();
+    
     setPasswordInput(event.target.value);
+    
   };
+  useEffect(()=>console.log("pw", passwordInput), [passwordInput]);
+  useEffect(()=>console.log("un", usernameInput), [usernameInput]);
 
   const handleLogIn = async (event) => {
     event.preventDefault();
     try {
-      const user = await logInUser(usernameInput, passwordInput);
+      const user = await login(usernameInput, passwordInput);
+      console.log("user", user)
       if (!user.token) {
         alert(user.message);
         setPasswordInput("");
         return;
       }
+      console.log(usernameInput, passwordInput)
       setToken(user.token);
-      setUser(user.user);
+      setCurrentUser(user.user);
+      setShowAuth(false)
+      
     } catch (error) {
       console.error(error);
     }
   };
 
   const handleClick = () => {
-    setShowSignUp(true);
+    setShowLogIn(false);
   };
 
   return (
@@ -73,7 +63,7 @@ export const LogIn = ({ setUser, setShowSignUp }) => {
           <input
             type="text"
             className="username"
-            placeholder="username"
+            placeholder="Username"
             value={usernameInput}
             onChange={usernameChangeHandler}
             required
@@ -81,17 +71,9 @@ export const LogIn = ({ setUser, setShowSignUp }) => {
           <input
             type="password"
             className="password"
-            placeholder="password"
+            placeholder="Password"
             value={passwordInput}
             onChange={passwordChangeHandler}
-            required
-          />
-          <input
-            type="text"
-            className="email"
-            placeholder="Email Address"
-            value={emailInput}
-            onChange={emailChangeHandler}
             required
           />
           <button className="auth_button" onClick={handleLogIn}>

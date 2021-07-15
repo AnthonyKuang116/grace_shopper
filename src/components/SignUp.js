@@ -1,30 +1,12 @@
 import React, { useState } from "react";
+import {register} from "../api"
 
-const registerUser = async (username, password) => {
-  try {
-    const response = await fetch(`api/users/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: username,
-        password: password,
-      }),
-    });
-    const user = await response.json();
-    console.log({ user });
-    return user;
-  } catch (error) {
-    console.error(error);
-  }
-};
 
 const setToken = (token) => {
   localStorage.setItem("token", token);
 };
 
-export const SignUp = ({ setUser, setShowSignUp }) => {
+export const SignUp = ({ setCurrentUser, setShowAuth, setShowLogIn }) => {
   const [usernameInput, setUsernameInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [emailInput, setEmailInput] = useState("");
@@ -49,22 +31,22 @@ export const SignUp = ({ setUser, setShowSignUp }) => {
   };
 
   const handleClick = () => {
-    setShowSignUp(false);
+    setShowLogIn(true);
   };
 
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      const user = await registerUser(usernameInput, passwordInput);
+      const user = await register(usernameInput, passwordInput, emailInput);
       if (!user.token) {
         alert(user.message);
         setPasswordInput("");
-        setVerifyPasswordInput("");
 
         return;
       }
       setToken(user.token);
-      setUser(user.user);
+      setCurrentUser(user.user);
+      setShowAuth(false)
     } catch (error) {
       console.error(error);
     }

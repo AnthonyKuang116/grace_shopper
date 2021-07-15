@@ -15,7 +15,9 @@ const App = () => {
   const [userCart, setUserCart] = useState(null);
   const [currentSearchText, setCurrentSearchText] = useState("");
   const [subCategory, setSubCategory] = useState([]);
-  const [showSignUp, setShowSignUp] = useState(false);
+  const [showAuth, setShowAuth ] = useState(false);
+  const [showLogIn, setShowLogIn ]= useState(false)
+  
   const [openCart, setOpenCart] = useState(false);
 
   const [openUsers, setOpenUsers] = useState(false);
@@ -95,9 +97,7 @@ const App = () => {
           setProducts,
           handleSubCategoryChange,
           subCategory,
-
-setShowSignUp,
-
+          setShowAuth,
           setOpenCart,
           setOpenUsers,
           setAddProduct,
@@ -140,7 +140,7 @@ setShowSignUp,
       ) : (
         ""
       )}
-      <Auth {...{ showSignUp, setShowSignUp }} />
+      <Auth {...{ setCurrentUser, showAuth, setShowAuth, showLogIn,  setShowLogIn,  }} />
       <ViewUsers openUsers={openUsers} setOpenUsers={setOpenUsers} />
 
       <AdminAddProduct
