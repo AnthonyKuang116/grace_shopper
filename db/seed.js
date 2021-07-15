@@ -21,19 +21,19 @@ const createInitialUsers = async () => {
         username: "sandra",
         password: "sandra123",
         email: "sandra@fakemail.com",
-        admin: false,
+       
       },
       {
         username: "glamgal",
         password: "glamgal123",
         email: "glamgal@fakemail.com",
-        admin: false,
+       
       },
       {
         username: "cart",
         password: "cart",
         email: "cart@emai.com",
-        admin: false,
+
       },
     ];
     const users = await Promise.all(usersToCreate.map(createUser));
